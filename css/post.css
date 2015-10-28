@@ -1,0 +1,37 @@
+#content{border: 1px solid #C1FEAE;margin-top:50px;}
+#wrapPost,#textarea{position:relative; width:98%;margin:10px auto; }
+#textarea{height:380px;}
+/*#wrapPost{overflow:auto;height:700px;}*/
+#notepad{width:100%;height:300px;}
+#titoloPost{width:99% !important;height:20px;}
+div.jHtmlArea .ToolBar ul li {margin: 1px !important;}
+iframe{width:100% !important; height:300px !important;margin-top:10px;border:1px solid #cacaca}
+div.jHtmlArea,.ToolBar, #tbdata{width:100% !important;}
+.tddata{width:20px;}
+#wrapEditor{margin-top: 15px !important;border-bottom: 1px solid #FFBF96;padding-bottom: 10px;}
+.wrapdata{position:relative;width: 100%;height: 50px;background: #ECECEC;border-radius: 5px;padding: 5px;text-align: center;border:1px solid #857d7d;}
+.wrapdata:after, .wrapdata:before {left: 100%;top: 50%;border: solid transparent;content: " ";height: 0;width: 0;position: absolute;pointer-events: none;}
+.wrapdata:after {border-color: rgba(255, 255, 255, 0);border-left-color: #ECECEC;border-width: 5px;margin-top: -5px;}
+.wrapdata:before {border-color: rgba(133, 125, 125, 0);border-left-color: #857d7d;border-width: 6px;margin-top: -6px;}
+.data{display:block;line-height:3px !important;color:#907F73 !important;}
+.giorno{font-weight:bold; font-size:1.5em !important;}
+.mese{font-size:1.5em !important;}
+.anno{font-size:0.95em !important;}
+.headerPost{margin:0px !important;}
+.wrapPostContent{margin-bottom:15px; border-bottom:1px dotted #857d7d;}
+.post{zoom:130%;}
+.titlePost{border-bottom:1px solid #FF8952;}
+.gestionePost{margin:3px 0px;}
+.gestionePost label, .gestioneCommenti label{font-size:0.890em !important;}
+.gestioneCommenti label{color:black !important;}
+.gestioneCommenti label:hover{text-decoration:underline;}
+.wrapCommentiContent{margin:10px 0px;}
+.commentiHeader{padding: 5px;background-color: #ececec;margin-bottom: 2px;}
+.commenta{float:right;}
+.commenta, .gestionePost label, .gestioneCommenti label{cursor:pointer;}
+.commenta:hover, .gestionePost label:hover{color:#685C53 !important;}
+.commentoCorpo{background-color:#CFC4B1;padding:5px;margin-bottom:2px;}
+.headerCommento{margin:0px !important; font-size:0.890em !important;}
+.commento{margin:5px 0px;}
+.errormsg{text-align:center;background-color:#FF8952;margin-top:10px;}
+.login2{margin-top:20px !important;}

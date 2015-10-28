@@ -1,0 +1,131 @@
+/*   Reset   */
+
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, textarea, input, select {margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline;}
+table {border-collapse: collapse; border-spacing: 0;}
+caption, th, td {text-align: left; font-weight: normal;}
+table, td, th {vertical-align: middle;}
+blockquote:before, blockquote:after, q:before, q:after {content: "";}
+blockquote, q {quotes: "" "";}
+a img {border: none;}
+:focus {outline: 0;}
+
+
+/*stili per il layout fisso*/
+html,body{margin: 0;padding:0}
+body{font-family: arial,sans-serif;font-size: 76%;text-align: center}
+div#container{
+	position:relative; 
+	width: 760px;
+	height: 100%;
+	margin: 10px auto;
+	text-align: left;
+}
+body>div#container{height: auto; min-height: 100%}
+/*stili generici, su header e footer*/
+div#header{background-color:#fff; color: #ff0; height:100px;border: 1px #000 solid;}
+div#header h1 {color:#000; font-size:1.6em;}
+div#header h2 {color:#585858; font-size:1.2em;}
+div#header h1,div#header h2 {padding:0px; margin:10px 0px 0px 25px;}
+
+div#risoluzione{
+	position:absolute;
+	top:0px;
+	right: 0px;
+	margin:2px;
+	padding: 5px;
+	}
+div#risoluzione a.change-css {
+	margin-right:2px;
+	padding: 2px 4px;
+	/*background-color:#9C9C9C;*/
+	text-decoration:none;
+	color:#585858;
+	}
+	
+div#footer a{color: #fff;font-weight: bold;text-decoration: underline}
+
+/*stili specifici per il layout*/
+div#navigation{
+	position:relative;
+	padding: 1em;
+	margin-top:1em;
+	width: 10em;
+	float:right; 
+	border: 1px #000 solid;
+	}
+div#content{
+	margin:1em 13em 1em 0;
+	padding: 1em;
+	border: 1px #000 solid;
+	}
+div#content h1 {font: 1.4em Verdana, sans-serif;color:#B85603; margin:10px 0px;}	
+
+div#footer{
+	text-align:center; 
+   background-color: #fff; 
+   color: #000;
+   clear:both;
+   width:760px;
+   height:50px;
+	border: 1px #000 solid;
+   }
+
+/*stili per la navigazione*/
+div#navigation ul{margin: 1em 0;padding: 0; list-style-type: none;}
+div#navigation li{margin: 0px;padding:10px 0px 0px 0px; border-bottom:1px dotted #585858}
+div#navigation a{color:#369;font: normal bold 0.8em/1.0em arial,sans-serif;text-decoration: none}
+div#navigation a:hover{color: #033;text-decoration: none;}
+div#navigation li:hover{background-color:#BABCBA}
+div#navigation a#activelink{color: #033;text-decoration: none}
+div#navigation h3 {
+	padding:10px 20px;
+	margin:0px;
+	font-weight:bold;
+	color:#3A5567;
+	/*background-color:#85A1B4;*/
+	text-align: center;
+	-moz-border-radius: 5px;
+   /* Safari 4-5, Chrome 1-9 */ 
+   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4C6678), to(#85A1B4)); 
+   /* Safari 5.1, Chrome 10+ */ 
+   background: -webkit-linear-gradient(top, #4C6678, #85A1B4); 
+   /* Firefox 3.6+ */ 
+   background: -moz-linear-gradient(top, #4C6678, #85A1B4); 
+   /* IE 10 */ 
+   background: -ms-linear-gradient(top, #4C6678, #85A1B4); 
+   /* Opera 11.10+ */ 
+   background: -o-linear-gradient(top, #4C6678, #85A1B4); 
+	}
+
+/***************  menù orizzontale   ***********/
+div#menuContent{
+	margin:0px auto;
+	padding:7px 20px;
+	width:400px;
+	height:35px;
+	/*background-color:#85A1B4;
+	text-align: center;
+	-moz-border-radius: 5px;*/
+	}
+	
+div.menu{
+	/*border: 1px solid #A1B8C8;*/
+	color:#fff;
+	text-align: center;
+	font-size:1.0em;
+	margin:0px auto;
+	/*margin-left:1px;*/
+	font-weight:bold;
+	padding:10px;
+	/*background-color: #77BEEA;*/
+	width:50px;
+	height:10px;
+	float:left;
+	cursor:pointer;
+}
+div.menu a:hover, div.menu a:link, div.menu a:visited{color:#002242; text-decoration:none;}
+
+div.menu:hover, div.menu a:active, div.menu a:active:hover{
+	background-color:#A1B8C8; 
+	color:#002242; 
+	}

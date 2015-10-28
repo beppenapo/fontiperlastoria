@@ -1,0 +1,138 @@
+
+@font-face {
+    font-family: 'AdobeCaslonProRegular';
+    src: url('../font/acaslonpro-regular-webfont.eot');
+    src: url('../font/acaslonpro-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../font/acaslonpro-regular-webfont.woff') format('woff'),
+         url('../font/acaslonpro-regular-webfont.ttf') format('truetype'),
+         url('../font/acaslonpro-regular-webfont.svg#AdobeCaslonProRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@import url(http://fonts.googleapis.com/css?family=PT+Sans);
+@import url(http://fonts.googleapis.com/css?family=Playfair+Display:400,700,400italic,700italic);
+@import url(http://fonts.googleapis.com/css?family=Gilda+Display);
+
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, textarea, input, select {margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline;}
+table {border-collapse: collapse; border-spacing: 0;}
+caption, th, td {text-align: left; font-weight: normal;}
+table, td, th {vertical-align: middle;}
+blockquote:before, blockquote:after, q:before, q:after {content: "";}
+blockquote, q {quotes: "" "";}
+a img {border: none;}
+:focus {outline: 0;}
+h1, h2, h3, h4{font-weight:bold;}
+a{text-decoration:none;}
+a:hover{text-decoration:underline;}
+h2{margin:20px 10px;}
+h4{margin:20px 10px 1px 10px !important;}
+p{color:#313131;}
+
+ol,ul{list-style: none;}
+
+
+html,body{margin: 0px;padding:0px; height:100%;}
+body{
+ background-color: #F8F8F6;
+ background: url("../img/layout/bgBodyHome.png");
+ background-repeat: no-repeat;
+ /*background-position: bottom center;*/
+ background-size: cover;
+ font-family: 'Playfair Display', serif;
+ /* font-family: arial,sans-serif; */
+ font-size: 76%;
+ text-align: left;
+}
+div#container{
+ position:absolute;
+ top:0px;
+ left:0px;
+ width:100%;
+ min-height: 100%;
+ z-index:1;
+}
+
+div#wrap{
+ padding:0px;
+ margin: 0px auto !important;
+ width: 70%;
+ text-align: left;
+ height: auto;  
+}
+
+
+div#contentSk{
+ width:100%;
+ height:auto !important;
+ min-height:580px; clear:both;
+ margin:40px 0px;
+ padding: 0px;
+ background-color: rgba(255,255,255,0.9);
+ border: 1px solid #C1FEAE;
+
+}
+
+div#livelloScheda{
+ position:relative;
+ float:left;
+ margin:-142px auto 0px;
+ width: 100%;
+ /*z-index:1000;*/
+}
+
+div#livelloScheda ul{
+ width:40%;
+ margin:0px auto;
+ padding:0px;
+}
+
+div#livelloScheda li{
+ float:left;	
+ width: 33%;
+ text-align: center;
+ padding:3px 0px;
+ border:1px solid #FFBF96;
+ background-color: rgba(255,255,255,0.7);
+ color:#DAD6D1;
+}
+.livAttivo{
+ background-color: rgba(236,236,236,1) !important;
+ color:#907F73 !important; 	
+}
+
+
+div#logoSchedaDx{
+ position:relative;
+ float:right;
+ margin: -35px -60px 0px 0px;
+ width:170px;
+ height:170px;
+ z-index: 1000;
+}
+div#logoSchedaSx{
+	position:relative;
+	float: left;
+	margin:10px 0px 0px -35px;
+   width:145px;
+   height:50px;
+   z-index: 5;
+}
+div#logoSchedaSx img{
+   opacity:0.4;
+   filter:alpha(opacity=40); /* For IE8 and earlier */
+}
+
+div#skArcheoContent div.primo{margin-top: 140px !important;}
+
+div#skArcheoContent div.inner{
+	position:relative;
+	float:left; 
+	width:949px;
+	/*min-height:50px;*/
+	border:1px solid #FFBF96;
+	background-color: #ffffff;
+	margin:0px auto 10px;
+	z-index:500;
+}
+div#skArcheoContent div.halfInner{float:left;width:450px !important;}
+div#skArcheoContent div.halfInnerSx{margin-right: 25px; }

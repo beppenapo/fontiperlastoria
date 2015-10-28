@@ -1,0 +1,591 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway:500,600,400,300);
+@font-face {
+    font-family: 'AdobeCaslonProRegular';
+    src: url('../font/acaslonpro-regular-webfont.eot');
+    src: url('../font/acaslonpro-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../font/acaslonpro-regular-webfont.woff') format('woff'),
+         url('../font/acaslonpro-regular-webfont.ttf') format('truetype'),
+         url('../font/acaslonpro-regular-webfont.svg#AdobeCaslonProRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/***************** generici ***************************/
+a{text-decoration: none;}
+
+
+/****************  stili mappa full screen *****************/
+html, body, #map {
+ margin: 0px;
+ padding:0px;
+ width: 100%;
+ height: 100%;
+}
+div#logo{
+ position:absolute;
+ top:20px;
+ left:10px;
+ padding: 5px;
+ width:150px;
+ height:50px;
+ background: url(../img/layout/logo.png) no-repeat center center;
+ background-color: none;
+ z-index: 20000;
+-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
+ transition: background 0.5s linear;
+ -moz-transition: background 0.5s linear; /* Firefox 4 */
+ -webkit-transition: background 0.5s linear; /* Safari and Chrome */
+ -o-transition: background 0.5s linear; /* Opera */
+}
+div#logo:hover{ background-color: rgba(255,255,255,0.5);}
+
+div#logo2Wrap{
+ position:absolute;
+ top:20px;
+ left: 175px;
+ width:50px;
+ height:50px;
+ margin:0px auto !important;
+ padding: 5px;
+ background-color: none;
+ z-index: 20000;
+-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
+ transition: background 0.5s linear;
+ -moz-transition: background 0.5s linear; /* Firefox 4 */
+ -webkit-transition: background 0.5s linear; /* Safari and Chrome */
+ -o-transition: background 0.5s linear; /* Opera */
+}
+div#logo2Wrap:hover{background-color: rgba(255,255,255,0.5);}
+div#logo2{
+ position:absolute;
+ left:5.5px;
+ width:50px;
+ height:43px;
+ margin:0px auto !important;
+ cursor:pointer;
+ font-size: 8px;
+ color:#AAA !important;
+ font-family: 'AdobeCaslonProRegular', Arial, sans-serif;
+ /*padding:40px 0px 40px 12px !important;*/
+ text-align:center;
+ background-color:rgb(57,45,0);
+ z-index: 20000;
+-webkit-border-radius: 30em;
+ -moz-border-radius: 30em;
+ border-radius: 30em;
+
+ /* transition: background 0.5s linear;
+ -moz-transition: background 0.5s linear; 
+ -webkit-transition: background 0.5s linear; 
+ -o-transition: background 0.5s linear; */
+}
+
+/*div#logo2:hover{background-color:rgb(96,75,0);}*/
+div#logo2 p{/*padding:40px 0px 40px 12px !important;*/ margin:16px auto !important;}
+div#text, div#result {
+ position: absolute;
+ font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+ font-size: 80%;
+ color: #222;
+ height: auto;
+/* min-height: 680px;*/
+ margin: 0px auto;
+ overflow:hidden;
+ z-index: 20000;
+ background-color: rgba(255,255,255,0.8);
+ /*-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;*/
+}
+div#text{top: 20px;right: 60px;width: 125px;padding: 0px 0.5em 0.5em 0.5em;}
+div#text h1{text-align:center;}
+div#text h1.switcher{text-align:left !important; /*text-decoration: underline;*/}
+div#text h1{font-size:9px; color:#43321C; text-align:center;}
+
+div#text h2{font-size:8px; color:#43321C;}
+div#ricerca{
+ margin:20px 1px 5px 1px;
+ padding:0px;
+ border-top:1px solid #67573F;
+ overflow:hidden;
+}
+div#ricercaToggle{cursor:default;}
+div.sezioni{border:1px solid #67573F;margin:-1px 2px; padding:0px 1px;}
+div.sezioni:hover{background-color:#CFC4B1; cursor:pointer;}
+div.sezioni h2{padding:1px 0px !important; margin:0px !important;}
+
+
+div#switcher{font-size:7px;}
+
+div#nord{
+	position:absolute;
+	top:85%;
+	right:1px;
+	width:60px;
+	height:60px;
+	z-index:1005;
+	background: url(../img/icone/nord.png) no-repeat center center;
+}
+
+img.infoImg{vertical-align: bottom; cursor: pointer;}
+input.checkLiv{
+	width: 10px; 
+	height: 10px;
+	padding: 0px;
+   margin:0px;
+   vertical-align: bottom;
+   position: relative;
+   top: 0px;
+   *overflow: hidden;
+}
+.olControlPanZoom {
+ width: 45px;
+ height: 143px;
+ margin-top: 75%;
+ margin-left:10px;
+ background-color: rgba(255,255,255,0.4) !important;
+ -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
+ transition: background 0.5s linear;
+ -moz-transition: background 0.5s linear; /* Firefox 4 */
+ -webkit-transition: background 0.5s linear; /* Safari and Chrome */
+ -o-transition: background 0.5s linear; /* Opera */
+}
+.olControlPanZoom:hover {background: rgba(255,255,255,0.5);}
+#coord, #scalebar{
+ position: absolute;
+ bottom: 1px;
+ font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+ font-size: 70%;
+ text-align:center;
+ color: #67573F;
+ margin: 0px auto;
+ z-index: 20000;
+ background-color: rgba(255,255,255,0.5);
+ padding: 0px 0.5em 0.5em 0.5em;
+-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
+}
+#coord {
+ left: 60%;
+ width: 150px;
+ height: auto;
+ padding: 6px;
+}
+#scalebar{
+ left: 40%;
+ width: 180px;
+ height: auto;
+}
+
+div.livelli{position: relative; display: block;width: 125px; }
+.legende{
+	float:right; 
+	width: 20px; 
+	height:5px; 
+	/*margin:7px 0px 0px 0px;*/
+	-moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;
+}
+.legendeAreeArcheo,   .legendeUbiArcheo{background-color: rgba(113,255,64,1);}
+.legendeAreeArchitet, .legendeUbiArchitet{background-color: rgba(255,0,0,1);}
+.legendeAreeArchiv,   .legendeUbiArchiv{background-color: rgba(255,0,255,1);}
+.legendeAreeBiblio,   .legendeUbiBiblio{background-color: rgba(255,202,1,1);}
+.legendeAreeCult,     .legendeUbiCult{background-color: rgba(0,128,0,1);}
+.legendeAreeFoto,     .legendeUbiFoto{background-color: rgba(0,255,0,1);}
+.legendeAreeOrale,    .legendeUbiOrale{background-color: rgba(0,255,255,1);}
+.legendeAreeStoArt,   .legendeUbiStoArt{background-color: rgba(0,149,216,1);}
+
+#sliderWrap{
+ position:absolute;
+ top:20px;
+ right:10px;
+ height:237px;
+ width:40px;  
+ margin:0px auto !important;
+ padding: 0px;
+ background-color: rgba(255,255,255,0.8);
+ /*-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;*/
+ z-index: 20000;
+}
+#slider{float:right;height:185px;width:5px;margin:20px 5px 0px 0px;}
+
+.sliderLivelli{height:auto !important; display: block;margin-top:5px;}
+.sliderOpacity{width:100px !important; height:5px !important; margin:0px;}
+.amount{float:right; font-size: 8px; margin-top: -8px;}
+.ui-slider .ui-slider-handle{width:1em !important;height:1em !important; cursor:move !important;}
+
+#sliderLabel{
+  font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+  font-size: 60%;
+  font-weight:bold;
+  color: #222;
+  padding:5px 0px 5px 4px;
+}
+.sliderTip{
+    position: absolute;
+    width: 20px;
+    height: 10px;
+    background: none;
+    color: #000;
+    font-size: 8px;
+    border-bottom:1px dotted #000;
+    z-index: 20000;
+    /*padding: 3px;*/
+    text-align: center;
+    margin-left:-25px;
+    margin-top:0px;
+}
+
+/**** Barra di scala ******/
+.olControlScaleBarBar {
+    height: 1px;
+    top: 14px;
+    background: #67573F;
+}
+
+.olControlScaleBarBarAlt {
+    height: 1px;
+    top: 14px;
+    background:#67573F;
+}
+
+.olControlScaleBarMarkerMajor {
+    height: 7px;
+    width: 1px;
+    top: 11px;
+    background: #67573F;
+}
+
+.olControlScaleBarMarkerMinor {
+    height: 5px;
+    width: 1px;
+    top: 12px;
+    background: #67573F;
+}
+
+.olControlScaleBarNumbersBox {
+    width: 40px;
+    height: 13px;
+    top: 21px;
+    font-size: 0.8em;
+}
+
+.olControlScaleBarLabelBox {
+    top: -2px;
+    height: 15px;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    font-size: 0.8em;
+    font-variant: small-caps;
+}
+
+.olControlScaleBarLabelBoxSingleLine {
+    height: 15px;
+    width: 35px;
+    top: 5px;
+    left: 10px;
+    font-size: 0.8em;
+    font-variant: small-caps;
+}
+
+/*********  Google attribution   *****************/
+.olLayerGooglePoweredBy.olLayerGoogleV3.gmnoprint{display:none !important;}
+
+/********** sfondo pannello comandi ****************/
+div#pannello{
+ position:absolute;
+ top:70%;
+ left:6px;
+ padding: 5px;
+ width:40px;
+ height:180px;
+ background-color: rgba(255,255,255,0.5);
+ z-index: 1000;
+/*-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
+ transition: background 0.5s linear;
+ -moz-transition: background 0.5s linear; 
+ -webkit-transition: background 0.5s linear;
+ -o-transition: background 0.5s linear; */
+}
+
+/*div#pannello:hover{ background-color: rgba(255,255,255,0.5);}*/
+/*********  Comando zoom area *************/
+div#zoomArea{
+	position:absolute; 
+	left:18px; 
+	top:70%;
+	z-index: 1005; 
+	width:27px; 
+	height:27px; 
+	cursor:pointer;
+	background: url(../img/icone/zoomArea.png) no-repeat center center;
+	background-color: none !important;
+	margin-top: 150px;
+}
+#zoomIn, #pan{width:27px !important;height:27px !important;}
+
+/*********  Comando drag *************/
+div#drag{
+	position:absolute; 
+	left:18px; 
+	top:70%;
+	z-index: 1005; 
+	width:27px; 
+	height:27px; 
+	cursor:pointer;
+	background: url(../img/icone/drag.png) no-repeat center center;
+	background-color: none !important;
+	margin-top: 110px;
+}
+
+/*********  Comando di zoom max extent  *************/
+div#zoomMax{
+	position:absolute; 
+	left:18px; 
+	top:70%;
+	z-index: 1005; 
+	width:27px; 
+	height:27px; 
+	cursor:pointer;
+	background: url(../img/icone/zoom_world.png) no-repeat center center;
+	background-color: none !important;
+	margin-top: 20px;
+}
+
+div.olControlZoom{top:70% !important;left:18px !important; background: none !important;}
+
+div.olControlZoom a {
+	background: rgba(45,36,3,0.2) !important;
+	width:18px !important;
+	height: 17px !important;
+}
+
+div.olControlZoom a:hover{background: rgba(45,36,3,0.7) !important;}
+a.olControlZoomIn{
+	margin-bottom:25px !important;
+   border-top: 1px solid #2D2403;
+	border-radius: 10px 10px 0px 0px !important;
+}
+a.olControlZoomOut{
+	border-bottom: 1px solid #2D2403;
+	border-radius: 0px 0px 10px 10px !important;
+}
+
+a.olControlZoomIn, a.olControlZoomOut{border-left: 1px solid #2D2403;border-right: 1px solid #2D2403;}
+
+/**********  history *************/
+div#history{
+  position:absolute;
+  top: 70%;
+  left:9px;
+  z-index: 1005;
+  width: 50px;
+  height: auto !important;
+  margin-top: 80px;	
+  background: rgba(45,36,3,0) !important;
+}
+
+.olControlNavigationHistory  {
+	background-image:none !important;
+	background-repeat:no-repeat;
+	height:25px !important;
+	width:25px !important;
+	float:left;
+	cursor:pointer;
+}
+
+.olControlNavigationHistoryPreviousItemActive { 
+	background-image:url(../img/icone/zoomPrev.png) !important;
+  	background-position: -1px 0px !important;
+}
+.olControlNavigationHistoryPreviousItemInactive { 
+   background-image:url(../img/icone/zoomPrev.png) !important;
+	background-position: -1px 0px !important;
+}
+.olControlNavigationHistoryNextItemActive { 
+	background-image:url(../img/icone/zoomNext.png) !important;
+   background-position: -1px 0px !important;
+}
+.olControlNavigationHistoryNextItemInactive { 
+	background-image:url(../img/icone/zoomNext.png) !important;
+   background-position: -1px 0px !important;
+}
+
+/**************** popup wmsfeatureinfo *************************************/
+#popUbi{
+   border-radius:10px !important;
+   -webkit-border-radius: 10px !important;
+   -moz-border-radius: 10px !important;
+   width: 260px !important;
+   height: 160px !important;
+}
+#popUbi, #result{
+  background-color: rgba(255,255,255,0.7) !important;
+  border: 2px solid #8C8C8C !important;
+  box-shadow: 5px 5px 8px #000000 !important;
+}
+#popUbi_contentDiv{
+width: 250px !important;
+height: 150px !important;
+position: relative !important;
+}
+#popUbi_contentDiv p{font-size: 13px !important;}
+.ulContent{position: relative;width: 250px;height: 110px;overflow: auto;}
+ul.ulpopup{margin: 0px 0px 10px 4px !important; padding:0px !important;}
+ul.ulpopup li{font-size: 0.5em;list-style: none; width: 220px;margin-left:10px;padding:2px 0px;}
+.h1popupArcheo,.h1popupArchivi,.h1popupArchitett,.h1popupBiblio,.h1popupCultMat,.h1popupFoto,.h1popupOrale,.h1popupStoArt{font-size: 13px; margin:5px 0px 0px 0px}
+.h2popupArcheo,.h2popupArchivi,.h2popupArchitett,.h2popupBiblio,.h2popupCultMat,.h2popupFoto,.h2popupOrale,.h2popupStoArt{font-size:12px;margin:2px 0px 3px 0px;padding:0px;width:100%;border-bottom: 1px solid;}
+
+.h1popupArcheo, a.popupArcheo{color:#71FF40;}
+.h2popupArcheo{border-bottom-color:#71FF40;}
+
+.h1popupArchivi, a.popupArchivi{color:#FF00FF;}
+.h2popupArchivi{border-bottom-color:#FF00FF;}
+
+.h1popupArchitett, a.popupArchitett{color:#FF0000;}
+.h2popupArchitett{border-bottom-color:#FF0000;}
+
+.h1popupBiblio, a.popupBiblio{color:#FFCA01;}
+.h2popupBiblio{border-bottom-color:#FFCA01;}
+
+.h1popupCultMat, a.popupCultMat{color:#008000;}
+.h2popupCultMat{border-bottom-color:#008000;}
+
+.h1popupFoto, a.popupFoto{color:#00FF00;}
+.h2popupFoto{border-bottom-color:#00FF00;}
+
+.h1popupOrale, a.popupOrale{color:#00FFFF;}
+.h2popupOrale{border-bottom-color:#00FFFF;}
+
+.h1popupStoArt, a.popupStoArt{color:#000080;}
+.h2popupStoArt{border-bottom-color:#000080;}
+
+/**********************  Risultato ricerca ************************/
+div#result{
+   top: 90px;
+   left: -325px;
+   width: 300px; 
+   height:50%; 
+   padding:0px;
+   margin:0px;
+   -webkit-border-top-right-radius: 10px;
+   -webkit-border-bottom-right-radius: 10px;
+   -moz-border-radius-topright: 10px;
+   -moz-border-radius-bottomright: 10px;
+   border-top-right-radius: 10px; 
+   border-bottom-right-radius: 10px;
+}
+div#resultHeader{width:100%; /*background-color: #ac5a00;*/ float:left;}
+
+div#resHeadImg, .olPopupCloseBox{
+   width:25px !important;
+   height:25px !important;
+   float:right; 
+   cursor: pointer !important;
+   text-transform:uppercase !important;
+   color:#fff !important;
+   background:rgba(203, 132, 46, 1) !important;
+   font-family:"Tahoma", Helvetica, sans-serif !important;
+   text-align:center !important;
+   border-radius:50% !important;
+   -moz-border-radius:50% !important;
+   -webkit-border-radius:50% !important;
+   box-shadow:0px 0px 2px 0px #666 !important;
+   -moz-box-shadow:0px 0px 2px 0px #666 !important;
+   -webkit-box-shadow:0px 0px 2px 0px #666 !important;
+   font-weight:bold !important;
+}
+div#resHeadImg{font-size:1.6em !important;line-height:1.3em !important;}
+.olPopupCloseBox{font-size:1.125em !important;line-height:1.7em !important;}
+.olPopupCloseBox:before{content:attr(data-icon);}
+div#resultContent{padding:10px;height:100%}
+div#resultContent ul {margin:0px; padding:0px;}
+div#result h1{font-size: 0.7em;color:#43321C; text-transform:uppercase;text-align:center; margin-top:20px;}
+div#resContentData{margin-bottom: 10px;}
+div#resContentData, div#resContentSchede{ width:100%; overflow:auto;}
+div#resContentData{ height:auto;max-height: 40% !important;}
+div#resContentSchede{min-height: 38%; height: auto;max-height: 45%;}
+
+div#resContentData li{
+  list-style-type: none; 
+  margin-left: 10px; 
+  font-weight:bold; 
+  cursor: pointer;
+  width:235px;
+  padding:2px 0px;
+  font-size:0.7em;
+  transition-property: margin-left; /*standard*/
+  transition-duration: 0.5s;
+  -webkit-transition-property: margin-left; /*Safari e Chrome */
+  -webkit-transition-duration: 0.5s;      
+  -o-transition-property: margin-left;     /*Opera*/        
+  -o-transition-duration: 0.5s;
+  -moz-transition-property: margin-left;   /*Firefox*/
+  -moz-transition-duration: 0.5s;
+}
+div#resContentData li:hover { margin-left:20px;}
+div#resContentSchede h2, #popUbi_contentDiv h2{padding:0px; margin:0px; font-size: 0.7em;}
+.ulpopup li h2{font-size: 1.10em !important;}
+#popUbi_contentDiv p{font-size: 9px !important;padding:0px; margin:0px;}
+div#resContentSchede p {font-size: 0.687em;padding:0px; margin:0px;}
+div#resContentSchede li, #popUbi_contentDiv li {margin: 0px 0px 5px 10px;}
+#popUbi_contentDiv{font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;}
+
+
+/************  popup ubicazioni   ****************************/
+h2.archeologica, a.archeologica{color:#71FF40 !important;}
+h2.archivistica, a.archivistica{color:#FF5555 !important;}
+h2.bibliografica, a.bibliografica{color:#FFCA01 !important;}
+h2.fotografica, a.fotografica{color:#00FF00 !important;}
+h2.orale, a.orale{color:#00FFFF !important;}
+h2.materiale, a.materiale{color:#008000 !important;}
+h2.stoart, a.stoart{color:#0095D8 !important;}
+h2.architettonica, a.architettonica{color:#FF0000 !important;}
+.titLocUbi{margin:5px 15px 10px;font-weight:bold;font-size:10px;}
+/****************  TOOLTIP ***************************************************************/
+.ui-tooltip, .qtip{z-index: 21000 !important;}
+/*! Add rounded corners to your tooltips in: FF3+, Chrome 2+, Opera 10.6+, IE9+, Safari 2+ */
+.ui-tooltip-rounded,
+.ui-tooltip-rounded .ui-tooltip-content,
+.ui-tooltip-tipsy,
+.ui-tooltip-tipsy .ui-tooltip-content,
+.ui-tooltip-youtube,
+.ui-tooltip-youtube .ui-tooltip-content{
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+}
+
+/***************** CLASSI GENERICHE ***************************/
+.hover{cursor:pointer;}
+.active{color: #B10404;}
+
+/**************** AVS *********************/
+#wrapLogoAvs{ 
+ position:absolute; 
+ top:20px; 
+ left:10px; 
+ padding: 5px; 
+ width:560px; 
+ height:50px; 
+ background-color: rgba(255,255,255,0.2);
+ color:#fff;
+ z-index: 20000;-moz-border-radius: 4px; 
+ -webkit-border-radius: 4px; 
+ border-radius: 4px; 
+ transition: background 0.5s linear, color 0.5s linear; 
+ -moz-transition: background 0.5s linear, color 0.5s linear; 
+ -webkit-transition: background 0.5s linear, color 0.5s linear; 
+ -o-transition: background 0.5s linear, color 0.5s linear; 
+ cursor:pointer;
+ font-family: 'Raleway', sans-serif;
+}
+div#wrapLogoAvs:hover{ background-color: rgba(255,255,255,0.7);color:#000;}
+#wrapLogoAvs #headLogo{
+ background-image: url(../avs/img/loghi/logoComunita.png);
+ background-repeat: no-repeat;
+ background-size:contain;
+ width: 60px;
+ height: 100%;
+ display: inline-block; 
+}
+#wrapLogoAvs #headTitle{ width: 490px; height: 100%; display: inline-block; vertical-align:top;}
+#wrapLogoAvs #headTitle h1{font-size:1em;padding: 0px !important; margin: 0px !important;}
+#wrapLogoAvs #headTitle h2{font-size:.8em;padding: 0px !important; margin: 0px !important;}

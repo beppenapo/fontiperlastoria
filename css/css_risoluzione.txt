@@ -1,0 +1,8 @@
+<script type="text/javascript">
+  if (screen.height >= 1024) {
+  document.write("<link rel='stylesheet' href='urlFoglioStile' type='text/css' media='screen' />");
+  }
+  else {
+  document.write("<link rel='stylesheet' href='UrlFoglioStile' type='text/css' media='screen' />");
+  }
+</script>

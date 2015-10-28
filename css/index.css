@@ -1,0 +1,24 @@
+/*   Reset   */
+
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, textarea, input, select {margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline;}
+table {border-collapse: collapse; border-spacing: 0;}
+caption, th, td {text-align: left; font-weight: normal;}
+table, td, th {vertical-align: middle;}
+blockquote:before, blockquote:after, q:before, q:after {content: "";}
+blockquote, q {quotes: "" "";}
+a img {border: none;}
+:focus {outline: 0;}
+
+html,body{margin: 0px;	padding:0px; /*height:100%;*/}
+html{background: url("../img/layout/bgMainPage.png") no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover;-o-background-size: cover;background-size: cover;}
+body{font-family: arial,sans-serif;font-size: 76%;text-align: center;}
+div#container{position:relative;width:500px;height: 500px;z-index:1;margin: 0px auto !important;text-align: left;padding: 0px auto !important;}
+div#wrap{position:relative;font-size:16px; width:600px;height:auto !important;padding: 0px auto !important;}
+div#messaggio{padding: 0px auto !important;color: #ffffff;height:200px; z-index:1000;margin:50px auto 5px;}
+div#messaggioText{padding:20px;background-color: rgba(89, 87, 78, 0.8);-webkit-border-radius: 1em;-moz-border-radius: 1em;border-radius: 1em;}
+div#switch{width:100%;height:50px;z-index:1001;margin: 0px auto !important;}
+div#home, div#webgis, div#database {width:115px;height:35px;font-size: 18px;font-weight:bold;color:#59574E;background-color:none; text-align: center;padding-top:15px;cursor:pointer;float:left; margin-left:40px;transition: background 0.5s linear, color 0.5s linear;-moz-transition: background 0.5s linear, color 0.5s linear; -webkit-transition: background 0.5s linear, color 0.5s linear; -o-transition: background 0.5s linear, color 0.5s linear;-webkit-border-radius: 1em;-moz-border-radius: 1em;border-radius: 1em;}
+div#home:hover, div#webgis:hover, div#database:hover {background-color:#59574E;color:#B3AFA3;}
+div#footer a{color: #968676;font-weight: bold;text-decoration: none;}
+div#footer{position:absolute;width:100%;bottom:12px;text-align:center;background-color: none !important;color: #B1ACA7;height:35px;}
+div#footer:hover{color:#59574E;}

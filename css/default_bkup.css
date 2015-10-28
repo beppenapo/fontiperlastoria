@@ -1,0 +1,365 @@
+
+@font-face {
+    font-family: 'AdobeCaslonProRegular';
+    src: url('../font/acaslonpro-regular-webfont.eot');
+    src: url('../font/acaslonpro-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../font/acaslonpro-regular-webfont.woff') format('woff'),
+         url('../font/acaslonpro-regular-webfont.ttf') format('truetype'),
+         url('../font/acaslonpro-regular-webfont.svg#AdobeCaslonProRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@import url(http://fonts.googleapis.com/css?family=PT+Sans);
+@import url(http://fonts.googleapis.com/css?family=Playfair+Display:400,700,400italic,700italic);
+@import url(http://fonts.googleapis.com/css?family=Gilda+Display);
+
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, textarea, input, select {margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline;}
+table {border-collapse: collapse; border-spacing: 0;}
+caption, th, td {text-align: left; font-weight: normal;}
+table, td, th {vertical-align: middle;}
+blockquote:before, blockquote:after, q:before, q:after {content: "";}
+blockquote, q {quotes: "" "";}
+a img {border: none;}
+:focus {outline: 0;}
+h1, h2, h3, h4{font-weight:bold;}
+a{text-decoration:none;}
+a:hover{text-decoration:underline;}
+h2{margin:20px 10px;}
+h4{margin:20px 10px 1px 10px !important;}
+p{color:#313131;}
+
+table{margin:10px 20px 20px 10px;}
+td{padding:10px;}
+
+.gBernardin,.eBrunet, .fBrunet, .aCosner, .sGaio, .aLongo, .logoCoop{font-weight:bold;}
+.gBernardin{color:#E61C1C;}
+.eBrunet{color:#FFD735;}
+.fBrunet{color:#FF55FF;}
+.aCosner{color:#45E545;}
+.sGaio{color:#33FFFF;}
+.aLongo{color:#FF9952;}
+.logoCoop{color:#FF00FF;}
+
+div#accordion ul li{margin-left:15px; list-style:none;}
+/*stili per il layout fisso*/
+html,body{margin: 0px;padding:0px; height:100%;}
+body{
+ background-color: #F8F8F6;
+ background: url("../img/layout/bgBodyHome.png");
+ background-repeat: no-repeat;
+ /*background-position: bottom center;*/
+ background-size: cover;
+ font-family: 'Playfair Display', serif;
+ /* font-family: arial,sans-serif; */
+ font-size: 76%;
+ text-align: left;
+}
+div#container{
+ position:absolute;
+ top:0px;
+ left:0px;
+ width:100%;
+ min-height: 100%;
+ z-index:1;
+}
+
+div#wrap{
+ padding:0px;
+ margin: 0px auto !important;
+ width: 1020px;
+ text-align: left;
+ height: auto;  
+}
+
+div#header{
+ position:relative;
+ background-color: rgba(255,255,255,0.5);
+ background: url("../img/layout/bgHeader.png");
+ background-repeat: no-repeat;
+ background-position: 100px 18px;
+ margin-top:40px;
+ padding:0px;
+ color: #ff0; 
+ height:60px;
+ z-index:2;
+ /*border: 1px #ccc solid;*/
+}
+div#header h1 {color:#000; font-size:1.6em;}
+div#header h2 {color:#585858; font-size:1.2em;}
+div#header h1,div#header h2 {padding:0px; margin:10px 0px 0px 25px;}
+div#logo{
+ width:145px;
+ height:55px;
+ margin-left:-40px;
+ margin-top:-15px;
+ background: url("../img/layout/logo.png");
+ background-repeat: no-repeat;
+ background-position: left top;
+ z-index:1000;
+}
+div#logo2{
+ position:absolute;
+ top:-20px;
+ right: 50px;
+ cursor:pointer;
+}
+div#webgis{
+ width:100px;
+ height:100px;
+ margin:0px auto !important;
+ background-color:rgba(43, 34, 0, 0.9);
+ -webkit-border-radius: 30em;
+ -moz-border-radius: 30em;
+ border-radius: 30em;
+
+ transition: background 0.5s linear;
+ -moz-transition: background 0.5s linear; /* Firefox 4 */
+ -webkit-transition: background 0.5s linear; /* Safari and Chrome */
+ -o-transition: background 0.5s linear; /* Opera */
+}
+div#webgis p{ 
+ color:#fff !important;
+ font-family: 'AdobeCaslonProRegular', Arial, sans-serif;
+ font-size: 18px;
+ /*font-weight:bold;*/ 
+ padding:40px 0px 40px 12px !important;
+}
+div#webgis:hover{ background-color:rgba(43, 34, 0, 1); cursor:pointer;}
+
+/*la colonna verticale di destra per il momento non è utilizzata
+div#navigation{
+	position:relative;
+	padding: 1em;
+	margin-top:1em;
+	width: 10em;
+	float:right; 
+	border: 1px #000 solid;
+	}
+*******************************/
+div#content{
+ position:relative;
+ width:1020px;
+ height:auto;
+ min-height:580px;
+ margin:20px 0px;
+ padding: 0px;
+ background-color: rgba(255,255,255,0.9);
+ border: 1px #ccc solid;
+ /*-moz-box-shadow:5px 5px 5px #717F84;
+ -webkit-box-shadow:5px 5px 5px #717F84;
+ box-shadow:5px 5px 5px #717F84;*/
+ clear:both;
+}
+div#content h1{width:900px;font-size: 1.4em; font-weight:bold;color:#FF8952;margin:20px 10px 10px 10px;}
+div#content p, div#content li, div#accordion div p{/*font: 1.1em Verdana, sans-serif !important;*/font-size: 1.1em;margin:10px;}
+
+div#footer{
+   position:relative;
+   /*bottom:0px;*/
+   padding:5px 0px 0px 0px;
+   margin:0px 0px 1px 0px;
+   font-size:11px;
+   text-align:center; 
+   background-color: none !important;
+   color: #B1ACA7;
+   clear:both;
+   width:1020px;
+   height:20px;
+   /*border: 1px #ccc solid;
+     background-color: rgba(255,255,255,0.7);
+   */
+}
+div#footer a{color: #968676;font-weight: bold;text-decoration: none;}
+
+/***************  menù orizzontale   ***********/
+div#menuContent{
+ margin:-2px 0px 0px 120px;
+ padding:0px;
+ width:900px;
+ height:33px;
+ /*border: 1px #ccc solid;*/
+}
+div#menuImg{
+ position:absolute;
+ top:-20px;
+ left:120px;
+ float:left;
+ /*margin:0px 0px 0px 100px;*/
+ padding:0px;
+ width:880px;
+ height:33px;
+ /*border: 1px #ccc solid;*/
+}
+
+div.menu{
+ margin:0px 2px;
+ padding:3px 2px 40px 2px;
+ width:60px;
+ height:10px;
+ float:left;
+
+}
+div.menuImg{
+ margin:0px 2px;
+ padding:0px 2px 0px 2px;
+ float:left;
+}
+div.menuImg,div#homeLinkImg,div#progettoLinkImg,div#fontiLinkImg,div#istruzioniLinkImg,div#dbLinkImg, div#webgisLinkImg, div#staffLinkImg, div#linkLinkImg, div#materialiLinkImg,div#progCorrLinkImg {
+ width:60px;
+ height:60px;
+}
+div.linkText{
+ font-size:1.1em;
+ font-family: 'PT Sans', sans-serif;
+ font-weight:bold;
+ margin:-13px 1px 0px 1px; 
+ cursor:pointer;
+ color:rgba(89, 87, 78, 1);
+ text-align: center;
+ width:60px;
+ height:10px;
+ float:left;
+}
+div.menuImgProgCorr, div#progCorrLink,div#progCorrLinkBg{width:100px !important;}
+.progCorr{padding:0px 25px !important;}
+
+div#homeLink:hover{color:rgba(36,172,204,1);}
+div#progettoLink:hover{color:rgba(255,127,42,1);}
+div#fontiLink:hover{color:rgba(91,255,36,1);}
+div#istruzioniLink:hover{color:rgba(255,85,85,1);}
+div#dbLink:hover{color:rgba(255,204,0,1);}
+div#webgisLink:hover{color:rgba(0,102,255,1);}
+div#staffLink:hover{color:rgba(255,0,255,1);}
+div#progCorrLink:hover{color:rgba(171,200,55,1);}
+div#linkLink:hover{color:rgba(255,102,0,1);}
+div#materialiLink:hover{color:rgba(95,243,211,1);}
+
+.hoverHome, .hoverProgetto, .hoverFonti, .hoverIstruzioni, .hoverDb, .hoverWebgis, .hoverStaff, .hoverProgCorr, .hoverLink, .hoverMateriali{ 
+ margin:0px 2px;
+ padding:3px 2px 40px 2px;
+ width:60px;
+ float:left;
+}
+.hoverHome{
+ background: rgba(36,172,204,0.6);
+ background: -webkit-gradient(linear, 0% 0%, 0% 85%, from(rgba(36,172,204,0.6)), to(rgba(255,255,255,0)));
+ background: -webkit-linear-gradient(top,rgba(36,172,204,0.6), rgba(255,255,255,0));
+ background: -moz-linear-gradient(top,rgba(36,172,204,0.6), rgba(255,255,255,0));
+ background: -ms-linear-gradient(top,rgba(36,172,204,0.6), rgba(255,255,255,0));
+ background: -o-linear-gradient(top,rgba(36,172,204,0.6), rgba(255,255,255,0));
+ filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='rgba(36,172,2040,0.9)', EndColorStr='rgba(255,255,255,0)', GradientType=0);
+}
+.hoverProgetto{
+ background: rgba(255,127,42,0.6);
+ background: -webkit-gradient(linear, 0% 0%, 0% 85%, from(rgba(255,127,42,0.6)), to(rgba(255,255,255,0)));
+ background: -webkit-linear-gradient(top,rgba(255,127,42,0.6), rgba(255,255,255,0));
+ background: -moz-linear-gradient(top,rgba(255,127,42,0.6), rgba(255,255,255,0));
+ background: -ms-linear-gradient(top,rgba(255,127,42,0.6), rgba(255,255,255,0));
+ background: -o-linear-gradient(top,rgba(255,127,42,0.6), rgba(255,255,255,0));
+ filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='rgba(255,127,42,0.9)', EndColorStr='rgba(255,255,255,0)', GradientType=0);
+}
+.hoverFonti{
+ background: rgba(91,255,36,0.6);
+ background: -webkit-gradient(linear, 0% 0%, 0% 85%, from(rgba(91,255,36,0.6)), to(rgba(255,255,255,0)));
+ background: -webkit-linear-gradient(top,rgba(91,255,36,0.6), rgba(255,255,255,0));
+ background: -moz-linear-gradient(top,rgba(91,255,36,0.6), rgba(255,255,255,0));
+ background: -ms-linear-gradient(top,rgba(91,255,36,0.6), rgba(255,255,255,0));
+ background: -o-linear-gradient(top,rgba(91,255,36,0.6), rgba(255,255,255,0));
+ filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='rgba(91,255,36,0.9)', EndColorStr='rgba(255,255,255,0)', GradientType=0);
+}
+.hoverIstruzioni{
+ background: rgba(255,85,85,0.6);
+ background: -webkit-gradient(linear, 0% 0%, 0% 85%, from(rgba(255,85,85,0.6)), to(rgba(255,255,255,0)));
+ background: -webkit-linear-gradient(top,rgba(255,85,85,0.6), rgba(255,255,255,0));
+ background: -moz-linear-gradient(top,rgba(255,85,85,0.6), rgba(255,255,255,0));
+ background: -ms-linear-gradient(top,rgba(255,85,85,0.6), rgba(255,255,255,0));
+ background: -o-linear-gradient(top,rgba(255,85,85,0.6), rgba(255,255,255,0));
+ filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='rgba(255,85,85,0.9)', EndColorStr='rgba(255,255,255,0)', GradientType=0);
+}
+.hoverDb{
+ background: rgba(255,204,0,0.6);
+ background: -webkit-gradient(linear, 0% 0%, 0% 85%, from(rgba(255,204,0,0.6)), to(rgba(255,255,255,0)));
+ background: -webkit-linear-gradient(top,rgba(255,204,0,0.6), rgba(255,255,255,0));
+ background: -moz-linear-gradient(top,rgba(255,204,0,0.6), rgba(255,255,255,0));
+ background: -ms-linear-gradient(top,rgba(255,204,0,0.6), rgba(255,255,255,0));
+ background: -o-linear-gradient(top,rgba(255,204,0,0.6), rgba(255,255,255,0));
+ filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='rgba(255,204,0,0.9)', EndColorStr='rgba(255,255,255,0)', GradientType=0);
+}
+.hoverWebgis{
+ background: rgba(0,102,255,0.6);
+ background: -webkit-gradient(linear, 0% 0%, 0% 85%, from(rgba(0,102,255,0.6)), to(rgba(255,255,255,0)));
+ background: -webkit-linear-gradient(top,rgba(0,102,255,0.6), rgba(255,255,255,0));
+ background: -moz-linear-gradient(top,rgba(0,102,255,0.6), rgba(255,255,255,0));
+ background: -ms-linear-gradient(top,rgba(0,102,255,0.6), rgba(255,255,255,0));
+ background: -o-linear-gradient(top,rgba(0,102,255,0.6), rgba(255,255,255,0));
+ filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='rgba(0,102,255,0.9)', EndColorStr='rgba(255,255,255,0)', GradientType=0);
+}
+.hoverStaff{
+ background: rgba(255,0,255,0.6);
+ background: -webkit-gradient(linear, 0% 0%, 0% 85%, from(rgba(255,0,255,0.6)), to(rgba(255,255,255,0)));
+ background: -webkit-linear-gradient(top,rgba(255,0,255,0.6), rgba(255,255,255,0));
+ background: -moz-linear-gradient(top,rgba(255,0,255,0.6), rgba(255,255,255,0));
+ background: -ms-linear-gradient(top,rgba(255,0,255,0.6), rgba(255,255,255,0));
+ background: -o-linear-gradient(top,rgba(255,0,255,0.6), rgba(255,255,255,0));
+ filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='rgba(255,0,255,0.9)', EndColorStr='rgba(255,255,255,0)', GradientType=0);
+}
+.hoverProgCorr{
+ background: rgba(171,200,55,0.6);
+ background: -webkit-gradient(linear, 0% 0%, 0% 85%, from(rgba(171,200,55,0.6)), to(rgba(255,255,255,0)));
+ background: -webkit-linear-gradient(top,rgba(171,200,55,0.6), rgba(255,255,255,0));
+ background: -moz-linear-gradient(top,rgba(171,200,55,0.6), rgba(255,255,255,0));
+ background: -ms-linear-gradient(top,rgba(171,200,55,0.6), rgba(255,255,255,0));
+ background: -o-linear-gradient(top,rgba(171,200,55,0.6), rgba(255,255,255,0));
+ filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='rgba(171,200,55,0.9)', EndColorStr='rgba(255,255,255,0)', GradientType=0);
+}
+.hoverLink{
+ background: rgba(255,102,0,0.6);
+ background: -webkit-gradient(linear, 0% 0%, 0% 85%, from(rgba(255,102,0,0.6)), to(rgba(255,255,255,0)));
+ background: -webkit-linear-gradient(top,rgba(255,102,0,0.6), rgba(255,255,255,0));
+ background: -moz-linear-gradient(top,rgba(255,102,0,0.6), rgba(255,255,255,0));
+ background: -ms-linear-gradient(top,rgba(255,102,0,0.6), rgba(255,255,255,0));
+ background: -o-linear-gradient(top,rgba(255,102,0,0.6), rgba(255,255,255,0));
+ filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='rgba(255,102,0,0.9)', EndColorStr='rgba(255,255,255,0)', GradientType=0);
+}
+.hoverMateriali{
+ background: rgba(95,243,211,0.6);
+ background: -webkit-gradient(linear, 0% 0%, 0% 85%, from(rgba(95,243,11,0.6)), to(rgba(255,255,255,0)));
+ background: -webkit-linear-gradient(top,rgba(95,243,211,0.6), rgba(255,255,255,0));
+ background: -moz-linear-gradient(top,rgba(95,243,211,0.6), rgba(255,255,255,0));
+ background: -ms-linear-gradient(top,rgba(95,243,211,0.6), rgba(255,255,255,0));
+ background: -o-linear-gradient(top,rgba(95,243,211,0.6), rgba(255,255,255,0));
+ filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='rgba(95,243,11,0.9)', EndColorStr='rgba(255,255,255,0)', GradientType=0);
+}
+div#homeLinkImg {background: url("../img/layout/albero1.png");background-repeat: no-repeat;background-position: top left;}
+div#progettoLinkImg {background: url("../img/layout/albero2.png");background-repeat: no-repeat;background-position: top left;}
+div#fontiLinkImg {background: url("../img/layout/albero3.png");background-repeat: no-repeat;background-position: top left;}
+div#istruzioniLinkImg {background: url("../img/layout/albero4.png");background-repeat: no-repeat;background-position: top left;}
+div#dbLinkImg {background: url("../img/layout/albero5.png");background-repeat: no-repeat;background-position: top left;}
+div#webgisLinkImg {background: url("../img/layout/albero6.png");background-repeat: no-repeat;background-position: top left;}
+div#staffLinkImg {background: url("../img/layout/albero7.png");background-repeat: no-repeat;background-position: top left;}
+div#progCorrLinkImg {background: url("../img/layout/albero8.png");background-repeat: no-repeat;background-position: top left;}
+div#linkLinkImg {background: url("../img/layout/albero9.png");background-repeat: no-repeat;background-position: top left;}
+div#materialiLinkImg {background: url("../img/layout/albero10.png");background-repeat: no-repeat;background-position: top left;}
+
+
+/*****CSS SPECIFICI DELLE VARIE PAGINE*******/
+/** div#homeContent a, div#progettoContent a, div#fontiContent a, div#istruzioniContent a,div#dbContent a, div#webgisContent a, div#progCorrContent a{font-weight:bold;} **/
+div#homeContent h1,div#homeContent a{color:rgb(36,172,204);}
+div#progettoContent h1,div#progettoContent a{color:rgb(255,127,42);}
+div#fontiContent h1, p.sezFontiP, div#fontiContent a{color:rgb(91,255,36);}
+div#istruzioniContent h1,div#istruzioniContent a{color:rgb(255,85,85);}
+acronym.db{border-bottom:1px dotted #FFCC00; cursor:help;color:#FFCC00; font-weight:bold;}
+div#dbContent h1,div#dbContent a{color:#FFCC00;}
+div#webgisContent h1, div#webgisContent a{color:rgb(0,102,255);}
+div#staffContent h1, div#staffContent a{color:rgb(255,0,255);}
+div#progCorrContent h1, div#progCorrContent a{color:rgb(171,200,55);}
+div#linkContent h1, div#linkContent a{color:rgb(255,102,0);}
+div#linkContent div.sezLink{margin:10px 30px !important;clear:both;}
+div#linkContent img {margin:5px 30px;vertical-align:middle !important;}
+div#materialiContent h1, div#materialiContent a{color:rgb(95,243,211);}
+
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, .ui-widget-content, .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { background:transparent !important;}
+
+div#accordion p{font-family: 'Playfair Display', serif;}
+div#accordion div{margin-top:-11px !important; padding:0px 10px;}

@@ -1,0 +1,119 @@
+.wrapRicerche{margin: 20px 0px 40px;}
+#wrapCheckTipo{position: absolute;width: 365px;height: 215px;top: 0px;left: 0px;padding-top:10px;}
+#wrapCheckTipo div{float:left;width:25%;margin-top:10px;}
+
+#wrapCheckLivello{position: absolute;width: 70px;height: 215px;top: 0px;left: 380px;padding-top:10px;}
+#wrapCheckLivello div{width:50px;height:50px;background-size: contain;margin-top:10px;}
+#wrapCheckLivello div label {cursor: pointer;position: relative;width: 50px;height: 50px;left: -11px;top: 5px;}
+.checkbox_1 {background:url('../img/icone/button_1.png') center center no-repeat;}
+.checkbox_2 {background:url('../img/icone/button_2.png') center center no-repeat;}
+.checkbox_3 {background:url('../img/icone/button_3.png') center center no-repeat;}
+
+.checkbox_1 label:after {filter: alpha(opacity=0);opacity: 0;content: '';position: absolute;width: 50px;height: 50px;background:url('../img/icone/button_1_sel.png');background-size: contain;left: -2px;top: -6px;}
+.checkbox_1 label:hover::after {filter: alpha(opacity=30);opacity: 0.3;}
+.checkbox_1 input[type=checkbox]:checked + label:after {filter: alpha(opacity=100);opacity: 1;}
+
+.checkbox_2 label:after {filter: alpha(opacity=0);opacity: 0;content: '';position: absolute;width: 50px;height: 50px;background:url('../img/icone/button_2_sel.png');background-size: contain;left: -2px;top: -6px;}
+.checkbox_2 label:hover::after {filter: alpha(opacity=30);opacity: 0.3;}
+.checkbox_2 input[type=checkbox]:checked + label:after {filter: alpha(opacity=100);opacity: 1;}
+
+.checkbox_3 label:after {filter: alpha(opacity=0);opacity: 0;content: '';position: absolute;width: 50px;height: 50px;background:url('../img/icone/button_3_sel.png');background-size: contain;left: -2px;top: -6px;}
+.checkbox_3 label:hover::after {filter: alpha(opacity=30);opacity: 0.3;}
+.checkbox_3 input[type=checkbox]:checked + label:after {filter: alpha(opacity=100);opacity: 1;}
+
+#wrapSlider{position: absolute;width: 475px;height: 100px;top: 0px;left: 470px;padding-top:35px;}
+#sliderLegend {width: 395px;margin: 0px 15px 10px;text-align: center;font-size: 10px;font-weight: bold;color: #907F73;}
+#wrapFiltra{position: absolute;width: 475px;height: 100px;top: 115px;left: 470px;padding-top:7px;}
+
+
+div#content{border: 1px solid #C1FEAE;margin-top:50px;} // PRIMO BOX
+table.mainData{width:100% !important;} // ???
+table.mainData td{vertical-align: top !important;}
+#slider{height:8px;width:400px;margin:0px 15px;border: 1px solid #FFBF96;} 
+
+.sliderTip1{position: absolute;width: 30px;height:15px;background: #ececec;color: #907F73; font-size: 8px;font-weight:bold;z-index: 20000;text-align: center;margin-top:0px;margin-left:-40px;line-height:15px; border-radius: 5px;}
+.sliderTip1:after{top: 50%;left: 100%;border: solid transparent;content: " ";height: 0;width: 0;position: absolute;pointer-events: none;border-color: rgba(236, 236, 236, 0);border-left-color: #ececec;border-width: 5px;margin-top: -5px;}
+
+.sliderTip2{position: absolute;width: 30px;height:15px;background: #ececec; color: #907F73; font-size: 8px;font-weight:bold;z-index: 20000;text-align: center;margin-top:0px;margin-left:27px;line-height:15px; border-radius: 5px;}
+.sliderTip2:after{top: 50%;right: 100%;border: solid transparent;content: " ";height: 0;width: 0;position: absolute;pointer-events: none; border-color: rgba(255, 137, 82, 0);border-right-color: #ececec;border-width: 5px;margin-top: -5px;}
+
+.ui-state-default1{width:1.4em !important;height:1.4em !important; background:url('../img/icone/button_ricspec.png') center center no-repeat ;background-size: contain;cursor:pointer !important;}
+.ui-state-default1:hover{border: 0; background:url('../img/icone/button_ricspec_hov.png') center center no-repeat ;background-size: contain}
+.ui-state-default1:focus{border: 0; background:url('../img/icone/button_ricspec_hov.png') center center no-repeat ;background-size: contain}
+.ui-state-default2{width:1.4em !important;height:1.4em !important; background:url('../img/icone/button_ricspecrev.png') center center no-repeat ;background-size: contain;cursor:pointer !important;}
+.ui-state-default2:hover{border: 0;background:url('../img/icone/button_ricspecrev_hov.png') center center no-repeat ;background-size: contain;cursor:pointer !important;}
+.ui-state-default2:focus{border: 0;background:url('../img/icone/button_ricspecrev_hov.png') center center no-repeat ;background-size: contain;cursor:pointer !important;}
+#fts, #campo{width:100%;margin:30px auto;} 
+#fts textarea{border: 1px solid #FFBF96; width:40% !important;margin:0px !important;font-size: 10px; height: 15px;margin:3px 0px !important;}
+#fts h1{width:100% !important;}
+#fts select{width:43% !important;font-size: 10px;}
+
+#sub,#sub2{float:right; width:70px; height:70px;background:url('../img/icone/botton_ric.png') center center no-repeat ;background-size: contain;margin-right:160px;margin-top:-7px; cursor:pointer;}
+#sub:hover,#sub2:hover{background:url('../img/icone/botton_ric_hov.png') center center no-repeat ;background-size: contain}
+#sub:focus,#sub2:focus{border:none !important;box-shadow:none !important;}
+
+#togglesearch{border: 1px solid #FFBF96; background-color: #F8F8F6; width: 42.8%;padding: 5px 0px;cursor:pointer; height: 25px;margin-top:3px !important;}
+
+#campo h1{width:100% !important;}
+#campo1{border: 1px solid #FFBF96; background-color: #F8F8F6; width: 40% !important; padding: 5px 3px;cursor:pointer; height: 15px}
+#campo2{border: 1px solid #FFBF96;  width: 23%;padding: 5px 3px; height: 15px}
+#bot {float:right; width:70px; height:70px;background:url('../img/icone/button_ricspec.png') center center no-repeat ;background-size: contain;margin-right:160px;margin-top:-7px; cursor:pointer;}
+/*#bot:hover{background:url('../img/icone/button_ricspec_hov.png') center center no-repeat ;background-size: contain}*/
+.livello{border: 1px solid #FFBF96; background-color: #F8F8F6; width: 40% !important; padding: 5px 3px;cursor:pointer; height: 15px; text-align: center; margin:3px 0px;}
+.livello select{cursor:pointer;padding:0px 5px;width:100%;}   
+input[type=checkbox] {visibility: hidden;}
+
+.checkbox_archeo {width:80px;height:80px;background:url('../img/icone/button_archeo.png') center center no-repeat;background-size: contain;}
+.checkbox_archeo label {cursor: pointer;position: relative;width: 80px;height: 80px;left: -7px;top: 4px;}
+.checkbox_archeo label:after {filter: alpha(opacity=0);opacity: 0;content: '';position: absolute;width: 80px;height: 80px;background:url('../img/icone/button_archeo_sel.png');background-size: contain;left: 0px;top: -5px;}
+.checkbox_archeo label:hover::after {filter: alpha(opacity=30);opacity: 0.3;}
+.checkbox_archeo input[type=checkbox]:checked + label:after {filter: alpha(opacity=100);opacity: 1;}
+	
+.checkbox_archit {width:80px;height:80px;background:url('../img/icone/button_archit.png') center center no-repeat;background-size: contain;}
+.checkbox_archit label {cursor: pointer;position: relative;width: 80px;height: 80px;left: -7px;top: 4px;}
+.checkbox_archit label:after {filter: alpha(opacity=0);opacity: 0;content: '';position: absolute;width: 80px;height: 80px;background:url('../img/icone/button_archit_sel.png');background-size: contain;left: 0px;top: -5px;}
+.checkbox_archit label:hover::after {filter: alpha(opacity=30);opacity: 0.3;}
+.checkbox_archit input[type=checkbox]:checked + label:after {filter: alpha(opacity=100);opacity: 1;}
+
+.checkbox_archiv {width:80px;height:80px;background:url('../img/icone/button_archiv.png') center center no-repeat;background-size: contain;}
+.checkbox_archiv label {cursor: pointer;position: relative;width: 80px;height: 80px;left: -7px;top: 3px;}
+.checkbox_archiv label:after {filter: alpha(opacity=0);opacity: 0;content: '';position: absolute;width: 80px;height: 80px;background:url('../img/icone/button_archiv_sel.png');background-size: contain;left: 0px;top: -5px;}
+.checkbox_archiv label:hover::after {filter: alpha(opacity=30);opacity: 0.3;}
+.checkbox_archiv input[type=checkbox]:checked + label:after {filter: alpha(opacity=100);opacity: 1;}
+    
+.checkbox_biblio {width:80px;height:80px;background:url('../img/icone/button_biblio.png') center center no-repeat;background-size: contain;}
+.checkbox_biblio label {cursor: pointer;position: relative;width: 80px;height: 80px;left: -7px;top: 3px;}
+.checkbox_biblio label:after {filter: alpha(opacity=0);opacity: 0;content: '';position: absolute;width: 80px;height: 80px;background:url('../img/icone/button_biblio_sel.png');background-size: contain;left: 0px;top: -5px;}
+.checkbox_biblio label:hover::after {filter: alpha(opacity=30);opacity: 0.3;}
+.checkbox_biblio input[type=checkbox]:checked + label:after {filter: alpha(opacity=100);opacity: 1;}
+    
+.checkbox_mater {width:80px;height:80px;background:url('../img/icone/button_mater.png') center center no-repeat;background-size: contain;}
+.checkbox_mater label {cursor: pointer;position: relative;width: 80px;height: 80px;left: -7px;top: 4px;}
+.checkbox_mater label:after {filter: alpha(opacity=0);opacity: 0;content: '';position: absolute;width: 80px;height: 80px;background:url('../img/icone/button_mater_sel.png');background-size: contain;left: 0px;top: -5px;}
+.checkbox_mater label:hover::after {filter: alpha(opacity=30);opacity: 0.3;}
+.checkbox_mater input[type=checkbox]:checked + label:after {filter: alpha(opacity=100);opacity: 1;}
+    
+.checkbox_oral {width:80px;height:80px;background:url('../img/icone/button_oral.png') center center no-repeat;background-size: contain;}
+.checkbox_oral label {cursor: pointer;position: relative;width: 80px;height: 80px;left: -7px;top: 3px;}
+.checkbox_oral label:after {filter: alpha(opacity=0);opacity: 0;content: '';position: absolute;width: 80px;height: 80px;background:url('../img/icone/button_oral_sel.png');background-size: contain;left: 0px;top: -5px;}
+.checkbox_oral label:hover::after {filter: alpha(opacity=30);opacity: 0.3;}
+.checkbox_oral input[type=checkbox]:checked + label:after {filter: alpha(opacity=100);opacity: 1;}
+    
+.checkbox_foto {width:80px;height:80px;background:url('../img/icone/button_foto.png') center center no-repeat;background-size: contain;}
+.checkbox_foto label {cursor: pointer;position: relative;width: 80px;height: 80px;left: -7px;top: 3px;}
+.checkbox_foto label:after {filter: alpha(opacity=0);opacity: 0;content: '';position: absolute;width: 80px;height: 80px;background:url('../img/icone/button_foto_sel.png');background-size: contain;left: 0px;top: -5px;}
+.checkbox_foto label:hover::after {filter: alpha(opacity=30);opacity: 0.3;}
+.checkbox_foto input[type=checkbox]:checked + label:after {filter: alpha(opacity=100);opacity: 1;}
+	
+.checkbox_stoart {width:80px;height:80px;background:url('../img/icone/button_stoart.png') center center no-repeat;background-size: contain;}
+.checkbox_stoart label {cursor: pointer;position: relative;width: 80px;height: 80px;left: -7px;top: 3px;}
+.checkbox_stoart label:after {filter: alpha(opacity=0);opacity: 0;content: '';position: absolute;width: 80px;height: 80px;background:url('../img/icone/button_stoart_sel.png');background-size: contain;left: 0px;top: -5px;}
+.checkbox_stoart label:hover::after {filter: alpha(opacity=30);opacity: 0.3;}
+.checkbox_stoart input[type=checkbox]:checked + label:after {filter: alpha(opacity=100);opacity: 1;}
+	
+/*table.bottoni td{vertical-align:middle;}
+table.bottoni tr{height:10px;}*/
+	
+#attivaFiltro {border: 0;width:70px; height:70px;background:url('../img/icone/button_filtro.png') center center no-repeat ;background-size: contain;cursor:pointer;}
+#attivaFiltro:hover {border: 0;background:url('../img/icone/button_filtro_sel.png') center center no-repeat ;background-size: contain}
+#catalogoTable thead{border-top:none !important;}
