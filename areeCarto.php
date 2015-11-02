@@ -22,6 +22,7 @@ $usr = $_SESSION['id_user'];
   <title>Le fonti per la storia. Per un archivio delle fonti sulle valli di Primiero e Vanoi</title>
   <link href="lib/jquery_friuli/css/start/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/scheda.css" type="text/css" rel="stylesheet" media="screen" />
+  <link href="css/ico-font/css/font-awesome.min.css" type="text/css" rel="stylesheet" media="screen" />
   <link rel="shortcut icon" href="img/icone/favicon.ico" />
   <script type="text/javascript" src="lib/jquery-core/jquery-1.4.4.min.js"></script>
   <script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
@@ -66,6 +67,8 @@ $usr = $_SESSION['id_user'];
  <div class="sezioni sezAperta" style="margin:10px 10px 0px 10px; border:none;"><h2>Nuova area</h2></div>
  <div class="slide">
    <label style="text-align:center;display:block;font-weight:bold;">* CAMPI OBBLIGATORI.</label>
+   <label>* NOME AREA</label>
+   <textarea id="nomeArea" class="form" style="width:92.5% !important;"></textarea>
    <label>* COMUNE</label>
    <select id="comuneCarto" name="comuneCarto" class="form">
     <option value="15">--non determinabile--</option>
@@ -81,11 +84,11 @@ $usr = $_SESSION['id_user'];
    
    <div id="localitaCartoWrap">
     <label>LOCALITA'</label>
-    <div id="localitaCarto">
-   
-    </div>
-    <label class="update" id="addArea">Inserisci area </label>
+    <div id="localitaCarto"></div>
+    <label class="update" id="addArea">Aggiungi area </label>
    </div>
+   <ul id="locTot"></ul>
+   <button type="button" name="salvaAree">Salva area</button>
   </div>
 </div>
 <?php } ?>        
@@ -132,6 +135,7 @@ $usr = $_SESSION['id_user'];
     </tr>
    </thead>
    <tbody>
+   
    </tbody>
   </table>
  </div>
@@ -146,95 +150,42 @@ $usr = $_SESSION['id_user'];
  <!--div invisibili -->
 <div id="dialog">  </div>
 <script type="text/javascript" >
-function pager(){
-//how much items per page to show  
-    var show_per_page = 40;  
-    //getting the amount of elements inside content div  
-    var number_of_items = $('#catalogoTable tbody tr:visible').length; 
-    //calculate the number of pages we are going to have  
-    var number_of_pages = Math.ceil(number_of_items/show_per_page);  
-  
-    //set the value of our hidden input fields  
-    $('#current_page').val(0);  
-    $('#show_per_page').val(show_per_page);  
-	var navigation_html = '<a class="previous_link" href="javascript:previous();">Prev</a>';
-	var current_link = 0;
-	while(number_of_pages > current_link){
-		navigation_html += '<a class="page_link" href="javascript:go_to_page(' + current_link +')" longdesc="' + current_link +'">'+ (current_link + 1) +'</a>';
-		current_link++;
-	}
-	navigation_html += '<a class="next_link" href="javascript:next();">Next</a>';
-	$('.page_navigation').html(navigation_html);
-	//add active_page class to the first page link
-	$('.page_navigation .page_link:first').addClass('active_page');
-	//hide all the elements inside content div
-	$("#catalogoTable tbody>tr").css('display', 'none');
-	//and show the first n (show_per_page) elements
-	$("#catalogoTable tbody>tr").slice(0, show_per_page).css('display', 'table-row');
-}
-
 $(document).ready(function() {
-   $('.slide').hide();
-   $('.sezioni').click(function(){
-   	$('.slide').slideToggle();
-   	//$('.sezioni').toggleClass('sezAperta');
-   });
-   $("#rubrica").hide();
-   $("#newTipo").change(function () {  
-	  var i=$(this).val();
-	  if (i==2) {$("#rubrica").fadeIn("slow");}else {$("#rubrica").fadeOut("slow");}
-   });
-   $('#new_area').click(function(){
-    var newTipo = $('#newTipo').val();
-    var comune_update = $('#comune_update').val();
-    var localita_update = $('#localita_update').val();
-    var indirizzo_update = $('#indirizzo_update').val();
-    var rubrica_update = $('#rubrica_update').val();
-    var errori='';
-    
-    if (newTipo==0) {errori += 'Il campo "Tipologia area" non può essere vuoto<br/>';$('#newTipo').addClass('errore');}
-    else{$('#newTipo').removeClass('errore');}
-    if (comune_update==15) {errori += 'Il campo "Comune" non può essere vuoto<br/>';$('#comune_update').addClass('errore');}
-    else{$('#comune_update').removeClass('errore');}
-    
-    if(errori){
-   	errori = '<h3>I seguenti campi sono obbligatori e vanno compilati:</h3><ol>' + errori;
-        $("<div id='errorDialog'>" + errori + "</ol></div>").dialog({
-          resizable: false,
-          height: 'auto',
-          width: 'auto',
-          position: 'top',
-          title:'Errori',
-          modal: true,
-          buttons: {'Chiudi finestra': function() {$(this).dialog('close');} }//buttons
-       });//dialog
-       return false;
-   }else{
-   	$.ajax({
-          url: 'inc/insertAreaScript.php',
-          type: 'POST', 
-          data: {newTipo:newTipo, comune_update:comune_update, localita_update:localita_update, indirizzo_update:indirizzo_update, rubrica_update:rubrica_update},
-          success: function(data){
-             $(data)
-               .dialog({position:['middle', 10]})
-               .delay(2500)
-               .fadeOut(function(){ $(this).dialog("close");window.location.href = 'aree.php?c=0&t=0'; });
-          }//success
-     });//ajax
-   }
+ $('.slide, #addArea').hide();
+ $('.sezioni').click(function(){$('.slide').slideToggle();});
+
+ $("button[name=salvaAree]").hide();
+ $("#addArea").click(function(){
+  var arrLocNome = new Array();
+  var arrLoc = new Array();
+  var com = $("#comuneCarto option:selected").text();
+  var comId = $("#comuneCarto").val();
+  $("input[name=localitaCartoCheck]:checked").each(function(){
+   var nome = $(this).data('loc'); 
+   var id = $(this).val(); 
+   arrLocNome.push(nome);
+   arrLoc.push(id);
+  });
+  $("#locTot").append("<li><i class='fa fa-times removeArea' title='Elimina area'></i> "+com+": <span class='idLoc' data-arrloc='"+arrLoc.join()+"'>"+arrLocNome.join(", ")+"</span></li>"); 
+  $(".removeArea").click(function(){$(this).parent("li").remove();checkLocLi();});
+  $("#localitaCartoWrap").fadeOut('fast');
+  $("#comuneCarto").val(15);
+  checkLocLi();
  });
-  
-   $('td.geom').click(function(){ 
-	    var area = $(this).parent('tr').attr('id');//id area
-	    var id = $(this).parent('tr').attr('idLocalita');
-	    var tipo = $(this).parent('tr').attr('tipo');
-	    var comune = $(this).parent('tr').attr('comune');
-	    var loc = $(this).parent('tr').attr('localita');
-	    var ind = $(this).parent('tr').attr('indirizzo');
-	    if (tipo==1) {window.location.href = 'aree_geom.php?id='+area+'&c='+comune+'&loc='+loc;}
-	    if (tipo==2) {window.location.href = 'point_geom.php?id='+area+'&c='+comune+'&loc='+loc+'&ind='+ind;}	    
-	});
-	
+
+ function checkLocLi(){
+  if($("#locTot li").length > 0){$("button[name=salvaAree]").show();}else{$("button[name=salvaAree]").hide();}; 
+ }
+
+
+ $('td.geom').click(function(){ 
+  var area = $(this).parent('tr').attr('id');//id area
+  var id = $(this).parent('tr').attr('idLocalita');
+  var comune = $(this).parent('tr').attr('comune');
+  var loc = $(this).parent('tr').attr('localita');
+  window.location.href = 'aree_geom.php?id='+area+'&c='+comune+'&loc='+loc;  
+ });
+
 var legenda;
 var pre = 'Il database contiene ';
 var post = ' schede relative a fonti di tipo '; 
@@ -274,46 +225,6 @@ $('.link').each(function(){
 });//each
    
 });//funzione principale
-
-function previous(){
-
-	new_page = parseInt($('#current_page').val()) - 1;
-	//if there is an item before the current active link run the function
-	if($('.active_page').prev('.page_link').length==true){
-		go_to_page(new_page);
-	}
-
-}
-
-function next(){
-	new_page = parseInt($('#current_page').val()) + 1;
-	//if there is an item after the current active link run the function
-	if($('.active_page').next('.page_link').length==true){
-		go_to_page(new_page);
-	}
-
-}
-function go_to_page(page_num){
-	//get the number of items shown per page
-	var show_per_page = parseInt($('#show_per_page').val());
-
-	//get the element number where to start the slice from
-	start_from = page_num * show_per_page;
-
-	//get the element number where to end the slice
-	end_on = start_from + show_per_page;
-
-	//hide all children elements of content div, get specific items and show them
-	$("#catalogoTable tbody>tr").css('display', 'none').slice(start_from, end_on).css('display', 'table-row');
-
-	/*get the page link that has longdesc attribute of the current page and add active_page class to it
-	and remove that class from previously active page link*/
-	$('.page_link[longdesc=' + page_num +']').addClass('active_page').siblings('.active_page').removeClass('active_page');
-
-	//update the current page input field
-	$('#current_page').val(page_num);
-}
-
 </script>
 
 </body>
