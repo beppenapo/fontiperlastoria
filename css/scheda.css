@@ -3,6 +3,7 @@
 ol,ul{list-style: none;}
 table{margin:0px !important; padding:0px !important}
 table.mainData th{padding-left: 10px}
+input[type=checkbox]{vertical-align:middle;}
 table#catalogoTable{width:98%;margin:0px 10px 10px 10px !important;}
 table#catalogoTable thead,table#vocabolariTable thead, table.mainData thead{
 	background-color: #F8F8F6;
@@ -72,6 +73,7 @@ table.tableInfo{width:100%; margin-left:-10px !important; font-size:1em;}
 .avviso{color:red !important;}
 .errore{background-color: #d86a6a;}
 label.input{cursor: pointer;}
+label.labelInput{display:block;cursor: pointer;}
 a.altrif{
 	text-decoration: none;
  	padding:0px 5px;
