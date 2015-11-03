@@ -263,7 +263,6 @@ $data = date("Y-m-d");
        ?>
        <div class="toggle check bassa">
         <div class="sezioni"><h2>AREA DI INTERESSE</h2></div>
-
         <div class="slide">
          <table class="mainData" style="width:98% !important;">
           <tr>

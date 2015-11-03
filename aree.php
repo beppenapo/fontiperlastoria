@@ -338,13 +338,7 @@ $(document).ready(function() {
     if(errori){
    	errori = '<h3>I seguenti campi sono obbligatori e vanno compilati:</h3><ol>' + errori;
         $("<div id='errorDialog'>" + errori + "</ol></div>").dialog({
-          resizable: false,
-          height: 'auto',
-          width: 'auto',
-          position: 'top',
-          title:'Errori',
-          modal: true,
-          buttons: {'Chiudi finestra': function() {$(this).dialog('close');} }//buttons
+          resizable: false, height: 'auto', width: 'auto', position: 'top', title:'Errori', modal: true, buttons: {'Chiudi finestra': function() {$(this).dialog('close');} }//buttons
        });//dialog
        return false;
    }else{

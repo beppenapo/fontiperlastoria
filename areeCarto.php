@@ -26,7 +26,6 @@ $usr = $_SESSION['id_user'];
   <link rel="shortcut icon" href="img/icone/favicon.ico" />
   <script type="text/javascript" src="lib/jquery-core/jquery-1.4.4.min.js"></script>
   <script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
-  <script type="text/javascript" src="lib/select.js"></script>
   <style type="text/css">
     div#content{border: 1px solid #C1FEAE;margin-top:50px;}
     table.mainData{width:100% !important;}
@@ -88,7 +87,8 @@ $usr = $_SESSION['id_user'];
     <label class="update" id="addArea">Aggiungi area </label>
    </div>
    <ul id="locTot"></ul>
-   <button type="button" name="salvaAree">Salva area</button>
+   <button type="button" name="salvaAree" class="pulsanti" >Salva area</button>
+   <span id="test"></span>
   </div>
 </div>
 <?php } ?>        
@@ -151,80 +151,134 @@ $usr = $_SESSION['id_user'];
 <div id="dialog">  </div>
 <script type="text/javascript" >
 $(document).ready(function() {
- $('.slide, #addArea').hide();
- $('.sezioni').click(function(){$('.slide').slideToggle();});
-
- $("button[name=salvaAree]").hide();
- $("#addArea").click(function(){
-  var arrLocNome = new Array();
-  var arrLoc = new Array();
-  var com = $("#comuneCarto option:selected").text();
-  var comId = $("#comuneCarto").val();
-  $("input[name=localitaCartoCheck]:checked").each(function(){
-   var nome = $(this).data('loc'); 
-   var id = $(this).val(); 
-   arrLocNome.push(nome);
-   arrLoc.push(id);
-  });
-  $("#locTot").append("<li><i class='fa fa-times removeArea' title='Elimina area'></i> "+com+": <span class='idLoc' data-arrloc='"+arrLoc.join()+"'>"+arrLocNome.join(", ")+"</span></li>"); 
-  $(".removeArea").click(function(){$(this).parent("li").remove();checkLocLi();});
-  $("#localitaCartoWrap").fadeOut('fast');
-  $("#comuneCarto").val(15);
-  checkLocLi();
- });
-
- function checkLocLi(){
-  if($("#locTot li").length > 0){$("button[name=salvaAree]").show();}else{$("button[name=salvaAree]").hide();}; 
- }
-
-
- $('td.geom').click(function(){ 
-  var area = $(this).parent('tr').attr('id');//id area
-  var id = $(this).parent('tr').attr('idLocalita');
-  var comune = $(this).parent('tr').attr('comune');
-  var loc = $(this).parent('tr').attr('localita');
-  window.location.href = 'aree_geom.php?id='+area+'&c='+comune+'&loc='+loc;  
- });
-
-var legenda;
-var pre = 'Il database contiene ';
-var post = ' schede relative a fonti di tipo '; 
-var righe = $('#catalogoTable tbody tr:visible').length;
-$('#legenda').html(pre+'<b>'+righe+'</b> record');
-
-$('.link').each(function(){
-  $(this).click(function(){
-    var id = $(this).attr('id');
-    var idcomune = $(this).attr('idcomune');
-    var idlocalita = $(this).attr('idlocalita');
-    var idindirizzo = $(this).attr('idindirizzo');
-    var idrubrica = $(this).attr('idrubrica');
-    var comune = $(this).attr('comune');
-    var localita = $(this).attr('localita');
-    var indirizzo = $(this).attr('indirizzo');
-    var rubrica = $(this).attr('rubrica');
-    var tipo = $(this).attr('tipo');
-    //alert(id+' '+ comune+' '+localita+' '+ indirizzo+' '+' '+rubrica+' '+ tipo); return false;
-    $.ajax({
-      url: 'inc/form_update/area_update.php',
-      type: 'POST', 
-      data: {id:id, idcomune:idcomune, idlocalita:idlocalita, idindirizzo:idindirizzo,idrubrica:idrubrica, comune:comune, localita:localita, indirizzo:indirizzo,rubrica:rubrica,tipo:tipo},
-      success: function(data){
-        $("#dialog").html(data);
-        $("#dialog").dialog({
-          resizable:false,
-          modal:true,
-          height: 630,
-          width: 700,
-          title: "Modifica sezione",
-          position:['middle', 5]
+    $('.slide, #addArea').hide();
+    $('.sezioni').click(function(){$('.slide').slideToggle();});
+    
+    var locLength;
+    $("#comuneCarto").change(function() {
+        var comId = $(this).val();
+        var com = $("#comuneCarto option:selected").text();
+        if(comId==15){
+            $('#localitaCartoWrap').hide();
+            $("#addArea").hide();
+        }else{
+            $('#localitaCartoWrap').show();
+            $("#addArea").show();
+        }
+        $.ajax({
+              type: "POST"
+            , url: "inc/dinSelLocalitaCarto.php"
+            , data: {id:comId}
+            , cache: false
+            , success: function(data){
+                $("#localitaCarto").html(data);
+                var checkLoc = $("input[name=localitaCartoCheck]");
+                var checkAll = $("input[name=lcAll");
+                var checkLocChecked;
+                checkAll.click(function(){
+                    if($(this).attr('checked')){ 
+                        checkLoc.attr('checked',true); 
+                    }else{
+                        checkLoc.attr('checked',false); 
+                    }
+                    //addArea();
+                });
+                //checkLoc.click(function(){ addArea(); });
+            }
         });
-      }//success
-    });//ajax
-   });//click
-});//each
-   
+    });
+    
+    var arrLoc = new Array();
+    $("button[name=salvaAree]").hide();
+
+    $("#addArea").click(function(){
+        var arrLocNome = new Array();
+        var com = $("#comuneCarto option:selected").text();
+        var comId = $("#comuneCarto").val();
+        var checkLocChecked = $("input[name=localitaCartoCheck]:checked");
+        var locLength = checkLocChecked.length;
+        if (locLength==0){
+            arrLocNome.push('nessuna località specifica');
+            arrLoc.push({com: comId, loc:0});
+        }else{
+            checkLocChecked.each(function(){
+                var nome = $(this).data('loc'); 
+                var id = $(this).val(); 
+                arrLocNome.push( nome);
+                arrLoc.push({com: comId, loc:id});
+            });
+        }
+        
+        $("#locTot").append("<li><i class='fa fa-times removeArea' title='Elimina area'></i> Comune: "+com+", Località: <span class='idLoc' data-arrloc='"+arrLoc.join()+"'>"+arrLocNome.join(", ")+"</span></li>"); 
+        $(".removeArea").click(function(){$(this).parent("li").remove();checkLocLi();});
+        $("#localitaCartoWrap").fadeOut('fast');
+        $("#comuneCarto").val(15);
+        checkLocLi();
+    });
+
+    $("button[name=salvaAree]").click(function(){
+        var nomeArea = $("#nomeArea").val();
+        if(!nomeArea){
+            $("#test").text("Il campo nome area è obbligatorio");
+            return false;
+        }
+        $.ajax({
+            url: 'inc/areeCartoIns.php',
+            type: 'POST', 
+            data: {n:nomeArea,a:arrLoc},
+                success: function(data){ 
+                    $("#test").html(data); 
+                }
+        });//ajax
+    });
+
+    $('td.geom').click(function(){ 
+        var area = $(this).parent('tr').attr('id');//id area
+        var id = $(this).parent('tr').attr('idLocalita');
+        var comune = $(this).parent('tr').attr('comune');
+        var loc = $(this).parent('tr').attr('localita');
+        window.location.href = 'aree_geom.php?id='+area+'&c='+comune+'&loc='+loc;  
+    });
+
+    var legenda;
+    var pre = 'Il database contiene ';
+    var post = ' schede relative a fonti di tipo '; 
+    var righe = $('#catalogoTable tbody tr:visible').length;
+    $('#legenda').html(pre+'<b>'+righe+'</b> record');
+
+    $('.link').each(function(){
+        $(this).click(function(){
+            var id = $(this).attr('id');
+            var idcomune = $(this).attr('idcomune');
+            var idlocalita = $(this).attr('idlocalita');
+            var idindirizzo = $(this).attr('idindirizzo');
+            var idrubrica = $(this).attr('idrubrica');
+            var comune = $(this).attr('comune');
+            var localita = $(this).attr('localita');
+            var indirizzo = $(this).attr('indirizzo');
+            var rubrica = $(this).attr('rubrica');
+            var tipo = $(this).attr('tipo');
+            $.ajax({
+                url: 'inc/form_update/area_update.php',
+                type: 'POST', 
+                data: {id:id, idcomune:idcomune, idlocalita:idlocalita, idindirizzo:idindirizzo,idrubrica:idrubrica, comune:comune, localita:localita, indirizzo:indirizzo,rubrica:rubrica,tipo:tipo},
+                success: function(data){
+                    $("#dialog").html(data);
+                    $("#dialog").dialog({resizable:false, modal:true, height: 630,width: 700, title: "Modifica sezione", position:['middle', 5]});
+                }//success
+            });//ajax
+        });//click
+    });//each
 });//funzione principale
+
+function addArea(){
+    checkLocChecked = $("input[name=localitaCartoCheck]:checked");
+    locLength = checkLocChecked.length;
+    if (locLength==0){$("#addArea").hide();}else{$("#addArea").show();}
+}
+function checkLocLi(){
+    if($("#locTot li").length > 0 ){$("button[name=salvaAree]").show();}else{$("button[name=salvaAree]").hide();};
+}
 </script>
 
 </body>
