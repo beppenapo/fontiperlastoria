@@ -148,5 +148,5 @@ while ($row = pg_fetch_assoc($exec)){
   <td style='padding-left:20px;'>".$row['cro_spec']."</td>
  </tr>";
 }
-echo "<tr><td colspan='5'>$query</td></tr>";
+//echo "<tr><td colspan='5'>$query</td></tr>";
 ?>
