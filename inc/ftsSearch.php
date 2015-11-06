@@ -132,7 +132,7 @@ inner join ricerca prv on prv.id = scheda.prv_id
 inner join ricerca cmp on cmp.id = scheda.cmp_id
 inner join anagrafica ana on ana.id = scheda.ana_id
 inner join lista_stato_conserv conserv on conserv.id = scheda.scn_id
-inner join hub on prv.hub = hub.id
+inner join hub on cmp.hub = hub.id
 WHERE scheda.fine = 2 and ((crono.cro_iniz between $ci and $cf) or (crono.cro_fin between $ci and $cf)) $tipi $livelli $andhub) a
 $whereFts
 order by numsch asc;
@@ -148,5 +148,5 @@ while ($row = pg_fetch_assoc($exec)){
   <td style='padding-left:20px;'>".$row['cro_spec']."</td>
  </tr>";
 }
-//echo "<tr><td colspan='5'>$query</td></tr>";
+echo "<tr><td colspan='5'>$query</td></tr>";
 ?>
