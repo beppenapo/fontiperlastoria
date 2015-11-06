@@ -402,7 +402,7 @@ $extent2 = str_replace(' ', ',', $extent2);
 
        ?>
        
-       <?php if($hub==1){ ?>
+       <?php if($hub==1 || !$hub){ ?>
        <div class="toggle check bassa">
         <div class="sezioni"><h2>COMPILAZIONE</h2></div>
 
@@ -950,14 +950,14 @@ order by id_scheda asc;
              <?php
 
               foreach(array( 6=>array('ARCHEOLOGICHE','archeologica'), 8=>array('ARCHITETTONICHE','architettonica'), 9=>array('STORICO-ARTISTICHE','stoart'), 2=>array('MATERIALI','materiale'), 4=>array('ARCHIVISTICHE','archivistica'), 1=>array('ORALI','orale'), 7=>array('FOTOGRAFICHE','fotografica'), 5=>array('BIBLIOGRAFICHE','bibliografica'), 10=>array('CARTOGRAFICHE','cartografica')) as $idforeach=>$nomeforeach){
-                 $qrif6 = ("select * from altrif where scheda_altrif = $id and tpsch_altrif = $idforeach");
-                 $rrif6 = pg_query($connection, $qrif6);
+                 $qrif6 = ("select * from altrif where scheda = $id and tpsch_altrif = $idforeach");
+                $rrif6 = pg_query($connection, $qrif6);
                  $rowrif6 = pg_num_rows($rrif6);
                  if($rowrif6 != 0) {
                    echo '<label>'.$nomeforeach[0].'</label><div class="valori">';
                    for ($x = 0; $x < $rowrif6; $x++){
-                    $idrif6 = pg_result($rrif6, $x,"scheda");
-                    $numschrif6 = pg_result($rrif6, $x,"numsch");
+                    $idrif6 = pg_result($rrif6, $x,"scheda_altrif");
+                    $numschrif6 = pg_result($rrif6, $x,"numsch_altrif");
                     $idaltrifprinc = pg_result($rrif6, $x,"id");
                     echo "<a href=\"scheda_archeo.php?id=$idrif6\" target=\"_blank\" class=\"altrif ".$nomeforeach[1]."\">$numschrif6</a>";
                     if ($_SESSION['username']!='guest'){echo '<a href="javascript:removeCorrela('.$idaltrifprinc.')"><i class="fa fa-times avviso"></i></a>   ';             }
