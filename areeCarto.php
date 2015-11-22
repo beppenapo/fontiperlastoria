@@ -2,9 +2,30 @@
 session_start();
 if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 ini_set( "display_errors", 0);
-require_once("inc/db.php");
+require("inc/db.php");
 $usr = $_SESSION['id_user'];
 
+$query = ("
+    select ac.id 
+            , ac.nome area
+            , a.tipo
+            , array_to_string(array_agg(distinct c.comune), ', ') as comune
+            , array_to_string(array_agg(distinct l.localita), ', ') as localita
+            , coalesce(sum(area_int_poly.id*area_int_line.id*ubicazione.id), 0)::integer as geom
+            , count(ubicazione.id)::integer as ubi
+    from aree_carto ac
+    inner join aree a on a.nome_area = ac.id
+    inner join comune c on a.id_comune = c.id
+    inner join localita l on a.id_localita = l.id
+    left join area_int_poly on area_int_poly.id_area = ac.id
+    left join area_int_line on area_int_line.id_area = ac.id
+    left join ubicazione on ac.id = ubicazione.area and a.tipo = 2
+    where a.nome_area is not null
+    group by ac.id,ac.nome, a.tipo
+    order by area asc;
+");      
+$e = pg_query($connection, $query);
+if(!$e){die("errore ".pg_last_error($connection));}else{echo "ok";}
 ?> 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//IT"
@@ -52,15 +73,6 @@ $usr = $_SESSION['id_user'];
  <div id="skArcheoContent">
   <div class="inner primo">
   <div style="">
-  <?php
-   $query = ("
-    
-   ");
-
-   $exec = pg_query($connection, $query);
-   $row = pg_num_rows($exec);
-   $caption = "Il database contiene ".$row."aree";
-  ?> 
 <?php if($usr) {?>
 <div class="toggle" style="margin-bottom:10px;">
  <div class="sezioni sezAperta" style="margin:10px 10px 0px 10px; border:none;"><h2>Nuova area</h2></div>
@@ -129,13 +141,27 @@ $usr = $_SESSION['id_user'];
    <thead>
     <tr>
      <th style="width:20px">ID</th>
+     <th style="width:150px">NOME AREA</th>
      <th style="width:150px">COMUNE</th>
      <th style="width:150px">LOCALITA'</th>
      <?php if($usr == 1 || $usr == 2 || $usr == 6) {echo '<th style="width:100px"></th>';} ?>
     </tr>
    </thead>
    <tbody>
-   
+   <?php 
+        while($r = pg_fetch_array($e)){
+            if($r['tipo'] == 3 && $r['geom'] == 0) {$azione = '<span style="color:red !important">Inserisci geometrie</span>';}
+            elseif($r['tipo'] ==2 && $r['ubi'] == 0) {$azione = '<span style="color:red !important">Inserisci geometrie</span>';}
+            else {$azione = 'gestisci geometrie';}
+            echo "<tr>";
+                echo "<td>".$r['id']."</td>";
+                echo "<td>".$r['area']."</td>";
+                echo "<td>".$r['comune']."</td>";
+                echo "<td>".$r['localita']."</td>";
+                 if($usr == 1 || $usr == 2 || $usr == 6) {echo '<td class="modLista geom">'.$azione.'</td>';}
+            echo "</tr>";
+        }
+    ?>
    </tbody>
   </table>
  </div>
