@@ -11,14 +11,13 @@ $query = ("
             , a.tipo
             , array_to_string(array_agg(distinct c.comune), ', ') as comune
             , array_to_string(array_agg(distinct l.localita), ', ') as localita
-            , coalesce(sum(area_carto_poly.id*area_carto_line.id), 0)::integer as geom
+            , count(area_carto_poly.id)::integer as geom
             , count(ubicazione.id)::integer as ubi
     from aree_carto ac
     inner join aree a on a.nome_area = ac.id
     inner join comune c on a.id_comune = c.id
     inner join localita l on a.id_localita = l.id
-    left join area_carto_poly on area_int_poly.id_area = ac.id
-    left join area_carto_line on area_int_line.id_area = ac.id
+    left join area_carto_poly on area_carto_poly.id_area = ac.id
     left join ubicazione on ac.id = ubicazione.area and a.tipo = 2
     where a.nome_area is not null and a.id_comune$and
     group by ac.id,ac.nome, a.tipo
