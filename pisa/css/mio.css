@@ -1,0 +1,19 @@
+    img{border:none !important;vertical-align:top !important;box-shadow:none !important;}
+   .centro{text-align:center !important;}
+   .rosso{color:rgb(233,28,28);}
+   .verde{color:rgb(71,231,70);}
+   .giallo{color:rgb(255,215,53);}
+   .viola{color:rgb(255,85,255);}
+   .arancio{color:rgb(244,165,110);}
+   .turchese{color:rgb(53,255,255);}
+   .blocco{display:block !important;}
+   .inline{display:inline-block !important;}
+   .alignSx{text-align:left !important;}
+   .noBorder {border:none !important;}
+   .vAlign{vertical-align:middle !important;}
+   .noDecoration > li{list-style-type:none !important;}
+   .f80{font-size:80% !important;}
+   #gruppoLavoro{font-size:50% !important;}
+   #gruppoLavoro p{margin:0px !important;}
+   table#fonti tr td{padding:0em 0.5em !important; border:none !important;}
+   table#licenze tr td{text-align:center !important;}
