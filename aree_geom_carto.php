@@ -4,6 +4,7 @@ if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 ini_set( "display_errors", 0);
 require_once("inc/db.php");
 $id=$_GET['id'];
+$area=$_GET['a'];
 $q0=("SELECT aree.id,comune.comune,localita.localita
       FROM aree, comune, localita
       WHERE aree.id_localita = localita.id AND aree.id_comune = comune.id AND aree.id = $id;");
@@ -70,7 +71,7 @@ $numLine = $g2['num_line'];
     <div id="logoSchedaSx"><img src="img/layout/logo.png" alt="logo" /></div> 
     <div id="livelloScheda">
      <ul>
-      <li id="catalogoTitle" class="livAttivo">COMUNE DI <?php echo($com);?><br/><b><?php echo($loc);?></b></li>
+      <li id="catalogoTitle" class="livAttivo"><b><?php echo strtoupper($area);?></b></li>
      </ul>
     </div>
  
@@ -85,7 +86,7 @@ $numLine = $g2['num_line'];
                           FROM aree, comune, localita 
                           WHERE aree.id_localita = localita.id AND 
                                 aree.id_comune = comune.id AND
-                                aree.tipo = 1 AND 
+                                aree.tipo = 3 AND 
                                 aree.id != $id AND
                                 aree.id_localita != 6 AND 
                                 aree.id_localita != 175 
@@ -278,9 +279,9 @@ poly = new OpenLayers.Layer.Vector("poligoni", {
    featureNS :   "http://www.lefontiperlastoria.it/fonti",
    //maxExtent:    mapextent,
    srsName:      "EPSG:3857",
-   featureType:  "area_int_poly", 
-   geometryName: "the_geom", 
-   schema:       "http://www.lefontiperlastoria.it/fonti?service=WFS&version=1.0.0&request=DescribeFeatureType&TypeName=fonti:area_int_poly"
+   featureType:  "area_carto_poly", 
+   geometryName: "geom", 
+   schema:       "http://www.lefontiperlastoria.it/fonti?service=WFS&version=1.0.0&request=DescribeFeatureType&TypeName=fonti:area_carto_poly"
  }),
  filter: new OpenLayers.Filter.Comparison({
    type: OpenLayers.Filter.Comparison.EQUAL_TO,

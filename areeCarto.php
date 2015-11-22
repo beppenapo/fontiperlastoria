@@ -4,7 +4,7 @@ if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 ini_set( "display_errors", 0);
 require("inc/db.php");
 $usr = $_SESSION['id_user'];
-
+if($_GET['c']==0) {$and='>0';}else{$and= '='.$_GET['c'];}
 $query = ("
     select ac.id 
             , ac.nome area
@@ -20,7 +20,7 @@ $query = ("
     left join area_int_poly on area_int_poly.id_area = ac.id
     left join area_int_line on area_int_line.id_area = ac.id
     left join ubicazione on ac.id = ubicazione.area and a.tipo = 2
-    where a.nome_area is not null
+    where a.nome_area is not null and a.id_comune$and
     group by ac.id,ac.nome, a.tipo
     order by area asc;
 ");      
@@ -107,14 +107,14 @@ if(!$e){die("errore ".pg_last_error($connection));}else{echo "ok";}
  <div style="margin:30px 10px 0px 10px;">
   <div style="float:left"><legend id="legenda"></legend></div>
   <div style="float:right">
-   <form action="aree.php" id="filtra" method="get" enctype="text/plain">
+   <form action="areeCarto.php" id="filtra" method="get" enctype="text/plain">
     filtra ricerca:
     <select id="c" name="c" class="filtri" style="width:200px;">
      <option value="0">--tutti i comuni--</option>
       <?php
       $qf = ("SELECT DISTINCT aree.id_comune, comune.comune, comune.cap AS cap_comune
               FROM aree, comune
-              WHERE aree.id_comune = comune.id
+              WHERE aree.id_comune = comune.id and aree.tipo = 3
               order by comune asc;
       ");
       $qex = pg_query($connection, $qf);
@@ -153,7 +153,7 @@ if(!$e){die("errore ".pg_last_error($connection));}else{echo "ok";}
             if($r['tipo'] == 3 && $r['geom'] == 0) {$azione = '<span style="color:red !important">Inserisci geometrie</span>';}
             elseif($r['tipo'] ==2 && $r['ubi'] == 0) {$azione = '<span style="color:red !important">Inserisci geometrie</span>';}
             else {$azione = 'gestisci geometrie';}
-            echo "<tr>";
+            echo "<tr class='link' id='".$r['id']."' area='".$r['area']."' title='clicca per modificare o eliminare il record'>";
                 echo "<td>".$r['id']."</td>";
                 echo "<td>".$r['area']."</td>";
                 echo "<td>".$r['comune']."</td>";
@@ -259,11 +259,9 @@ $(document).ready(function() {
     });
 
     $('td.geom').click(function(){ 
-        var area = $(this).parent('tr').attr('id');//id area
-        var id = $(this).parent('tr').attr('idLocalita');
-        var comune = $(this).parent('tr').attr('comune');
-        var loc = $(this).parent('tr').attr('localita');
-        window.location.href = 'aree_geom.php?id='+area+'&c='+comune+'&loc='+loc;  
+        var id = $(this).parent('tr').attr('id');//id area
+        var area = $(this).parent('tr').attr('area');
+        window.location.href = 'aree_geom_carto.php?id='+id+'&a='+area;  
     });
 
     var legenda;
@@ -275,19 +273,10 @@ $(document).ready(function() {
     $('.link').each(function(){
         $(this).click(function(){
             var id = $(this).attr('id');
-            var idcomune = $(this).attr('idcomune');
-            var idlocalita = $(this).attr('idlocalita');
-            var idindirizzo = $(this).attr('idindirizzo');
-            var idrubrica = $(this).attr('idrubrica');
-            var comune = $(this).attr('comune');
-            var localita = $(this).attr('localita');
-            var indirizzo = $(this).attr('indirizzo');
-            var rubrica = $(this).attr('rubrica');
-            var tipo = $(this).attr('tipo');
             $.ajax({
-                url: 'inc/form_update/area_update.php',
+                url: 'inc/form_update/areaCarto_update.php',
                 type: 'POST', 
-                data: {id:id, idcomune:idcomune, idlocalita:idlocalita, idindirizzo:idindirizzo,idrubrica:idrubrica, comune:comune, localita:localita, indirizzo:indirizzo,rubrica:rubrica,tipo:tipo},
+                data: {id:id},
                 success: function(data){
                     $("#dialog").html(data);
                     $("#dialog").dialog({resizable:false, modal:true, height: 630,width: 700, title: "Modifica sezione", position:['middle', 5]});

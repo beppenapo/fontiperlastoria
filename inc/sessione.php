@@ -45,7 +45,7 @@
      <a href='aree.php?c=0&t=0' title="Accedi alla lista delle aree di interesse e delle ubicazioni"> aree/ubicazioni</a>
     </li>
     <li>
-     <a href='areeCarto.php?c=0&t=0' title="Accedi alla lista delle aree di interesse cartografico"> aree interesse cartografico</a>
+     <a href='areeCarto.php?c=0' title="Accedi alla lista delle aree di interesse cartografico"> aree interesse cartografico</a>
     </li>
    </ul>
   </li>
