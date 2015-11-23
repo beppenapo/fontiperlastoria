@@ -140,7 +140,7 @@ if(!$e){die("errore ".pg_last_error($connection));}else{echo "ok";}
     <tr>
      <th style="width:20px">ID</th>
      <th style="width:150px">AREA</th>
-     <th style="width:250px">LOCALITÀ</th>
+     <th style="width:600px">LOCALITÀ</th>
      <?php if($usr == 1 || $usr == 2 || $usr == 6) {echo '<th style="width:100px"></th>';} ?>
     </tr>
    </thead>
