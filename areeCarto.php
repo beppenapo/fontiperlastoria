@@ -9,8 +9,7 @@ $query = ("
     select ac.id 
             , ac.nome area
             , a.tipo
-            , array_to_string(array_agg(distinct c.comune), ', ') as comune
-            , array_to_string(array_agg(distinct l.localita), ', ') as localita
+            , array_to_string(array_agg(c.comune || ' (' || l.localita || ')' ), '<br/>') as lista
             , count(area_carto_poly.id)::integer as geom
             , count(ubicazione.id)::integer as ubi
     from aree_carto ac
@@ -140,9 +139,8 @@ if(!$e){die("errore ".pg_last_error($connection));}else{echo "ok";}
    <thead>
     <tr>
      <th style="width:20px">ID</th>
-     <th style="width:150px">NOME AREA</th>
-     <th style="width:150px">COMUNE</th>
-     <th style="width:150px">LOCALITA'</th>
+     <th style="width:150px">AREA</th>
+     <th style="width:250px">LOCALITÀ</th>
      <?php if($usr == 1 || $usr == 2 || $usr == 6) {echo '<th style="width:100px"></th>';} ?>
     </tr>
    </thead>
@@ -155,8 +153,7 @@ if(!$e){die("errore ".pg_last_error($connection));}else{echo "ok";}
             echo "<tr class='link' id='".$r['id']."' area='".$r['area']."' title='clicca per modificare o eliminare il record'>";
                 echo "<td>".$r['id']."</td>";
                 echo "<td>".$r['area']."</td>";
-                echo "<td>".$r['comune']."</td>";
-                echo "<td>".$r['localita']."</td>";
+                echo "<td>".$r['lista']."</td>";
                  if($usr == 1 || $usr == 2 || $usr == 6) {echo '<td class="modLista geom">'.$azione.'</td>';}
             echo "</tr>";
         }
@@ -271,14 +268,15 @@ $(document).ready(function() {
 
     $('.link').each(function(){
         $(this).click(function(){
+            var area = $(this).attr('area');
             var id = $(this).attr('id');
             $.ajax({
                 url: 'inc/form_update/areaCarto_update.php',
                 type: 'POST', 
-                data: {id:id},
+                data: {id:id, area:area},
                 success: function(data){
                     $("#dialog").html(data);
-                    $("#dialog").dialog({resizable:false, modal:true, height: 630,width: 700, title: "Modifica sezione", position:['middle', 5]});
+                    $("#dialog").dialog({resizable:false, modal:true, height: 630,width: 700, title: "Modifica area "+area , position:['middle', 5]});
                 }//success
             });//ajax
         });//click

@@ -40,67 +40,31 @@ $tipologia=($tipo==1)?'area di interesse':'ubicazione';
 ?>
 
 <div id="compilazione_form">   
-   <label>* Tipologia area</label>
-    <select id="tipo_update" name="tipo_update" class="form">
-      <option value="<?php echo($tipo);?>"><?php echo($tipologia);?></option>
-      <option value="1">area di interesse</option>
-      <option value="2">ubicazione</option>
+    <label>* Nome area</label>
+    <textarea id="nomeArea" class="form" style="width:92.5% !important;"></textarea>
+    <label>* COMUNE</label>
+    <select id="comuneCarto" name="comuneCarto" class="form">
+        <option value="15">--non determinabile--</option>
+        <?php
+        $q1 = ("SELECT DISTINCT id, comune FROM comune WHERE id != 15 order by comune asc;");
+        $q1ex = pg_query($connection, $q1);
+        $q1r = pg_num_rows($q1ex);
+        while($row = pg_fetch_array($q1ex)){
+            echo "<option value=".$row['id'].">".stripslashes($row['comune'])."</option>";
+        }
+        ?>
     </select>
-   
-   <label>* COMUNE</label>
-   <select id="comuneubi_update" name="comune_update" class="form">
-    <option value="<?php echo($idcomune);?>"><?php echo($comune);?></option>
-    <?php
-     $q1 = ("SELECT DISTINCT id, comune FROM comune order by comune asc;");
-     $q1ex = pg_query($connection, $q1);
-     $q1r = pg_num_rows($q1ex);
-     if($q1r != 0) {
-      for ($a1 = 0; $a1 < $q1r; $a1++){
-       $selid = pg_result($q1ex, $a1,"id"); 	
-       $selcomune = pg_result($q1ex, $a1,"comune");
-       $selcomune = stripslashes($selcomune);
-       echo "<option value=\"$selid\">$selcomune</option>";
-     }
-   }
-   ?>
-   </select>
-   
-   <label>LOCALITA'</label>
-   <select id="localitaubi_update" name="localita_update" class="form">
-     <option value="<?php echo($idlocalita);?>"><?php echo($localita);?></option>
-   </select>
-   
-   <label>INDIRIZZO</label>
-   <select id="indirizzoubi_update" name="indirizzo_update" class="form">
-     <option value="<?php echo($idindirizzo);?>"><?php echo($indirizzo);?></option>
-   </select>
-   <div id="rubrica">   
-   <label>RIFERIMENTO RUBRICA</label>
-   <select id="rubrica_up" name="rubrica_up" class="form">
-     <option value="<?php echo($idrubrica);?>"><?php echo($rubrica);?></option>
-    <?php
-     $q2 = ("SELECT DISTINCT id, nome FROM anagrafica WHERE id != $idrubrica order by nome asc;");
-     $q2ex = pg_query($connection, $q2);
-     $q2r = pg_num_rows($q2ex);
-     if($q2r != 0) {
-      for ($a2 = 0; $a2 < $q2r; $a2++){
-       $selid = pg_result($q2ex, $a2,"id"); 	
-       $selnome = pg_result($q2ex, $a2,"nome");
-       echo "<option value=\"$selid\">$selnome</option>";
-     }
-   }
-   ?>
-   </select>
+    <label>LOCALITA'</label>
  
- <input type="hidden" id="id" value="<?php echo($id); ?>" />
- <div id="salva" class="login2" style="margin-top:20px;" id="compilazione_update">Salva modifiche</div>
- <div id="chiudi" class="login2">Annulla modifiche</div>
- <div id="elimina" class="login2">Elimina record</div>
+    <input type="hidden" id="id" value="<?php echo($id); ?>" />
+    <div id="salva" class="login2" style="margin-top:20px;" id="compilazione_update">Salva modifiche</div>
+    <div id="chiudi" class="login2">Annulla modifiche</div>
+    <div id="elimina" class="login2">Elimina record</div>
 </div>
 
 
 <div id="delDialog" style="display:none; text-align:center;">
- <h2>Hai scelto di eliminare un'<?php echo($tipologia);?></h2>
+ <h2>Hai scelto di eliminare il record</h2>
  <p>Eliminando il record eliminerai anche i collegamenti con le schede</p>
  <p>Sei sicuro di voler eliminare il record?</p>
  <div id="no" class="login2" style="margin-top:20px;" id="compilazione_update">NO, non eliminare</div>
@@ -150,7 +114,5 @@ $(document).ready(function(){
           }//success
      });//ajax
    });
- 
 });
-
 </script>
