@@ -2,9 +2,12 @@ div#content{border: 1px solid #C1FEAE;margin-top:50px;}
 div#mappa2{width:100%;height:500px;clear: both;}
 #nodelist{width: 30%;height: 30px;position: absolute;margin: 0px 35%!important;z-index: 5000;}
 .nodeContent, div#coordinates{text-align: center; padding:5px 0px;}
-#panel{ float: right; right: 0px; height: 30px; width: 400px; margin: 10px 0px; }
 .nodeContent{background-color: #ffbf96;}
-#filtro{width:420px; height: 30px; float:left;margin: 10px 0px 0px -70px; z-index: 20;}
+/*#panel{ float: right; right: 0px; height: 30px; width: 400px; margin: 10px 0px; }
+#filtro{width:420px; height: 30px; float:left;margin: 10px 0px 0px -70px; z-index: 20;}*/
+#panel{height: 30px; width: 400px;display:inline-block; }
+#filtro{position:relative;width:420px; display:inline-block; z-index: 2000;}
+#filtro label{cursor:help;}
 #scegli{
  position: absolute;
  bottom:26px;
