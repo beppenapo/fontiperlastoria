@@ -1,49 +1,23 @@
 <?php
 require('../db.php');
 $id = $_POST['id'];
-$q=("
-SELECT 
-  aree.id, 
-  aree.id_comune, 
-  comune.comune, 
-  aree.id_localita, 
-  localita.localita, 
-  aree.id_indirizzo, 
-  indirizzo.indirizzo, 
-  comune.cap AS cap_comune, 
-  indirizzo.cap AS cap_indirizzo, 
-  aree.tipo, 
-  aree.id_rubrica, 
-  anagrafica.nome as rubrica
-FROM 
-  public.aree
-left join comune on aree.id_comune = comune.id
-left join localita on aree.id_localita = localita.id
-left join indirizzo on aree.id_indirizzo = indirizzo.id
-left join anagrafica on aree.id_rubrica = anagrafica.id
-where aree.id = $id;
-");
-$r = pg_query($connection, $q);
-$a = pg_fetch_array($r);
-$idcomune = $a['id_comune'];
-$idlocalita = $a['id_localita'];
-$idindirizzo = $a['id_indirizzo'];
-$idrubrica = $a['id_rubrica'];
-$comune = stripslashes($a['comune']);
-$localita = stripslashes($a['localita']);
-$indirizzo = stripslashes($a['indirizzo']);
-$rubrica = stripslashes($a['rubrica']);
-$tipo = $a['tipo'];
-$tipologia=($tipo==1)?'area di interesse':'ubicazione';
-//if($tipo==1) {$tipologia = 'area di interesse';}if($tipo==2) {$tipologia = 'ubicazione';}
+$areaq = "select nome from aree_carto where id = $id;";
+$areaExec = pg_query($connection, $areaq);
+$areaNome = pg_fetch_array($areaExec);
 
+$listaq=("select a.id, array_to_string(array_agg(c.comune || ' (' || l.localita || ')' ), ', ') as lista from aree_carto ac, aree a, comune c, localita l where a.nome_area = ac.id and a.id_comune = c.id and a.id_localita = l.id and ac.id = $id group by a.id; ");
+$listaExec = pg_query($connection, $listaq);
+$listaArr;
+while($lista = pg_fetch_array($listaExec)){$listaArr .="<li><input type='checkbox' name='loc' id='loc".$lista['id']."' value='".$lista['id']."' /> <label for='loc".$lista['id']."'>".$lista['lista']."</label></li>";}
 ?>
 
 <div id="compilazione_form">   
-    <label>* Nome area</label>
-    <textarea id="nomeArea" class="form" style="width:92.5% !important;"></textarea>
-    <label>* COMUNE</label>
-    <select id="comuneCarto" name="comuneCarto" class="form">
+    <label class='main'>* Nome area</label>
+    <textarea id="nomeArea" class="form" style="height:15px;"><?php echo $areaNome['nome']; ?></textarea>
+    <label class='main'>Località associate all'area, seleziona le località da eliminare</label>
+    <div id="listaDiv"><ul><?php echo $listaArr; ?></ul></div>
+    <label class='main'>* COMUNE</label>
+    <select id="comuneCarto" name="comuneCarto" class="form"  style="width:95%;">
         <option value="15">--non determinabile--</option>
         <?php
         $q1 = ("SELECT DISTINCT id, comune FROM comune WHERE id != 15 order by comune asc;");
@@ -54,7 +28,7 @@ $tipologia=($tipo==1)?'area di interesse':'ubicazione';
         }
         ?>
     </select>
-    <label>LOCALITA'</label>
+    <label class='main'>LOCALITA'</label>
  
     <input type="hidden" id="id" value="<?php echo($id); ?>" />
     <div id="salva" class="login2" style="margin-top:20px;" id="compilazione_update">Salva modifiche</div>

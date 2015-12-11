@@ -1,10 +1,14 @@
 <?php
 session_start();
-if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 ini_set( "display_errors", 0);
 require_once("inc/db.php");
-$id=$_GET['id'];
-$area=$_GET['a'];
+if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
+$id=$_GET['a'];
+
+$a=("select nome from aree_carto where id = $id");
+$ar = pg_query($connection, $a);
+$arr = pg_fetch_array($ar, 0, PGSQL_ASSOC);
+$area = $arr['nome'];
 /**********************************************************************************/
 $qgeom1=("select count(id) as num_poly from area_int_poly where id_area = $id");
 $qgeom1Res = pg_query($connection, $qgeom1);
@@ -57,8 +61,8 @@ $ymax = $extComArr['maxy'];
   <style>
     #topoLista{
     position: absolute;
-    top: -25px;
-    left: 150px;
+    top: 25px;
+    left: -25px;
     background-color: #fff;
     border-radius: 5px;
     padding: 10px;
@@ -296,6 +300,5 @@ function onFeatureInsert(feature){
      miFeature[0].popup = null;
   }
 </script>
-
 </body>
 </html>
