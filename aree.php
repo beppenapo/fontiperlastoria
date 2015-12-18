@@ -4,13 +4,21 @@ if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 ini_set( "display_errors", 0);
 require("inc/db.php");
 $usr = $_SESSION['id_user'];
-if($_POST['c']==0) {$and='>0';}else{$and= '='.$_POST['c'];}
-if($_POST['t']==0) {$and2='>0';}else{$and2= '='.$_POST['t'];}
-switch($_POST['t']){
-    case 1: $tipo = 'Area di interesse'; break;
-    case 2: $tipo = 'Ubicazione'; break;
-    case 3: $tipo = 'Cartografia'; break;
+if(!isset($_POST['c']) || $_POST['c']==0) {
+    $and='>0';
+    $jc = 0;
+}else{
+    $and= '='.$_POST['c'];
+    $jc = $_POST['c'];
 }
+if(!isset($_POST['t']) || $_POST['t']==0) {
+    $and2='>0';
+    $jt = 0;
+}else{
+    $and2= '='.$_POST['t'];
+    $jt = $_POST['t'];
+}
+
 $query = ("
     select ac.id 
             , ac.nome area
@@ -133,6 +141,11 @@ $e = pg_query($connection, $query);
                                         if($r['tipo'] == 3 && $r['geom'] == 0) {$azione = '<span style="color:red !important">Inserisci</span>';}
                                         elseif($r['tipo'] ==2 && $r['ubi'] == 0) {$azione = '<span style="color:red !important">Inserisci</span>';}
                                         else {$azione = 'gestisci';}
+                                        switch($r['tipo']){
+                                            case 1: $tipo = 'Area di interesse'; break;
+                                            case 2: $tipo = 'Ubicazione'; break;
+                                            case 3: $tipo = 'Cartografia'; break;
+                                        }
                                         echo "<tr class='link' id='".$r['id']."' area='".$r['area']."' title='clicca per modificare o eliminare il record'>";
                                             echo "<td>".$r['id']."</td>";
                                             echo "<td>".$tipo."</td>";
@@ -154,14 +167,19 @@ $e = pg_query($connection, $query);
     <div id="dialog">  </div>
     <script type="text/javascript" >
         var locLength,legenda;
-        var c = <?php echo $_POST['c']; ?>;
-        var t = <?php echo $_POST['t']; ?>;
+        var c = <?php echo $jc; ?>;
+        var t = <?php echo $jt; ?>;
         $(document).ready(function() {
             $('.slide, #addArea').hide();
             $('.sezioni').click(function(){$('.slide').slideToggle();});
             $('#c option[value='+c+']').attr('selected','selected');
             $('#t option[value='+t+']').attr('selected','selected');
             legenda = (t==0 && c==0)?'Il database contiene ':'La ricerca ha prodotto ';
+            $("#rubrica").hide();
+            $("#tipo").change(function () {  
+                var i=$(this).val();
+                if (i==2) {$("#rubrica").fadeIn("slow");}else {$("#rubrica").fadeOut("slow");}
+            });
             $("#comuneCarto").change(function() {
                 var comId = $(this).val();
                 var com = $("#comuneCarto option:selected").text();
@@ -220,6 +238,7 @@ $e = pg_query($connection, $query);
             $("button[name=salvaAree]").click(function(){
                 var tipoArea = $("#tipo").val();
                 var nomeArea = $("#nomeArea").val();
+                var rubrica = $("select[name=rubrica]").val();
                 if(!tipoArea){ $("#test").text("Il campo tipologia area è obbligatorio"); return false; }
                 if(!nomeArea){ $("#test").text("Il campo nome area è obbligatorio"); return false; }
                 $.ajax({

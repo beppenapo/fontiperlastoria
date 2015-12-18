@@ -11,6 +11,17 @@
         </select>
         <label>* NOME AREA</label>
         <textarea id="nomeArea" class="form" style="width:93% !important; height:16px !important;"></textarea>
+        <div id="rubrica">   
+            <label>RIFERIMENTO RUBRICA</label>
+            <select name="rubrica" class="form">
+                <option value="7">--non determinabile--</option>
+                <?php
+                $q2 = ("SELECT DISTINCT id, nome FROM anagrafica WHERE id != 7 order by nome asc;");
+                $q2ex = pg_query($connection, $q2);
+                while($rub = pg_fetch_array($q2ex)){echo "<option value='". $rub['id']."'>".$rub['nome']."</option>";}
+                ?>
+   </select>
+   </div>
         <label>* COMUNE</label>
         <select id="comuneCarto" name="comuneCarto" class="form">
             <option value="15">--non determinabile--</option>

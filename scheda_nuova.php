@@ -288,13 +288,7 @@ $resai = pg_query($connection, $qai);
             <select id="id_area" name="id_area" class="form">
              <?php 
                 echo $opt;
-                while($x = pg_fetch_array($resai)){ 
-                    if($tipoScheda==10){
-                        echo "<option value='".$x['id']."'>".$x['nome']."</option>"; 
-                    }else{
-                        echo "<option value='".$x['id']."'>".$x['comune']." ".$x['localita']."</option>"; 
-                    }
-                } 
+                while($x = pg_fetch_array($resai)){ echo "<option value='".$x['id']."'>".$x['nome']."</option>"; } 
             ?>
             </select>
           </td>
@@ -345,19 +339,10 @@ $resai = pg_query($connection, $qai);
           <div style="margin:10px">
            <label>ANAGRAFICA UBICAZIONE</label>
            <select id="ana_ubi" name="ana_ubi" class="form">
-            <option value="672">--seleziona un valore dalla lista--</option>
+            <option value="<?php echo $defVal; ?>">--seleziona un valore dalla lista--</option>
             <?php
-             $query =  ("
-               SELECT distinct aree.id, comune.comune, localita.localita, indirizzo.indirizzo, anagrafica.nome
-               FROM aree, localita,comune,indirizzo, anagrafica
-               WHERE aree.id_comune = comune.id AND
-                     aree.id_indirizzo = indirizzo.id AND
-                     aree.id_localita = localita.id AND
-                     aree.id_rubrica = anagrafica.id and
-                     aree.tipo = 2
-               order by comune asc, localita asc, indirizzo asc, nome asc;
-
-             ");
+             //$query =  ("SELECT distinct aree.id, comune.comune, localita.localita, indirizzo.indirizzo, anagrafica.nome FROM aree, localita,comune,indirizzo, anagrafica WHERE aree.id_comune = comune.id AND  aree.id_indirizzo = indirizzo.id AND  aree.id_localita = localita.id AND  aree.id_rubrica = anagrafica.id and aree.tipo = 2 order by comune asc, localita asc, indirizzo asc, nome asc; ");
+             $query =  ("SELECT id, nome from area where tipo = 2 order by nome asc;");
              $result = pg_query($connection, $query);
              $righe = pg_num_rows($result);
              $i=0;
