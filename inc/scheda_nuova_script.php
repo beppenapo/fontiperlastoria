@@ -18,7 +18,7 @@ $scn_id = $_POST['scn_id'];
 $scn_note = pg_escape_string($_POST['scn_note']);
 $note = pg_escape_string($_POST['note_gen']);
 $fine = $_POST['fine'];
-
+$tipoArea = ($dgn_tpsch==10)? 3 : 1 ;
 //cronologia
 $cro_iniz = $_POST['cro_iniz'];
 $cro_fin = $_POST['cro_fin'];
@@ -37,7 +37,7 @@ if($areeList) {
  for($z = 0; $z < $c; $z++){
   list($area, $area_motiv) = explode(",", $arrayareeList[$z]);//esplodo il singolo array nei singoli valori
   $queryAreeList .= ("
-   INSERT INTO aree_scheda(id_scheda, id_area, id_motivazione) values (currval('scheda_liv1_id_seq'), $area, $area_motiv);
+   INSERT INTO aree_scheda(id_scheda, id_area, id_motivazione, tipo) values (currval('scheda_liv1_id_seq'), $area, $area_motiv, $tipoArea);
   ");
  }
 }
@@ -96,7 +96,7 @@ VALUES ($dgn_tpsch, $livello, '$dgn_numsch', $dgn_livind, '$dgn_dnogg', '$dgn_no
 INSERT INTO cronologia(id_scheda, cro_iniz, cro_fin, cro_spec, cro_motiv, cro_note)
 VALUES (currval('scheda_liv1_id_seq'), $cro_iniz, $cro_fin, '$cro_spec', $cro_motiv, '$cro_note');
 
-INSERT INTO aree_scheda(id_scheda, id_area, id_motivazione) values (currval('scheda_liv1_id_seq'), $id_ubi, $id_motivUbi);
+INSERT INTO aree_scheda(id_scheda, id_area, id_motivazione,tipo) values (currval('scheda_liv1_id_seq'), $id_ubi, $id_motivUbi,2);
 
 INSERT INTO consultabilita(id_scheda, consultabilita, orario, servizi)values(currval('scheda_liv1_id_seq'), '$consultabilita', '$orario', '$servizi');
 

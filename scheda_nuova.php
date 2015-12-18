@@ -11,6 +11,23 @@ $idUsr = $_SESSION['id'];
 $tipoUsr = $_SESSION['tipo'];
 $hub = $_SESSION['hub'];
 $data = date("Y-m-d");
+
+/* query area di interesse */
+
+
+if($tipoScheda==10){
+    $opt = "<option value='261'>-- seleziona area di interesse cartografico --</option>";
+    //$qai =  "SELECT id, nome from area order by nome asc;";
+    $t=3;
+    $defVal = 261;
+}else{
+    $opt = "<option value='261'>-- seleziona area di interesse --</option>";
+    //$qai =  "SELECT distinct aree.id, comune.comune, localita.localita FROM aree, localita,comune WHERE aree.id_comune = comune.id AND aree.id_localita = localita.id AND aree.tipo = 1 order by comune asc, localita asc;";
+    $t=1;
+    $defVal = 261;
+}
+$qai =  "SELECT id, nome from area where tipo = $t order by nome asc;";
+$resai = pg_query($connection, $qai);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//IT"
@@ -269,24 +286,15 @@ $data = date("Y-m-d");
            <td>
             <label>Seleziona un'area dall'elenco</label>
             <select id="id_area" name="id_area" class="form">
-             <option value="671">--seleziona area di interesse--</option>
-             <?php
-             $query =  ("
-               SELECT distinct aree.id, comune.comune, localita.localita
-               FROM aree, localita,comune
-               WHERE aree.id_comune = comune.id AND
-                     aree.id_localita = localita.id AND
-                     aree.tipo = 1
-               order by comune asc, localita asc;");
-             $result = pg_query($connection, $query);
-             $righe = pg_num_rows($result);
-             $i=0;
-             for ($i = 0; $i < $righe; $i++){
-               $idArea = pg_result($result, $i, "id");
-               $comune = pg_result($result, $i, "comune");
-               $localita = pg_result($result, $i, "localita");
-               echo "<option value=\"$idArea\">$comune $localita</option>";
-             }
+             <?php 
+                echo $opt;
+                while($x = pg_fetch_array($resai)){ 
+                    if($tipoScheda==10){
+                        echo "<option value='".$x['id']."'>".$x['nome']."</option>"; 
+                    }else{
+                        echo "<option value='".$x['id']."'>".$x['comune']." ".$x['localita']."</option>"; 
+                    }
+                } 
             ?>
             </select>
           </td>
@@ -297,13 +305,7 @@ $data = date("Y-m-d");
             <?php
              $query =  ("SELECT * FROM lista_ai_motiv order by definizione asc; ");
              $result = pg_query($connection, $query);
-             $righe = pg_num_rows($result);
-             $i=0;
-             for ($i = 0; $i < $righe; $i++){
-               $idMotivAi = pg_result($result, $i, "id");
-               $def = pg_result($result, $i, "definizione");
-               echo "<option value=\"$idMotivAi\">$def</option>";
-             }
+             while($x = pg_fetch_array($result)){ echo "<option value='".$x['id']."'>".$x['definizione']."</option>"; }
             ?>
            </select>
            </td>
@@ -316,7 +318,7 @@ $data = date("Y-m-d");
            <div id="areeWrap">
             <label><b>ELENCO AREE SCELTE</b></label>
             <div id="aree">
-             <div class="areeList" id="areaDefault" val="671,16"></div>
+             <div class="areeList" id="areaDefault" val="<?php echo $defVal; ?>,16"></div>
             </div>
             <div id="areeListCanc" class="login2" style="font-size:1.2em;width:250px !important;margin-top:10px;">Annulla inserimento area</div>
            </div>
@@ -608,7 +610,7 @@ $data = date("Y-m-d");
   <script type="text/javascript" src="lib/update.js"></script>
 
 <script type="text/javascript" >
-var tpsch = "<? echo($tipoScheda); ?>";
+var tpsch = "<?php echo($tipoScheda); ?>";
 var hub = '<?php echo($hub); ?>'
 var numItems;
 $(document).ready(function() {

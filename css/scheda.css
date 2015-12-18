@@ -21,7 +21,7 @@ select#filtroCatalogo, select.filtri{width: auto;}
 input#addDefinizione{width:300px;}
 .qtip input{width:93%;margin-bottom:10px;}
 .qtip select{width:100%; margin-bottom:10px;}
-select.addListe, select#filtroCatalogo, input#addDefinizione,input#addDefinizione2, .qtip input, select.filtri{border:2px inset; background-color: whitesmoke;}
+select.addListe, select#filtroCatalogo, input#addDefinizione,input#addDefinizione2, .qtip input, select.filtri{border:1px solid #ccc;padding:2px 5px;}
 select.addListe, input#addDefinizione,input#addDefinizione2, input#add,.qtip input{font-size:1.2em;}
 select.addListe, input#addDefinizione,input#addDefinizione2, .qtip input{padding:5px 7px;}
 input#add{padding:6px 7px; cursor:pointer;}
@@ -87,8 +87,8 @@ outline: none !important;
 border:1px solid orange;;
 box-shadow: 0 0 10px #719ECE;
 }
-input.submit{padding:3px 5px;cursor: pointer;border:1px solid grey;}
-input.submit:hover{background-color: grey;}
+input.submit{padding:3px 5px;cursor: pointer;border:1px solid #ccc;background:#fff;}
+input.submit:hover{background-color: #ccc;}
 
 div.checkboxDiv{background-color:white;width:93%;padding:10px; border:1px solid #cacaca;}
 
