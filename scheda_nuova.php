@@ -328,13 +328,8 @@ $resai = pg_query($connection, $qai);
 
         </div>
        </div>
-
-       <?php
-
-       ?>
        <div class="toggle check">
         <div class="sezioni"><h2>UBICAZIONE</h2></div>
-
         <div class="slide">
           <div style="margin:10px">
            <label>ANAGRAFICA UBICAZIONE</label>
@@ -342,20 +337,10 @@ $resai = pg_query($connection, $qai);
             <option value="<?php echo $defVal; ?>">--seleziona un valore dalla lista--</option>
             <?php
              //$query =  ("SELECT distinct aree.id, comune.comune, localita.localita, indirizzo.indirizzo, anagrafica.nome FROM aree, localita,comune,indirizzo, anagrafica WHERE aree.id_comune = comune.id AND  aree.id_indirizzo = indirizzo.id AND  aree.id_localita = localita.id AND  aree.id_rubrica = anagrafica.id and aree.tipo = 2 order by comune asc, localita asc, indirizzo asc, nome asc; ");
-             $query =  ("SELECT id, nome from area where tipo = 2 order by nome asc;");
+             $query =  ("SELECT a.id, a.nome AS area, an.nome FROM aree, area a, anagrafica an  WHERE aree.nome_area = a.id  AND aree.id_rubrica = an.id  AND a.tipo = 2;");
              $result = pg_query($connection, $query);
-             $righe = pg_num_rows($result);
-             $i=0;
-             for ($i = 0; $i < $righe; $i++){
-               $idAnaUbi = pg_result($result, $i, "id");
-               $comuneUbi = pg_result($result, $i, "comune");
-               $localitaUbi = pg_result($result, $i, "localita");
-               $indirizzoUbi = pg_result($result, $i, "indirizzo");
-               $nomeUbi = pg_result($result, $i, "nome");
-               if($localitaUbi == "Non determinabile") {$localitaUbi = '';}
-               if($indirizzoUbi == "Non determinabile") {$indirizzoUbi = '';}
-               if($nomeUbi == "Non determinabile") {$nomeUbi = '';}
-               echo "<option value=\"$idAnaUbi\">$comuneUbi $localitaUbi $indirizzoUbi $nomeUbi</option>";
+             while($x = pg_fetch_array($result)){
+               echo "<option value='".$x['id']."'>".$x['area']." - ".$x['nome']."</option>";
              }
             ?>
            </select>

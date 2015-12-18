@@ -510,31 +510,17 @@ $extent2 = str_replace(' ', ',', $extent2);
        <?php
 
 $qai =  ("
-SELECT
- aree_scheda.id as id_as,
- aree_scheda.id_area,
- stato.id as id_stato,
- provincia.id as id_prov,
- aree.id as filtro,
- aree.id_localita,
- aree.id_comune,
- aree.id_indirizzo,
- aree_scheda.id_motivazione as id_motiv,
- localita.localita,
- comune.comune,
- lista_ai_motiv.definizione as motiv,
- indirizzo.indirizzo,
- provincia.provincia,
- stato.stato
-FROM aree_scheda
-LEFT JOIN aree ON aree.id = aree_scheda.id_area
+select aree_scheda.id as id_as, area.id as filtro, area.nome, localita.localita, comune.comune,lista_ai_motiv.definizione as motiv,indirizzo.indirizzo, provincia.provincia, stato.stato
+from area
+inner join aree on aree.nome_area = area.id
+inner join aree_scheda on aree_scheda.id_area = aree.nome_area
+inner join lista_ai_motiv ON lista_ai_motiv.id = aree_scheda.id_motivazione
 LEFT JOIN comune ON aree.id_comune = comune.id
 LEFT JOIN provincia ON comune.provincia = provincia.id
 LEFT JOIN stato ON comune.stato = stato.id
 LEFT JOIN localita ON aree.id_localita = localita.id
-LEFT JOIN lista_ai_motiv ON lista_ai_motiv.id = aree_scheda.id_motivazione
 LEFT JOIN indirizzo ON indirizzo.id = aree.id_indirizzo
-WHERE aree.tipo = 1 AND aree_scheda.id_scheda = $id
+WHERE area.tipo <> 2 and aree_scheda.id_scheda = $id
 ORDER BY comune ASC, localita ASC, indirizzo ASC;
 ");
 $rai = pg_query($connection, $qai);
@@ -543,7 +529,6 @@ $param = '';
 ?>
        <div class="toggle check bassa">
         <div class="sezioni"><h2>AREA DI INTERESSE</h2></div>
-
         <div class="slide">
         <div style="width:98%; margin:0px auto !important">
         <?php if($rowai > 0) {?>
@@ -561,14 +546,6 @@ $param = '';
           <?php
           for ($x = 0; $x < $rowai; $x++){
              $id_as= pg_result($rai, $x,"id_as");
-             $id_area= pg_result($rai, $x,"id_area");
-             $id_stato=  pg_result($rai, $x,"id_stato");
-             $id_prov=  pg_result($rai, $x,"id_prov");
-             $id_loc=  pg_result($rai, $x,"id_localita");
-             $id_com=  pg_result($rai, $x,"id_comune");
-             $id_indirizzo=  pg_result($rai, $x,"id_indirizzo");
-             $id_motiv=  pg_result($rai, $x,"id_motiv");
-             $localitaai=  pg_result($rai, $x,"localita"); 
              if($localitaai == '') {$localitaai=$nd;}else {$localitaai=stripslashes($localitaai);}
              $comuneai=  pg_result($rai, $x,"comune"); 
              if($comuneai== '') {$comuneai=$nd;}else {$comuneai=stripslashes($comuneai);}
@@ -591,11 +568,7 @@ $param = '';
                <td>$indirizzoai</td>
                <td>$motivai</td>
                <td>";
-               if ($_SESSION['username']!='guest'){
-                echo "<a href=\"javascript:removeArea($id_as)\">
-                 <img style='width:14px;height:14px;' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACHElEQVR42n2T70tTYRTHB73ddPfubq6ld5utYOQ2lsRYm7IyK6xBoC8CK+jHin5AWLEQgugPkG48OlEqMtIKhKAfrhFkJOVwlYVBSe1FvvDFSFj0B3x7zr1udOvOA1/Oc87nex547uGaTP9ErsHsM9WItZgp22Bex6W8CnpB2YDXZGo8c5gzn3q78HtyAHP74+C18hdj73s6VEaZvLrhxw4L+3BwL8ojF1Dqi6F8qx/5fXHwvkKs0N2B8mhaZb9uXgbV1FeHHzksvlyLFz8Hz2P5zDZN5yJYGUnjTVcM+QMJrAxfxPLZSJVTnfXL4LOyesmk3cKmwy78OBbG0vFVpVpRGrqEEuvD0onWap88L0Mu0IzuGQ/sdexF0IXvvQEUD63qSAjFw6FqTSwXWA/yGn7IcamOZbc48bXbj8Uevag35XeCPDVXOSbVs1x7GAvJzfic9Om0kNyEbCwI7jFe421bPXve2Ybi1ZOY392M+U6PTh/3bETx2mlM7YyCe/WXjNqsytNdcXy7kkIhIaPQ3qhqrk1TpX6XcHPPKTzZsR18RnvKsGj1jvk8+JI+itmoC7MRp6q3XPfdNjz0SOq50s9HN2CxP4U7zW7wWW2Ng6JVmZBteL1VwgwX5XFZBO8zEp0rjDTh1pjuGTdEgd1tFDHdIoAy1TrWxFlAwL0mgVjG8ENeFwRlSBJA2YCxjF1ltddIMSAI8hrsv9/5D5EYVSAsqeh8AAAAAElFTkSuQmCC'>
-                 </a>";
-               }
+               if ($_SESSION['username']!='guest'){ echo "<a href='#' id='removeArea' class='avviso' title='Rimuovi area' data-id='$id_as'><i class='fa fa-times fa-2x'></i></a>"; }
                echo "</td>
               </tr>
              ";
@@ -1203,6 +1176,13 @@ $(document).ready(function() {
  });
 
  if(hub==2){$( "div.check:not([class~='bassa'])" ).remove();}
+    
+    $("a#removeArea").click(function(e){
+        e.preventDefault();
+        var id = $(this).data('id');
+        removeArea(id);
+    });
+
 
 ////////////// SHOW/HIDE modifica sezione /////////////////
 if ( (tipoUsr == 1)||((tipoUsr==2)&&(schede.indexOf(scheda)!=-1))||(idUsr==compilatore)) {$('.update').show();}
