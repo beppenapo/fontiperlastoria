@@ -263,10 +263,6 @@ $resai = pg_query($connection, $qai);
               <textarea id="prv_note" class="form" style="height:100px !important"></textarea>
         </div>
        </div>
-
-       <?php
-
-       ?>
        <div class="toggle check bassa">
         <div class="sezioni"><h2>AREA DI INTERESSE</h2></div>
         <div class="slide">
@@ -568,6 +564,7 @@ $resai = pg_query($connection, $qai);
   <script type="text/javascript" src="lib/menu.js"></script>
   <script type="text/javascript" src="lib/select.js"></script>
   <script type="text/javascript" src="lib/update.js"></script>
+  <script type="text/javascript" src="lib/funzioni.js"></script>
 
 <script type="text/javascript" >
 var tpsch = "<?php echo($tipoScheda); ?>";
@@ -611,15 +608,12 @@ $(document).ready(function() {
       if (numItems == 0) {$(this).fadeOut('slow');}
    });
 
-   $("#areeMsg, #areeWrap, #areeListCanc").hide();
-//   $("#comune_update").change(function () { var val=$(this).val(); if (val == 15) {$("#areeAdd").fadeOut('slow');} });
-//   $("#motiv_update").change(function () {$("#areeAdd").fadeIn('slow'); });
-
+   $("#areeWrap, #areeListCanc").hide();
     $("#areeAdd").click(function () {
         $("#areaDefault").remove();
         var id_area=$("#id_area").val();
         var motiv=$("#motiv_update").val();
-        if(id_area == 261 || motiv == 16){$("#areeMsg").fadeIn('fast'); }
+        if(id_area == 261 || motiv == 16){return false; }
         else{
             $("#areeMsg").fadeOut('fast');
             var area = $( "#id_area option:selected" ).text();
@@ -634,13 +628,7 @@ $(document).ready(function() {
         $("div[class=areeList]:last").remove();
         areeFunc();
     });
-    function areeFunc(){
-        var areeNum = $('.areeList').length;
-        console.log(areeNum);
-        if(areeNum>1){$("#areeListCanc").text("Rimuovi l'ultima area inserita"); }
-        else if (areeNum == 0) {$("#areeListCanc").parent().fadeOut('slow');$(".clear").remove();}
-        else{$("#areeListCanc").text("Annulla inserimento area"); }
-    }
+    
   $('.avviso').hide();
   $('#livello').change(function(){
     var livello_list = $(this).val();

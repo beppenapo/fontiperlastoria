@@ -10,35 +10,31 @@ $idUsr = $_SESSION['id_user'];
 $schedeUsr = $_SESSION['schede'];
 $idMappa = $id;
 $nd = 'Dato non presente';
-
 $q1 =  ("
- SELECT
-  scheda.id,
-  scheda.livello,
-  scheda.dgn_numsch as numsch,
-  scheda.dgn_dnogg,
-  scheda.dgn_tpsch,
-  lista_dgn_tpsch.definizione AS tipo_scheda,
-  scheda.dgn_livind,
-  lista_dgn_livind.definizione AS individuazione,
-  scheda.dgn_note,
-  scheda.scn_note,
-  scheda.note,
-  scheda.ana_note,
-  scheda.noteai,
-  scheda.noteubi,
-  cronologia.cro_spec,
-  scheda.fine
- FROM
-  public.scheda,
-  public.lista_dgn_tpsch,
-  public.lista_dgn_livind,
-  public.cronologia
- WHERE
-  scheda.dgn_tpsch = lista_dgn_tpsch.id AND
-  scheda.dgn_livind = lista_dgn_livind.id AND
-  cronologia.id_scheda = scheda.id AND
-  scheda.id = $id;
+    SELECT
+        scheda.id,
+        scheda.livello,
+        scheda.dgn_numsch as numsch,
+        scheda.dgn_dnogg,
+        scheda.dgn_tpsch,
+        lista_dgn_tpsch.definizione AS tipo_scheda,
+        scheda.dgn_livind,
+        lista_dgn_livind.definizione AS individuazione,
+        scheda.dgn_note,
+        scheda.scn_note,
+        scheda.note,
+        scheda.ana_note,
+        scheda.noteai,
+        scheda.noteubi,
+        cronologia.cro_spec,
+        cronologia.cro_iniz,
+        cronologia.cro_fin,
+        scheda.fine
+    FROM scheda, lista_dgn_tpsch, lista_dgn_livind, cronologia
+    WHERE scheda.dgn_tpsch = lista_dgn_tpsch.id 
+        AND  scheda.dgn_livind = lista_dgn_livind.id 
+        AND  cronologia.id_scheda = scheda.id 
+        AND  scheda.id = $id;
 ");
 $r = pg_query($connection, $q1);
 $a = pg_fetch_array($r, 0, PGSQL_ASSOC);
@@ -50,11 +46,10 @@ $tipologiaScheda = $a['tipo_scheda'];
 $livind = $a['dgn_livind'];
 $fine = $a['fine'];
 $statoScheda=($fine == 1)?'APERTA':'CHIUSA';
-
 $upStatoScheda=($fine == 1)?'upVal=2':'upVal=1';
-
-$cro_spec = stripslashes($a['cro_spec']);
-if($cro_spec == '0') {$cro_spec = 'Cronologia assente';}
+if($a['cro_spec'] == '0') {$cro_spec = 'Cronologia assente';}
+elseif($a['cro_spec']==''||!$a['cro_spec']){$cro_spec = $a['cro_iniz']." - ".$a['cro_fin'];}
+else{$cro_spec = stripslashes($a['cro_spec']);}
 $dgn_ogg=stripslashes($a['dgn_dnogg']);
 $pag = $tpsch.$livello;
 
@@ -185,8 +180,12 @@ $extent2 = str_replace(' ', ',', $extent2);
   <script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
 
   <style>
-   #mapImgWrap{position:relative;}
-   #imgDiv{position: absolute;top: 0;left: 0;background-color: #fff;z-index: 9000;}
+    #mapImgWrap{position:relative;}
+    #imgDiv{position: absolute;top: 0;left: 0;background-color: #fff;z-index: 9000;}
+    .areeList{display:block;width: 100%; margin:10px 0px}
+    .areeListRecord{display:inline-block; margin:2px 10px; width:45%;}
+    .areeListRecord label{font-size: 1em !important;}
+    #areeAdd{ border-radius: 15px; -moz-border-radius: 15px; -webkit-border-radius: 15px;  padding:5px 8px !important; margin-bottom: 0px;}
   </style>
 
 </head>
@@ -536,7 +535,7 @@ $param = '';
            <th>PROVINCIA</th>
            <th>COMUNE</th>
            <th>LOCALITA'</th>
-           <th>INDIRIZZO</th>
+           <th>NOME AREA</th>
            <th>MOTIVAZIONE</th>
            <th></th>
           </thead>
@@ -550,7 +549,7 @@ $param = '';
                <td>".$x['provincia']."</td>
                <td>".$x['comune']."</td>
                <td>".$x['localita']."</td>
-               <td>".$x['filtro']."</td>
+               <td>".$x['nome']."</td>
                <td>".$x['motiv']."</td>
                <td>";
                if ($_SESSION['username']!='guest'){ echo "<a href='#' id='removeArea' class='avviso' title='Rimuovi area' data-id='".$x['id_as']."'><i class='fa fa-times fa-2x'></i></a>"; }
@@ -1137,6 +1136,7 @@ order by id_scheda asc;
   <script type="text/javascript" src="lib/menu.js"></script>
   <script type="text/javascript" src="lib/select.js"></script>
   <script type="text/javascript" src="lib/update.js"></script>
+  <script type="text/javascript" src="lib/funzioni.js"></script>
 
 <script type="text/javascript" >
 var hub = '<?php echo($hub); ?>'
