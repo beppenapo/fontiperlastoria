@@ -510,18 +510,16 @@ $extent2 = str_replace(' ', ',', $extent2);
        <?php
 
 $qai =  ("
-select aree_scheda.id as id_as, area.id as filtro, area.nome, localita.localita, comune.comune,lista_ai_motiv.definizione as motiv,indirizzo.indirizzo, provincia.provincia, stato.stato
+select aree_scheda.id as id_as, area.id as filtro, area.nome,lista_ai_motiv.definizione as motiv, localita.localita, comune.comune, provincia.provincia, stato.stato
 from area
 inner join aree on aree.nome_area = area.id
-inner join aree_scheda on aree_scheda.id_area = aree.nome_area
-inner join lista_ai_motiv ON lista_ai_motiv.id = aree_scheda.id_motivazione
-LEFT JOIN comune ON aree.id_comune = comune.id
-LEFT JOIN provincia ON comune.provincia = provincia.id
-LEFT JOIN stato ON comune.stato = stato.id
-LEFT JOIN localita ON aree.id_localita = localita.id
-LEFT JOIN indirizzo ON indirizzo.id = aree.id_indirizzo
-WHERE area.tipo <> 2 and aree_scheda.id_scheda = $id
-ORDER BY comune ASC, localita ASC, indirizzo ASC;
+inner join aree_scheda on aree_scheda.id_area = area.id 
+inner join lista_ai_motiv on aree_scheda.id_motivazione = lista_ai_motiv.id 
+left join localita on aree.id_localita = localita.id 
+left join comune on aree.id_comune = comune.id 
+left join provincia on comune.provincia = provincia.id 
+left join stato on comune.stato=stato.id
+where aree_scheda.id_scheda = $id and area.tipo <> 2 order by comune asc, localita asc;
 ");
 $rai = pg_query($connection, $qai);
 $rowai = pg_num_rows($rai);
@@ -544,35 +542,23 @@ $param = '';
           </thead>
           <tbody>
           <?php
-          for ($x = 0; $x < $rowai; $x++){
-             $id_as= pg_result($rai, $x,"id_as");
-             if($localitaai == '') {$localitaai=$nd;}else {$localitaai=stripslashes($localitaai);}
-             $comuneai=  pg_result($rai, $x,"comune"); 
-             if($comuneai== '') {$comuneai=$nd;}else {$comuneai=stripslashes($comuneai);}
-             $motivai=  pg_result($rai, $x,"motiv"); 
-             if($motivai == '') {$motivai=$nd;}else {$motivai=stripslashes($motivai);}
-             $indirizzoai=  pg_result($rai, $x,"indirizzo"); 
-             if($indirizzoai == '') {$indirizzoai=$nd;}else {$indirizzoai=stripslashes($indirizzoai);}
-             $provinciaai=  pg_result($rai, $x,"provincia"); 
-             if($provinciaai == '') {$provinciaai=$nd;}else {$provinciaai=stripslashes($provinciaai);}
-             $statoai=  pg_result($rai, $x,"stato"); 
-             if($statoai == '') {$statoai=$nd;}else {$statoai=stripslashes($statoai);} 
-             $filtro = pg_result($rai, $x, "filtro");
-             $param .= 'id_area='.$filtro.' OR ';
-             echo "
+          while ($x = pg_fetch_array($rai)){
+              $param .= 'id_area='.$x['filtro'].' OR ';
+              echo "
               <tr>
-               <td>$statoai</td>
-               <td>$provinciaai</td>
-               <td>$comuneai</td>
-               <td>$localitaai</td>
-               <td>$indirizzoai</td>
-               <td>$motivai</td>
+               <td>".$x['stato']."</td>
+               <td>".$x['provincia']."</td>
+               <td>".$x['comune']."</td>
+               <td>".$x['localita']."</td>
+               <td>".$x['filtro']."</td>
+               <td>".$x['motiv']."</td>
                <td>";
-               if ($_SESSION['username']!='guest'){ echo "<a href='#' id='removeArea' class='avviso' title='Rimuovi area' data-id='$id_as'><i class='fa fa-times fa-2x'></i></a>"; }
+               if ($_SESSION['username']!='guest'){ echo "<a href='#' id='removeArea' class='avviso' title='Rimuovi area' data-id='".$x['id_as']."'><i class='fa fa-times fa-2x'></i></a>"; }
                echo "</td>
               </tr>
              ";
-            }
+          }
+         
           ?>
           </tbody>
          </table>

@@ -55,23 +55,12 @@ $resai = pg_query($connection, $qai);
     table.mainData td{vertical-align: top !important;}
     input.form{height:20px !important;}
     select.form{height:28px !important;}
-    /*.sezioni{background-color:#CFC4B1; cursor: default !important;}*/
-    .ui-autocomplete {
-      max-height: 100px;
-      overflow-y: auto;
-      overflow-x: hidden;
-     }
+    .ui-autocomplete { max-height: 100px; overflow-y: auto; overflow-x: hidden;  }
      div.schAssoc{width:auto;float:left;margin:0px 10px 10px 0px;}
-     .areeList{display:block;width: 98%; margin:10px 0px}
-     .areeListRecord{float:left; margin:2px 10px; width:250px;}
+     .areeList{display:block;width: 100%; margin:10px 0px}
+     .areeListRecord{display:inline-block; margin:2px 10px; width:45%;}
      .areeListRecord label{font-size: 1em !important;}
-     #areeAdd{
-        border-radius: 15px;
-        -moz-border-radius: 15px;
-        -webkit-border-radius: 15px;
-        margin-top: 7px;
-        margin-bottom: 0px;
-     }
+     #areeAdd{ border-radius: 15px; -moz-border-radius: 15px; -webkit-border-radius: 15px;  margin-top: 7px; margin-bottom: 0px;}
   </style>
 
 </head>
@@ -309,12 +298,13 @@ $resai = pg_query($connection, $qai);
           </tr>
           <tr>
            <td colspan="3">
+            <label id="areeMsg"><b>Se vuoi aggiungere un'area alla scheda devi selezionare un valore dalla lista e aggiungere una motivazione, altrimenti lascia la sezione vuota.</b></label>
            <div id="areeWrap">
-            <label><b>ELENCO AREE SCELTE</b></label>
+            <label><b>ELENCO AREE SELEZIONATE</b></label>
             <div id="aree">
              <div class="areeList" id="areaDefault" val="<?php echo $defVal; ?>,16"></div>
             </div>
-            <div id="areeListCanc" class="login2" style="font-size:1.2em;width:250px !important;margin-top:10px;">Annulla inserimento area</div>
+            <div id="areeListCanc" class="login2" style="font-size:1.2em;width:250px !important;margin-top:10px;"></div>
            </div>
            </td>
           </tr>
@@ -621,33 +611,36 @@ $(document).ready(function() {
       if (numItems == 0) {$(this).fadeOut('slow');}
    });
 
-   $("#areeAdd, #areeWrap, #areeListCanc").hide();
+   $("#areeMsg, #areeWrap, #areeListCanc").hide();
+//   $("#comune_update").change(function () { var val=$(this).val(); if (val == 15) {$("#areeAdd").fadeOut('slow');} });
+//   $("#motiv_update").change(function () {$("#areeAdd").fadeIn('slow'); });
 
-   $("#comune_update").change(function () {
-	  var val=$(this).val();
-	  if (val == 15) {$("#areeAdd").fadeOut('slow');}
-   });
+    $("#areeAdd").click(function () {
+        $("#areaDefault").remove();
+        var id_area=$("#id_area").val();
+        var motiv=$("#motiv_update").val();
+        if(id_area == 261 || motiv == 16){$("#areeMsg").fadeIn('fast'); }
+        else{
+            $("#areeMsg").fadeOut('fast');
+            var area = $( "#id_area option:selected" ).text();
+            var motivTxt = $( "#motiv_update option:selected" ).text();
+            $("#aree").append('<div class="areeList" val="'+id_area+','+motiv+'"><div class="areeListRecord"><label>'+area+'</label></div><div class="areeListRecord"><label>'+motivTxt+'</label></div></div>');
+            $("#areeWrap, #areeListCanc").fadeIn('slow');
+            areeFunc();
+        }
+    });
 
-   $("#motiv_update").change(function () {
-      $("#areeAdd").fadeIn('slow');
-   });
-
-   $("#areeAdd").click(function () {
-	  $("#areaDefault").remove();
-	  var id_area=$("#id_area").val();
-	  var area = $( "#id_area option:selected" ).text();
-	  var motiv=$("#motiv_update").val();
-	  var motivTxt = $( "#motiv_update option:selected" ).text();
-	  $("#aree").append('<div class="areeList" val="'+id_area+','+motiv+'"><div class="areeListRecord"><label>'+area+'</label></div><div class="areeListRecord"><label>'+motivTxt+'</label></div></div><div class="clear" style="clear:both;"></div>');
-	  $("#areeWrap, #areeListCanc").fadeIn('slow');
-   });
-
-  $("#areeListCanc").click(function(){
-    $("div[class=areeList]:last").remove();
-    var areeNum = $('.areeList').length;
-    if (areeNum == 0) {$(this).parent().fadeOut('slow');$(".clear").remove();}
-  });
-
+    $("#areeListCanc").click(function(){
+        $("div[class=areeList]:last").remove();
+        areeFunc();
+    });
+    function areeFunc(){
+        var areeNum = $('.areeList').length;
+        console.log(areeNum);
+        if(areeNum>1){$("#areeListCanc").text("Rimuovi l'ultima area inserita"); }
+        else if (areeNum == 0) {$("#areeListCanc").parent().fadeOut('slow');$(".clear").remove();}
+        else{$("#areeListCanc").text("Annulla inserimento area"); }
+    }
   $('.avviso').hide();
   $('#livello').change(function(){
     var livello_list = $(this).val();
@@ -829,3 +822,4 @@ $(document).ready(function() {
 </script>
 </body>
 </html>
+        else{$("#areeListCanc").text("Annulla inserimento area");}
