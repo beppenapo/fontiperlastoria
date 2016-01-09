@@ -151,24 +151,6 @@ require_once("inc/db.php");
  <!--div invisibili -->
 
 <script type="text/javascript" >
-function pager(){
-    var show_per_page = 40;   
-    var number_of_items = $('#catalogoTable tbody tr:visible').length; 
-    var number_of_pages = Math.ceil(number_of_items/show_per_page);  
-    $('#current_page').val(0);  
-    $('#show_per_page').val(show_per_page);  
-    var navigation_html = '<a class="previous_link" href="javascript:previous();">Prev</a>';
-    var current_link = 0;
-    while(number_of_pages > current_link){
-      navigation_html += '<a class="page_link" href="javascript:go_to_page(' + current_link +')" longdesc="' + current_link +'">'+ (current_link + 1) +'</a>';
-      current_link++;
-    }
-    navigation_html += '<a class="next_link" href="javascript:next();">Next</a>';
-    $('.page_navigation').html(navigation_html);
-    $('.page_navigation .page_link:first').addClass('active_page');
-    $("#catalogoTable tbody>tr").css('display', 'none');
-    $("#catalogoTable tbody>tr").slice(0, show_per_page).css('display', 'table-row');
-}
 $(document).ready(function() {
    //var tipo;
 	var legenda;
@@ -179,51 +161,42 @@ $(document).ready(function() {
 
 
     $("#filtroCatalogo").change(function(){
-   	var tipo = $(this).val();
-   	switch (tipo) {
-        case '1': legenda = "<b>orali</b>"; break;
-        case '2': legenda = "<b>materiali</b>"; break;
-        case '4': legenda = "<b>archivistiche</b>"; break;
-        case '5': legenda = "<b>bibliografiche</b>"; break;
-        case '6': legenda = "<b>archeologiche</b>"; break;
-        case '7': legenda = "<b>fotografiche</b>"; break;
-        case '8': legenda = "<b>architettoniche</b>"; break;
-        case '9': legenda = "<b>storico-artistiche</b>"; break;	
-        case '10': legenda = "<b>cartografiche</b>"; break;
-    }	
-    if( tipo != 0){
-      $("#catalogoTable tbody>tr").hide();
-      $("#catalogoTable tr."+tipo).show();
-      var righe = $('#catalogoTable tbody tr:visible').length;
-      $('#legenda').html(pre+'<b>'+righe+'</b>'+post+legenda);
-    }else{
-      $("#catalogoTable tbody>tr").show();
-      var righe = $('#catalogoTable tbody tr:visible').length;
-      $('#legenda').html(pre+'<b>'+righe+'</b> schede');
-    }
-   });
-
+   	    var tipo = $(this).val();
+   	    switch (tipo) {
+            case '1': legenda = "<b>orali</b>"; break;
+            case '2': legenda = "<b>materiali</b>"; break;
+            case '4': legenda = "<b>archivistiche</b>"; break;
+            case '5': legenda = "<b>bibliografiche</b>"; break;
+            case '6': legenda = "<b>archeologiche</b>"; break;
+            case '7': legenda = "<b>fotografiche</b>"; break;
+            case '8': legenda = "<b>architettoniche</b>"; break;
+            case '9': legenda = "<b>storico-artistiche</b>"; break;	
+            case '10': legenda = "<b>cartografiche</b>"; break;
+        }	
+        if( tipo != 0){
+            $("#catalogoTable tbody>tr").hide();
+            $("#catalogoTable tr."+tipo).show();
+            var righe = $('#catalogoTable tbody tr:visible').length;
+            $('#legenda').html(pre+'<b>'+righe+'</b>'+post+legenda);
+        }else{
+            $("#catalogoTable tbody>tr").show();
+            var righe = $('#catalogoTable tbody tr:visible').length;
+            $('#legenda').html(pre+'<b>'+righe+'</b> schede');
+        }
+    });
 	$('.link').click(function(){
-	 var id = $(this).attr('ref');
-	 var link = 'scheda_archeo.php?id='+id;
-	 window.open(link, '_blank');
-	});
-		
-		
+        var id = $(this).attr('ref');
+	    var link = 'scheda_archeo.php?id='+id;
+	    window.open(link, '_blank');
+    });
 	//pager();
 	
  function exportTableToCSV($table, filename) {
   var $rows = $table.find('tr'),
-  // Temporary delimiter characters unlikely to be typed by keyboard
-  // This is to avoid accidentally splitting the actual contents
-  tmpColDelim = String.fromCharCode(11), // vertical tab character
-  tmpRowDelim = String.fromCharCode(0), // null character
-
-  // actual delimiter characters for CSV format
+  tmpColDelim = String.fromCharCode(11),
+  tmpRowDelim = String.fromCharCode(0),
   colDelim = '","',
   rowDelim = '"\r\n"',
-
-  // Grab text from table into CSV formatted string
   csv = '"' + $rows.map(function (i, row) {
     var $row = $(row), $cols = $row.find('th, td');
     return $cols.map(function (j, col) {
@@ -245,52 +218,42 @@ $(document).ready(function() {
     'target': '_blank'
   });
  }
- // This must be a hyperlink
- $("#csv").click(function (event) {
-   // CSV
-   exportTableToCSV.apply(this, [$('#catalogoTable'), 'catalogo.csv']);
-   // IF CSV, don't do event.preventDefault() or return false
-   // We actually need this to be a typical hyperlink
- }); 
+ $("#csv").click(function (event) {exportTableToCSV.apply(this, [$('#catalogoTable'), 'catalogo.csv']);}); 
 });
 
-
+function pager(){
+    var show_per_page = 40;   
+    var number_of_items = $('#catalogoTable tbody tr:visible').length; 
+    var number_of_pages = Math.ceil(number_of_items/show_per_page);  
+    $('#current_page').val(0);  
+    $('#show_per_page').val(show_per_page);  
+    var navigation_html = '<a class="previous_link" href="javascript:previous();">Prev</a>';
+    var current_link = 0;
+    while(number_of_pages > current_link){
+      navigation_html += '<a class="page_link" href="javascript:go_to_page(' + current_link +')" longdesc="' + current_link +'">'+ (current_link + 1) +'</a>';
+      current_link++;
+    }
+    navigation_html += '<a class="next_link" href="javascript:next();">Next</a>';
+    $('.page_navigation').html(navigation_html);
+    $('.page_navigation .page_link:first').addClass('active_page');
+    $("#catalogoTable tbody>tr").css('display', 'none');
+    $("#catalogoTable tbody>tr").slice(0, show_per_page).css('display', 'table-row');
+}
 function previous(){
-
 	new_page = parseInt($('#current_page').val()) - 1;
-	//if there is an item before the current active link run the function
-	if($('.active_page').prev('.page_link').length==true){
-		go_to_page(new_page);
-	}
-
+	if($('.active_page').prev('.page_link').length==true){go_to_page(new_page);}
 }
 
 function next(){
 	new_page = parseInt($('#current_page').val()) + 1;
-	//if there is an item after the current active link run the function
-	if($('.active_page').next('.page_link').length==true){
-		go_to_page(new_page);
-	}
-
+	if($('.active_page').next('.page_link').length==true){go_to_page(new_page);}
 }
 function go_to_page(page_num){
-	//get the number of items shown per page
 	var show_per_page = parseInt($('#show_per_page').val());
-
-	//get the element number where to start the slice from
 	start_from = page_num * show_per_page;
-
-	//get the element number where to end the slice
 	end_on = start_from + show_per_page;
-
-	//hide all children elements of content div, get specific items and show them
 	$("#catalogoTable tbody>tr").css('display', 'none').slice(start_from, end_on).css('display', 'table-row');
-
-	/*get the page link that has longdesc attribute of the current page and add active_page class to it
-	and remove that class from previously active page link*/
 	$('.page_link[longdesc=' + page_num +']').addClass('active_page').siblings('.active_page').removeClass('active_page');
-
-	//update the current page input field
 	$('#current_page').val(page_num);
 }
 </script>
