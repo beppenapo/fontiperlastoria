@@ -107,31 +107,31 @@ switch ($pag) {
 $qgeom1=("
   SELECT count(area_int_poly.id) as num_poly
   FROM area_int_poly,aree,aree_scheda 
-  WHERE area_int_poly.id_area = aree.id AND
-        aree_scheda.id_area = aree.id AND
+  WHERE area_int_poly.id_area = aree.nome_area AND
+        aree_scheda.id_area = aree.nome_area AND
         aree_scheda.id_scheda = $id;
   ");
 
 $qgeom2=("
   SELECT count(area_int_line.id) as num_line
   FROM area_int_line,aree,aree_scheda 
-  WHERE area_int_line.id_area = aree.id AND
-        aree_scheda.id_area = aree.id AND
+  WHERE area_int_line.id_area = aree.nome_area AND
+        aree_scheda.id_area = aree.nome_area AND
         aree_scheda.id_scheda = $id;
   ");
 
 $qgeom3=("
 select st_extent(area_int_poly.the_geom) as extent 
   FROM area_int_poly, aree,aree_scheda 
-  WHERE area_int_poly.id_area = aree.id AND
-        aree_scheda.id_area = aree.id AND
+  WHERE area_int_poly.id_area = aree.nome_area AND
+        aree_scheda.id_area = aree.nome_area AND
         aree_scheda.id_scheda = $id;
 ");
 $qgeom4=("
 select st_extent(area_int_line.the_geom) as extent2 
   FROM area_int_line, aree,aree_scheda 
-  WHERE area_int_line.id_area = aree.id AND
-        aree_scheda.id_area = aree.id AND
+  WHERE area_int_line.id_area = aree.nome_area AND
+        aree_scheda.id_area = aree.nome_area AND
         aree_scheda.id_scheda = $id;
 ");
 
