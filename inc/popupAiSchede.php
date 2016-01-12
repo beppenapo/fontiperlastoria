@@ -6,27 +6,16 @@ $tpsch = $_POST['tpsch'];
 $dir = ($_POST['hub']==2)?'../avs/scheda_archeo.php?id=':'../scheda_archeo.php?id=';
 
 $query = ("
-SELECT 
-  aree.id AS id_area, 
-  scheda.id AS id_scheda, 
-  scheda.dgn_numsch, 
-  cronologia.cro_spec, 
-  scheda.dgn_dnogg, 
-  lista_dgn_tpsch.css
-FROM 
-  public.aree, 
-  public.aree_scheda, 
-  public.scheda, 
-  public.cronologia, 
-  public.lista_dgn_tpsch
+SELECT aree.nome_area AS id_area, scheda.id AS id_scheda, scheda.dgn_numsch, cronologia.cro_spec, scheda.dgn_dnogg, lista_dgn_tpsch.css
+FROM aree, aree_scheda, scheda, cronologia, lista_dgn_tpsch
 WHERE 
-  aree_scheda.id_area = aree.id AND
+  aree_scheda.id_area = aree.nome_area AND
   aree_scheda.id_scheda = scheda.id AND
   scheda.dgn_tpsch = lista_dgn_tpsch.id AND
   cronologia.id_scheda = scheda.id AND
   aree.tipo = 1 AND 
   scheda.fine = 2 AND
-  aree.id = $idArea AND
+  aree.nome_area = $idArea AND
   ($tpsch)
 ORDER BY dgn_numsch ASC;
 

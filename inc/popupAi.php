@@ -28,19 +28,15 @@ SELECT
   area_int_poly.id, 
   comune.comune, 
   localita.localita,
-  aree.id as id_area,
+  aree.nome_area as id_area,
   st_area(area_int_poly.the_geom) as misura,
   st_xmin(area_int_poly.the_geom) as xmin, 
   st_xmax(area_int_poly.the_geom) as xmax, 
   st_ymin(area_int_poly.the_geom) as ymin, 
   st_ymax(area_int_poly.the_geom) as ymax
-FROM 
-  public.area_int_poly, 
-  public.aree, 
-  public.localita, 
-  public.comune
+FROM area_int_poly, aree, localita, comune 
 WHERE 
-  area_int_poly.id_area = aree.id AND
+  area_int_poly.id_area = aree.nome_area AND
   aree.id_localita = localita.id AND
   aree.id_comune = comune.id AND
   aree.tipo = 1 and
@@ -53,19 +49,15 @@ SELECT
   area_int_line.id, 
   comune.comune, 
   localita.localita,
-  aree.id as id_area,
+  aree.nome_area as id_area,
   st_length(area_int_line.the_geom) as misura,
   st_xmin(area_int_line.the_geom) as xmin, 
   st_xmax(area_int_line.the_geom) as xmax, 
   st_ymin(area_int_line.the_geom) as ymin, 
   st_ymax(area_int_line.the_geom) as ymax
-FROM 
-  public.area_int_line, 
-  public.aree, 
-  public.localita, 
-  public.comune
+FROM area_int_line, aree, localita, comune
 WHERE 
-  area_int_line.id_area = aree.id AND
+  area_int_line.id_area = aree.nome_area AND
   aree.id_localita = localita.id AND
   aree.id_comune = comune.id AND
   aree.tipo = 1 and
