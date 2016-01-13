@@ -1379,9 +1379,9 @@ stile='<?php echo($stile);?>';
 var cql = param.slice(0, -4);
 
 if ((numPoly > 0 && numLine >= 0)){
-	coo = '<?php echo($extent);?>';
-   bound = coo.split(',');
-   console.log(bound, '\n'+cql);
+    coo = '<?php echo($extent);?>';
+    bound = coo.split(',');
+    console.log(bound, '\n'+cql);
 }
 
 if ((numPoly == 0 && numLine > 0)){
@@ -1421,23 +1421,7 @@ osm = new OpenLayers.Layer.OSM(" MapQuest", arrayOSM, {
                 transitionEffect: "resize"
             });
 mappa.addLayer(osm);
-/*
-stile = new OpenLayers.StyleMap({
-                "default": new OpenLayers.Style({
-                    fillColor: "#ffcc66",
-                    fillOpacity: 0.5,
-                    strokeColor: "#ff9933",
-                    strokeWidth: 2,
-                    graphicZIndex: 1
-                }),
-                "select": new OpenLayers.Style({
-                    fillColor: "#66ccff",
-                    strokeColor: "#3399ff",
-                    graphicZIndex: 2
-                })
-            });
-*/
- var report = function(e) { OpenLayers.Console.log(e.type, e.feature.id); };
+var report = function(e) { OpenLayers.Console.log(e.type, e.feature.id); };
 
 if (numPoly != 0) {
  aree = new OpenLayers.Layer.WMS("Aree","http://www.lefontiperlastoria.it:80/geoserver/fonti/wms",{

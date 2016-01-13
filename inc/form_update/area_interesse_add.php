@@ -68,7 +68,7 @@ $(document).ready(function() {
             var area = $( "#aa option:selected" ).text();
             var motivTxt = $( "#mu option:selected" ).text();
             $("#aree").append('<div class="areeList" val="'+id_area+','+motiv+'"><div class="areeListRecord"><label>'+area+'</label></div><div class="areeListRecord"><label>'+motivTxt+'</label></div></div>');
-            $("#areeWrap, #areeListCanc").fadeIn('slow');
+            $("#area_add, #areeWrap, #areeListCanc").fadeIn('slow');
             areeFunc();
         }
     });
