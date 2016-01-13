@@ -1,19 +1,19 @@
 <div id="ubicazione_form">
- <input type="hidden" id="id_area_old" name="id_area_old" value="<?php echo($id_ubi); ?>"  class="form"/>
- <label>LOCALITA' / Indirizzo</label>
-         <select id="localitaubi_update" name="localitaubi_update" class="form">
-             <?php
-             $query =  ("
-             
-              SELECT aree.id, comune.comune, localita.localita, indirizzo.indirizzo, anagrafica.nome
-              FROM aree, localita, comune, indirizzo, anagrafica 
-              WHERE aree.id_localita = localita.id AND aree.id_comune = comune.id AND aree.id_indirizzo = indirizzo.id AND aree.id_rubrica = anagrafica.id and aree.tipo = 2 order by comune asc, localita asc;
+    <input type="hidden" id="id_area_old" name="id_area_old" value="<?php echo($id_as); ?>"  class="form"/>
+    <label>LOCALITA' / Indirizzo</label>
+    <select id="areaubi_update" name="areaubi_update" class="form">
+    <?php
+        $query =  ("SELECT aree.id, aree.nome_area as area, comune.comune, localita.localita, indirizzo.indirizzo, anagrafica.nome
+                    FROM aree, localita, comune, indirizzo, anagrafica 
+                    WHERE aree.id_localita = localita.id AND aree.id_comune = comune.id AND aree.id_indirizzo = indirizzo.id AND aree.id_rubrica = anagrafica.id and aree.tipo = 2 order by comune asc, localita asc;
              ");
-             $result = pg_query($connection, $query);
-             $righe = pg_num_rows($result);
-             $i=0;
+        $result = pg_query($connection, $query);
+        
+        $righe = pg_num_rows($result);
+        $i=0;
              for ($i = 0; $i < $righe; $i++){
                $idArea = pg_result($result, $i, "id");
+               $area = pg_result($result, $i, "area");
                $comune = pg_result($result, $i, "comune");
                $localita = pg_result($result, $i, "localita");
                $indirizzo = pg_result($result, $i, "indirizzo");
@@ -22,7 +22,7 @@
                if($localita == 'Non determinabile') {$localita = '';}else {$localita = stripslashes($localita);}
                if($indirizzo == 'Non determinabile') {$indirizzo = '';}else {$indirizzo = stripslashes($indirizzo );}
                if($nome == 'Non determinabile') {$nome = '';}else {$nome = stripslashes($nome);}
-               echo "<option ".($id_ubi == $idArea ? 'selected="selected"':'')."  value=\"$idArea\">$comune $localita $indirizzo $nome</option>";
+               echo "<option ".($id_ubi == $area ? 'selected="selected"':'')."  value=\"$area\">$comune $localita $indirizzo $nome</option>";
              }
             ?>
   </select>

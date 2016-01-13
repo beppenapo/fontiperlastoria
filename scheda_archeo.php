@@ -595,7 +595,7 @@ SELECT
  aree_scheda.id_scheda,
  stato.id as id_stato,
  provincia.id as id_prov,
- aree.id as area_id,
+ aree.nome_area as area_id,
  aree.id_localita,
  aree.id_comune,
  aree.id_indirizzo,
@@ -611,7 +611,7 @@ SELECT
  anagrafica.mail,
  anagrafica.web
 FROM aree_scheda
-LEFT JOIN aree ON aree.id = aree_scheda.id_area
+LEFT JOIN aree ON aree.nome_area = aree_scheda.id_area
 LEFT JOIN anagrafica ON aree.id_rubrica = anagrafica.id
 LEFT JOIN comune ON aree.id_comune = comune.id
 LEFT JOIN provincia ON comune.provincia = provincia.id
@@ -625,7 +625,7 @@ WHERE aree.tipo = 2 AND aree_scheda.id_scheda = $id;");
          $aubi = pg_fetch_array($rubi, 0, PGSQL_ASSOC);
          $rowubi = pg_num_rows($rubi);
          
-         $id_us= $aubi['id_as'];
+         $id_as= $aubi['id_as'];
          $id_stato_ubi= $aubi['id_stato'];
          $id_prov_ubi= $aubi['id_prov'];
          $id_loc_ubi= $aubi['id_localita'];
