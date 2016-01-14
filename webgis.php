@@ -1,5 +1,6 @@
 <?php
 session_start();
+require("inc/db.php");
 if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 if($_SESSION['hub']){
  $hub=$_SESSION['hub'];
@@ -9,6 +10,15 @@ if($_SESSION['hub']){
  }
 }
 $title = ($hub==2)?'Archivio iconografico dei Paesaggi di Comunità':'Le fonti per la storia. Per un archivio delle fonti sulle valli di Primiero e Vanoi';
+
+////  LISTA TOPONIMI PER FUNZIONE ZOOM ////////
+$topoQ="select gid, top_nomai, comu2, st_X(st_transform((geom),3857))||','||st_Y(st_transform((geom),3857)) as lonlat from toponomastica order by top_nomai;";
+$topoR=pg_query($connection,$topoQ);
+$opt="<option value='0'>--zoom su toponimo--</option>";
+while($topo = pg_fetch_array($topoR)){
+    $opt.="<option value='".$topo['lonlat']."'>".$topo['top_nomai']."</option>";
+}
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//IT"
@@ -25,10 +35,10 @@ $title = ($hub==2)?'Archivio iconografico dei Paesaggi di Comunità':'Le fonti p
   <title><?php echo $title; ?></title>
 
 <link href="css/mappa.css" type="text/css" rel="stylesheet" media="screen" />
-<link rel="stylesheet" href="css/google.css" type="text/css">
-<link rel="stylesheet" href="lib/OpenLayers-2.11/theme/default/style.css" type="text/css">
+<link href="css/google.css" rel="stylesheet" type="text/css">
+<link href="lib/OpenLayers-2.11/theme/default/style.css" rel="stylesheet" type="text/css">
 <link href="lib/jquery-ui-lampi/css/humanity/jquery-ui-1.8.18.custom.css" type="text/css" rel="stylesheet" media="screen" />
-<link type="text/css" rel="stylesheet" href="css/jquery.qtip.min.css" />
+<link href="css/jquery.qtip.min.css" type="text/css" rel="stylesheet"/>
 <?php if($hub!=2){?><link rel="shortcut icon" href="img/icone/favicon.ico" /><?php } ?>
 
 </head>
@@ -62,6 +72,12 @@ $title = ($hub==2)?'Archivio iconografico dei Paesaggi di Comunità':'Le fonti p
       <div id="btnNext"></div>
     </div>
   <div id="nord"></div>
+  
+  <div id="topoSearch">
+    <select>
+        <?php echo $opt; ?>
+    </select>
+  </div>
   
   <div id="text"> 
    <div id="switcher">

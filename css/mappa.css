@@ -13,176 +13,38 @@
 
 /***************** generici ***************************/
 a{text-decoration: none;}
-
-
 /****************  stili mappa full screen *****************/
-html, body, #map {
- margin: 0px;
- padding:0px;
- width: 100%;
- height: 100%;
-}
-div#logo{
- position:absolute;
- top:20px;
- left:10px;
- padding: 5px;
- width:150px;
- height:50px;
- background: url(../img/layout/logo.png) no-repeat center center;
- background-color: none;
- z-index: 20000;
--moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
- transition: background 0.5s linear;
- -moz-transition: background 0.5s linear; /* Firefox 4 */
- -webkit-transition: background 0.5s linear; /* Safari and Chrome */
- -o-transition: background 0.5s linear; /* Opera */
-}
+html, body, #map {margin: 0px;padding:0px;width: 100%; height: 100%;}
+div#logo{position:absolute; top:20px; left:10px; padding: 5px; width:150px; height:50px; background: url(../img/layout/logo.png) no-repeat center center;background-color: none; z-index: 20000;-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; transition: background 0.5s linear; -moz-transition: background 0.5s linear; -webkit-transition: background 0.5s linear;  -o-transition: background 0.5s linear; }
 div#logo:hover{ background-color: rgba(255,255,255,0.5);}
-
-div#logo2Wrap{
- position:absolute;
- top:20px;
- left: 175px;
- width:50px;
- height:50px;
- margin:0px auto !important;
- padding: 5px;
- background-color: none;
- z-index: 20000;
--moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
- transition: background 0.5s linear;
- -moz-transition: background 0.5s linear; /* Firefox 4 */
- -webkit-transition: background 0.5s linear; /* Safari and Chrome */
- -o-transition: background 0.5s linear; /* Opera */
-}
+div#logo2Wrap{ position:absolute; top:20px; left: 175px; width:50px; height:50px; margin:0px auto !important; padding: 5px; background-color: none; z-index: 20000;-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; transition: background 0.5s linear; -moz-transition: background 0.5s linear; -webkit-transition: background 0.5s linear; -o-transition: background 0.5s linear; }
 div#logo2Wrap:hover{background-color: rgba(255,255,255,0.5);}
-div#logo2{
- position:absolute;
- left:5.5px;
- width:50px;
- height:43px;
- margin:0px auto !important;
- cursor:pointer;
- font-size: 8px;
- color:#AAA !important;
- font-family: 'AdobeCaslonProRegular', Arial, sans-serif;
- /*padding:40px 0px 40px 12px !important;*/
- text-align:center;
- background-color:rgb(57,45,0);
- z-index: 20000;
--webkit-border-radius: 30em;
- -moz-border-radius: 30em;
- border-radius: 30em;
-
- /* transition: background 0.5s linear;
- -moz-transition: background 0.5s linear; 
- -webkit-transition: background 0.5s linear; 
- -o-transition: background 0.5s linear; */
-}
-
-/*div#logo2:hover{background-color:rgb(96,75,0);}*/
-div#logo2 p{/*padding:40px 0px 40px 12px !important;*/ margin:16px auto !important;}
-div#text, div#result {
- position: absolute;
- font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
- font-size: 80%;
- color: #222;
- height: auto;
-/* min-height: 680px;*/
- margin: 0px auto;
- overflow:hidden;
- z-index: 20000;
- background-color: rgba(255,255,255,0.8);
- /*-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;*/
-}
+div#logo2{ position:absolute; left:5.5px; width:50px; height:43px; margin:0px auto !important; cursor:pointer; font-size: 8px; color:#AAA !important; font-family: 'AdobeCaslonProRegular', Arial, sans-serif; text-align:center; background-color:rgb(57,45,0); z-index: 20000;-webkit-border-radius: 30em; -moz-border-radius: 30em; border-radius: 30em;}
+div#logo2 p{margin:16px auto !important;}
+div#text, div#result { position: absolute; font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif; font-size: 80%; color: #222; height: auto; margin: 0px auto; overflow:hidden; z-index: 20000; background-color: rgba(255,255,255,0.8);}
 div#text{top: 20px;right: 60px;width: 125px;padding: 0px 0.5em 0.5em 0.5em;}
 div#text h1{text-align:center;}
-div#text h1.switcher{text-align:left !important; /*text-decoration: underline;*/}
+div#text h1.switcher{text-align:left !important; }
 div#text h1{font-size:9px; color:#43321C; text-align:center;}
-
 div#text h2{font-size:8px; color:#43321C;}
-div#ricerca{
- margin:20px 1px 5px 1px;
- padding:0px;
- border-top:1px solid #67573F;
- overflow:hidden;
-}
+div#ricerca{ margin:20px 1px 5px 1px; padding:0px; border-top:1px solid #67573F; overflow:hidden;}
 div#ricercaToggle{cursor:default;}
 div.sezioni{border:1px solid #67573F;margin:-1px 2px; padding:0px 1px;}
 div.sezioni:hover{background-color:#CFC4B1; cursor:pointer;}
 div.sezioni h2{padding:1px 0px !important; margin:0px !important;}
-
-
+#topoSearch{ position: absolute; top: 20px; right: 220px; z-index: 1005; padding: 5px; background: rgba(255,255,255,0.5);}
+#topoSearch select{font-size: .55em; padding: 5px; background: #fff; border-radius: 6px;}
 div#switcher{font-size:7px;}
-
-div#nord{
-	position:absolute;
-	top:85%;
-	right:1px;
-	width:60px;
-	height:60px;
-	z-index:1005;
-	background: url(../img/icone/nord.png) no-repeat center center;
-}
-
+div#nord{ position:absolute; top:85%; right:1px; width:60px; height:60px; z-index:1005; background: url(../img/icone/nord.png) no-repeat center center; }
 img.infoImg{vertical-align: bottom; cursor: pointer;}
-input.checkLiv{
-	width: 10px; 
-	height: 10px;
-	padding: 0px;
-   margin:0px;
-   vertical-align: bottom;
-   position: relative;
-   top: 0px;
-   *overflow: hidden;
-}
-.olControlPanZoom {
- width: 45px;
- height: 143px;
- margin-top: 75%;
- margin-left:10px;
- background-color: rgba(255,255,255,0.4) !important;
- -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
- transition: background 0.5s linear;
- -moz-transition: background 0.5s linear; /* Firefox 4 */
- -webkit-transition: background 0.5s linear; /* Safari and Chrome */
- -o-transition: background 0.5s linear; /* Opera */
-}
+input.checkLiv{ width: 10px; height: 10px; padding: 0px; margin:0px; vertical-align: bottom; position: relative; top: 0px; *overflow: hidden;}
+.olControlPanZoom {width: 45px; height: 143px; margin-top: 75%; margin-left:10px; background-color: rgba(255,255,255,0.4) !important; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; transition: background 0.5s linear; -moz-transition: background 0.5s linear; -webkit-transition: background 0.5s linear; -o-transition: background 0.5s linear; }
 .olControlPanZoom:hover {background: rgba(255,255,255,0.5);}
-#coord, #scalebar{
- position: absolute;
- bottom: 1px;
- font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
- font-size: 70%;
- text-align:center;
- color: #67573F;
- margin: 0px auto;
- z-index: 20000;
- background-color: rgba(255,255,255,0.5);
- padding: 0px 0.5em 0.5em 0.5em;
--moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
-}
-#coord {
- left: 60%;
- width: 150px;
- height: auto;
- padding: 6px;
-}
-#scalebar{
- left: 40%;
- width: 180px;
- height: auto;
-}
-
+#coord, #scalebar{position: absolute; bottom: 1px; font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif; font-size: 70%; text-align:center; color: #67573F; margin: 0px auto; z-index: 20000; background-color: rgba(255,255,255,0.5); padding: 0px 0.5em 0.5em 0.5em;-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;}
+#coord { left: 60%; width: 150px; height: auto; padding: 6px;}
+#scalebar{ left: 40%; width: 180px; height: auto;}
 div.livelli{position: relative; display: block;width: 125px; }
-.legende{
-	float:right; 
-	width: 20px; 
-	height:5px; 
-	/*margin:7px 0px 0px 0px;*/
-	-moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;
-}
+.legende{ float:right;  width: 20px; height:5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;}
 .legendeAreeArcheo,   .legendeUbiArcheo{background-color: rgba(113,255,64,1);}
 .legendeAreeArchitet, .legendeUbiArchitet{background-color: rgba(255,0,0,1);}
 .legendeAreeArchiv,   .legendeUbiArchiv{background-color: rgba(255,0,255,1);}
@@ -191,121 +53,26 @@ div.livelli{position: relative; display: block;width: 125px; }
 .legendeAreeFoto,     .legendeUbiFoto{background-color: rgba(0,255,0,1);}
 .legendeAreeOrale,    .legendeUbiOrale{background-color: rgba(0,255,255,1);}
 .legendeAreeStoArt,   .legendeUbiStoArt{background-color: rgba(0,149,216,1);}
-
-#sliderWrap{
- position:absolute;
- top:20px;
- right:10px;
- height:237px;
- width:40px;  
- margin:0px auto !important;
- padding: 0px;
- background-color: rgba(255,255,255,0.8);
- /*-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;*/
- z-index: 20000;
-}
+#sliderWrap{ position:absolute; top:20px; right:10px; height:237px; width:40px;   margin:0px auto !important; padding: 0px; background-color: rgba(255,255,255,0.8); z-index: 20000;}
 #slider{float:right;height:185px;width:5px;margin:20px 5px 0px 0px;}
-
 .sliderLivelli{height:auto !important; display: block;margin-top:5px;}
 .sliderOpacity{width:100px !important; height:5px !important; margin:0px;}
 .amount{float:right; font-size: 8px; margin-top: -8px;}
 .ui-slider .ui-slider-handle{width:1em !important;height:1em !important; cursor:move !important;}
-
-#sliderLabel{
-  font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
-  font-size: 60%;
-  font-weight:bold;
-  color: #222;
-  padding:5px 0px 5px 4px;
-}
-.sliderTip{
-    position: absolute;
-    width: 20px;
-    height: 10px;
-    background: none;
-    color: #000;
-    font-size: 8px;
-    border-bottom:1px dotted #000;
-    z-index: 20000;
-    /*padding: 3px;*/
-    text-align: center;
-    margin-left:-25px;
-    margin-top:0px;
-}
-
+#sliderLabel{ font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;  font-size: 60%;  font-weight:bold;  color: #222;  padding:5px 0px 5px 4px;}
+.sliderTip{ position: absolute; width: 20px; height: 10px; background: none; color: #000; font-size: 8px; border-bottom:1px dotted #000; z-index: 20000; text-align: center; margin-left:-25px; margin-top:0px;}
 /**** Barra di scala ******/
-.olControlScaleBarBar {
-    height: 1px;
-    top: 14px;
-    background: #67573F;
-}
-
-.olControlScaleBarBarAlt {
-    height: 1px;
-    top: 14px;
-    background:#67573F;
-}
-
-.olControlScaleBarMarkerMajor {
-    height: 7px;
-    width: 1px;
-    top: 11px;
-    background: #67573F;
-}
-
-.olControlScaleBarMarkerMinor {
-    height: 5px;
-    width: 1px;
-    top: 12px;
-    background: #67573F;
-}
-
-.olControlScaleBarNumbersBox {
-    width: 40px;
-    height: 13px;
-    top: 21px;
-    font-size: 0.8em;
-}
-
-.olControlScaleBarLabelBox {
-    top: -2px;
-    height: 15px;
-    font-weight: bold;
-    letter-spacing: 0.1em;
-    font-size: 0.8em;
-    font-variant: small-caps;
-}
-
-.olControlScaleBarLabelBoxSingleLine {
-    height: 15px;
-    width: 35px;
-    top: 5px;
-    left: 10px;
-    font-size: 0.8em;
-    font-variant: small-caps;
-}
-
+.olControlScaleBarBar { height: 1px;top: 14px; background: #67573F;}
+.olControlScaleBarBarAlt { height: 1px; top: 14px; background:#67573F;}
+.olControlScaleBarMarkerMajor { height: 7px; width: 1px; top: 11px; background: #67573F;}
+.olControlScaleBarMarkerMinor { height: 5px; width: 1px; top: 12px; background: #67573F;}
+.olControlScaleBarNumbersBox { width: 40px; height: 13px; top: 21px; font-size: 0.8em;}
+.olControlScaleBarLabelBox { top: -2px; height: 15px; font-weight: bold; letter-spacing: 0.1em; font-size: 0.8em; font-variant: small-caps;}
+.olControlScaleBarLabelBoxSingleLine { height: 15px; width: 35px; top: 5px; left: 10px; font-size: 0.8em; font-variant: small-caps;}
 /*********  Google attribution   *****************/
 .olLayerGooglePoweredBy.olLayerGoogleV3.gmnoprint{display:none !important;}
-
 /********** sfondo pannello comandi ****************/
-div#pannello{
- position:absolute;
- top:70%;
- left:6px;
- padding: 5px;
- width:40px;
- height:180px;
- background-color: rgba(255,255,255,0.5);
- z-index: 1000;
-/*-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
- transition: background 0.5s linear;
- -moz-transition: background 0.5s linear; 
- -webkit-transition: background 0.5s linear;
- -o-transition: background 0.5s linear; */
-}
-
-/*div#pannello:hover{ background-color: rgba(255,255,255,0.5);}*/
+div#pannello{position:absolute; top:70%; left:6px; padding: 5px; width:40px; height:180px; background-color: rgba(255,255,255,0.5); z-index: 1000;}
 /*********  Comando zoom area *************/
 div#zoomArea{
 	position:absolute; 
