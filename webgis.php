@@ -12,11 +12,11 @@ if($_SESSION['hub']){
 $title = ($hub==2)?'Archivio iconografico dei Paesaggi di Comunità':'Le fonti per la storia. Per un archivio delle fonti sulle valli di Primiero e Vanoi';
 
 ////  LISTA TOPONIMI PER FUNZIONE ZOOM ////////
-$topoQ="select gid, top_nomai, comu2, st_X(st_transform((geom),3857))||','||st_Y(st_transform((geom),3857)) as lonlat from toponomastica order by top_nomai;";
+$topoQ="select toponomastica.gid, upper(top_nomai) toponimo, upper(comu2) comune, st_X(st_transform((geom),3857))||','||st_Y(st_transform((geom),3857)) as lonlat from toponomastica, comuni where st_contains(comuni.the_geom, st_transform(toponomastica.geom,3857)) order by 3,2;";
 $topoR=pg_query($connection,$topoQ);
 $opt="<option value='0'>--zoom su toponimo--</option>";
 while($topo = pg_fetch_array($topoR)){
-    $opt.="<option value='".$topo['lonlat']."'>".$topo['top_nomai']."</option>";
+    $opt.="<option value='".$topo['lonlat']."'>".$topo['comune']." - ".$topo['toponimo']."</option>";
 }
 
 ?>

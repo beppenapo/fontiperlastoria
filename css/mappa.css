@@ -32,7 +32,7 @@ div#ricercaToggle{cursor:default;}
 div.sezioni{border:1px solid #67573F;margin:-1px 2px; padding:0px 1px;}
 div.sezioni:hover{background-color:#CFC4B1; cursor:pointer;}
 div.sezioni h2{padding:1px 0px !important; margin:0px !important;}
-#topoSearch{ position: absolute; top: 20px; right: 220px; z-index: 1005; padding: 5px; background: rgba(255,255,255,0.5);}
+#topoSearch{ position: absolute; bottom:15px; left: 60px; z-index: 1005; padding: 5px; background: rgba(255,255,255,0.5);}
 #topoSearch select{font-size: .55em; padding: 5px; background: #fff; border-radius: 6px;}
 div#switcher{font-size:7px;}
 div#nord{ position:absolute; top:85%; right:1px; width:60px; height:60px; z-index:1005; background: url(../img/icone/nord.png) no-repeat center center; }
