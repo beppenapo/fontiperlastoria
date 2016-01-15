@@ -14,7 +14,7 @@ $title = ($hub==2)?'Archivio iconografico dei Paesaggi di Comunità':'Le fonti p
 ////  LISTA TOPONIMI PER FUNZIONE ZOOM ////////
 $topoQ="select toponomastica.gid, upper(top_nomai) toponimo, upper(comu2) comune, st_X(st_transform((geom),3857))||','||st_Y(st_transform((geom),3857)) as lonlat from toponomastica, comuni where st_contains(comuni.the_geom, st_transform(toponomastica.geom,3857)) order by 3,2;";
 $topoR=pg_query($connection,$topoQ);
-$opt="<option value='0'>--zoom su toponimo--</option>";
+$opt="<option value='0'>--zoom su località--</option>";
 while($topo = pg_fetch_array($topoR)){
     $opt.="<option value='".$topo['lonlat']."'>".$topo['comune']." - ".$topo['toponimo']."</option>";
 }
