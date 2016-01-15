@@ -738,7 +738,7 @@ $(document).ready(function() {
    if (!dgn_numsch) {errori += '<li>NUMERO SCHEDA</li>';$('#dgn_numsch').addClass('errore');}else{$('#dgn_numsch').removeClass('errore');}
    if (!dgn_livind) {errori += '<li>LIVELLO INDIVIDUAZIONE DATI</li>';$('#dgn_livind').addClass('errore');}else{$('#dgn_livind').removeClass('errore');}
    if (!dgn_dnogg) {errori += '<li>DEFINIZIONE OGGETTO</li>';$('#dgn_dnogg').addClass('errore');}else{$('#dgn_dnogg').removeClass('errore');}
-   if (ana_ubi!=672 && motivubi_update == 16) {errori+= '<li>MOTIVAZIONE UBICAZIONE</li>';$('#motivubi_update').addClass('errore');}else {$('#motivubi_update').removeClass('errore');}
+   if (ana_ubi!=261 && motivubi_update == 16) {errori+= '<li>MOTIVAZIONE UBICAZIONE</li>';$('#motivubi_update').addClass('errore');}else {$('#motivubi_update').removeClass('errore');}
    if(errori){
    	//alert('I sguenti campi sono obbligatori e vanno compilati: \n' + errori); return false;
    	errori = '<h3>I seguenti campi sono obbligatori e vanno compilati:</h3><ol>' + errori;
