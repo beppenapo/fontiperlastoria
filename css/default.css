@@ -3,6 +3,7 @@
 @import url(http://fonts.googleapis.com/css?family=Oxygen);
 @import url(http://fonts.googleapis.com/css?family=Playfair+Display:400,700,400italic,700italic);
 @import url(http://fonts.googleapis.com/css?family=Gilda+Display);
+
 html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, textarea, input, select {margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline;}
 table {border-collapse: collapse; border-spacing: 0;}
 caption, th, td {text-align: left; font-weight: normal;}
@@ -98,15 +99,15 @@ div#linkContent img {margin:5px 30px;vertical-align:middle !important;}
 div#materialiContent h1, div#materialiContent a{color:rgb(95,243,211);}
 div#accordion div{margin-top:-11px !important; padding:0px 10px;}
 /************* UTENTE *******************/
-div#utente{width: 100%;background-color: rgba(255,255,255,1);color:#968676;padding:0px 10px;}
-a.sessionLink{color:#968676;text-decoration: none; padding:0px 5px;display: block;width:80px;}
-a.sessionLink:hover{background-color: #968676;color:rgb(255,255,255)}
-#sessionMenu li{float:left;display: block;font-size:0.9em; position:relative;width:80px; padding:0px 1px;margin:0px 8px;text-align: center;}
-#sessionMenu li ul{position:absolute; z-index: 10000;left:-7px}
-.submenu li{	position:relative;	display: inline-block;	padding:3px 5px !important;	width:80px;	background-color: rgba(150,134,118,0.9);	border-bottom: 1px dashed ghostwhite;	}
-.submenu li:hover{background-color: rgba(248,248,246,1);}
-.submenu li a{text-decoration: none;color:ghostwhite;display: block;width:80px;}
-.submenu li a:hover{color:rgb(150,134,118);}
+div#utente{width: 100%;background-color: #fff;color:#968676;padding:0px 10px;}
+a.sessionLink{color:#968676;text-decoration: none; padding:5px 0px;display: block;width:110px;}
+a.sessionLink:hover{background-color: #968676;color:#fff;}
+#sessionMenu li{display: inline-block;font-size:1em; position:relative;text-align: center;}
+#sessionMenu li ul{position:absolute; z-index: 10000;}
+.submenu li{background-color: #968676;border-bottom: 1px dashed #fff;}
+.submenu li:hover{background-color: #fff;}
+.submenu li a{text-decoration: none;color:#fff;display: block;width:110px;padding:5px 0px;}
+.submenu li a:hover{color:#968676;}
 h2.titoletto{   width: 500px;  font-size: 1.4em;  font-weight: bold; color: #FF8952; margin: 20px 0px 10px; border-bottom:1px solid #ff8952;}
 /************ LOGIN ********************/
 div#loginWrap{width:400px; height:auto; padding:30px; border:1px solid #bdbdbd; background-color: rgba(255,255,255,0.9); position: relative; margin:15% auto 0px; box-shadow: 0 6px 10px -2px #3f4143;border-radius:5px;}

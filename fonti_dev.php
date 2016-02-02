@@ -20,13 +20,13 @@ if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
         <style>
             .main:last-child{margin-bottom:50px;}
             .sub, .main h3{margin:0px 10px;border:1px solid rgb(91,255,36); border-bottom:none;}
-            .main:last-child .sub, .main:last-child h3{border:1px solid rgb(91,255,36) !important; }
-            .main h3{color:rgb(91,255,36); padding:5px 10px; font-size:1.3em;cursor:pointer;}
-            .main h3:hover, .act{color:#fff !important; background-color:rgb(91,255,36);}
             .main h3 i{color:#F48204;}
+            .main:last-child .sub, .main:last-child h3{border:1px solid rgb(91,255,36) !important; }
+            .main h3{color:rgb(91,255,36); padding:0px 10px; font-size:1.5em;cursor:pointer;}
+            .main h3:hover, .act{color:#fff !important; background-color:rgb(91,255,36);}
+            .pHover{font-size:14px !important;font-weight:bold !important;margin:0px !important;padding:5px!important;color:#fff !important;background-color:rgb(91,255,36);}
             .sub{display:none;background:#f4f0ec;}
             .sub img{display:block; margin:0px auto; padding:30px 0px;}
-            .pHover{font-size:14px !important;font-weight:bold !important;margin:0px !important;padding:5px!important;color:#fff !important;background-color:rgb(91,255,36);}
         </style>
     </head>
     <body>
@@ -43,7 +43,7 @@ if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
                     </div>
                     <div class="main">
                         <h3 class="act"><i class="fa fa-minus-circle"></i> FONTI ARCHIVISTICHE</h3>
-                        <div class="sub">
+                        <div class="sub open">
                             <h4>Premessa</h4>
                             <p>La sezione "fonti archivistiche" prevede la schedatura degli archivi, pubblici e privati, che conservano materiale relativo alla storia e al territorio di Primiero. Per archivio s'intende la raccolta ordinata degli atti di un ente o di un individuo costituitasi durante lo svolgimento delle attività politiche, culturali, sociali, economiche, amministrative di quell'ente o individuo, ma anche la raccolta "disordinata" di fotografie, materiale audiovisivo, scritture autobiografiche, lettere ecc. che si conservano negli archivi privati di famiglia, la cui individuazione e schedatura acquista un'importanza fondamentale per la loro stessa natura sfuggente, ma spesso storicamente significativa.</p>
                             <p>Nell'individuazione delle fonti si deve tener conto della situazione di confine che ha caratterizzato la storia di Primiero influendo anche sulla "geografia delle fonti". Essa comprende due grandi aree: quella veneta e quella tirolese-austriaca le quali, a seconda dei diversi periodi storici e dei campi di indagine, possono fornire materiale documentario e fonti scritte, dirette o preterintenzionali, sulla storia della valle. Gli archivi d'interesse saranno quindi non solo quelli conservati in valle, ma anche quelli di Feltre, Trento, Bolzano, Innsbruck, Vienna, per citare solo i centri principali.</p> 
@@ -158,12 +158,23 @@ L'eventuale terzo livello di schedatura sarà rivolto alle singole fonti archeol
     </div><!--container-->
     <script type="text/javascript" src="lib/jquery-core/jquery-1.12.0.min.js"></script>
     <script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
-    <script type="text/javascript" src="lib/menu.js"></script>
     <script type="text/javascript" src="lib/funzioni.js"></script>
+    <script type="text/javascript" src="lib/menu.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('.sub').first().show();
-            $(".main h3").on("click",function(){toggleSezioni($(this));});
+            $(".main h3").on("click",function(){
+                if(!$(this).next('div').hasClass('open')){
+                    $(".main h3").removeClass('act');
+                    if($(".main h3 i").hasClass('fa-minus-circle')){
+                        $(".main h3 i").removeClass('fa-minus-circle').addClass('fa-plus-circle');
+                        $(this).children('i').removeClass('fa-plus-circle').addClass('fa-minus-circle');
+                    }
+                    $(this).addClass('act');
+                    $('.sub').slideUp(500).removeClass('open');
+                    $(this).next('div').slideDown(500).addClass('open');
+                }
+            });
         });
     </script>
     </body>

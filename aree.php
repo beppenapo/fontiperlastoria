@@ -1,7 +1,7 @@
 <?php
 session_start();
-if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 ini_set( "display_errors", 0);
+if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 require("inc/db.php");
 $usr = $_SESSION['id_user'];
 if(!isset($_POST['c']) || $_POST['c']==0) {
@@ -22,7 +22,7 @@ if(!isset($_POST['t']) || $_POST['t']==0) {
 $query = ("
     select ac.id 
             , ac.nome area
-            , a.tipo
+            , ac.tipo
             , array_to_string(array_agg(c.comune || ' (' || l.localita || ')' ), '<br/>') as lista
             , count(area_int_poly.id)::integer as geom
             , count(ubicazione.id)::integer as ubi
@@ -31,9 +31,9 @@ $query = ("
     inner join comune c on a.id_comune = c.id
     inner join localita l on a.id_localita = l.id
     left join area_int_poly on area_int_poly.id_area = ac.id
-    left join ubicazione on ac.id = ubicazione.area and a.tipo = 2
+    left join ubicazione on ac.id = ubicazione.area and ac.tipo = 2
     where a.nome_area is not null and a.id_comune$and and ac.tipo$and2
-    group by ac.id,ac.nome, a.tipo
+    group by ac.id,ac.nome, ac.tipo
     order by area asc;
 ");      
 $e = pg_query($connection, $query);
@@ -56,8 +56,6 @@ $e = pg_query($connection, $query);
   <link href="css/scheda.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/ico-font/css/font-awesome.min.css" type="text/css" rel="stylesheet" media="screen" />
   <link rel="shortcut icon" href="img/icone/favicon.ico" />
-  <script type="text/javascript" src="lib/jquery-core/jquery-1.4.4.min.js"></script>
-  <script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
   <style type="text/css">
     div#content{border: 1px solid #C1FEAE;margin-top:50px;}
     table.mainData{width:100% !important;}
@@ -146,12 +144,12 @@ $e = pg_query($connection, $query);
                                             case 2: $tipo = 'Ubicazione'; break;
                                             case 3: $tipo = 'Cartografia'; break;
                                         }
-                                        echo "<tr class='link' id='".$r['id']."' area='".$r['area']."' title='clicca per modificare o eliminare il record'>";
-                                            echo "<td>".$r['id']."</td>";
-                                            echo "<td>".$tipo."</td>";
-                                            echo "<td>".$r['area']."</td>";
-                                            echo "<td>".$r['lista']."</td>";
-                                            if($usr == 1 || $usr == 2 || $usr == 6) {echo '<td class="modLista geom">'.$azione.'</td>';}
+                                        echo "<tr id='".$r['id']."' area='".$r['area']."' title='clicca per modificare o eliminare il record'>";
+                                            echo "<td class='link' >".$r['id']."</td>";
+                                            echo "<td class='link' >".$tipo."</td>";
+                                            echo "<td class='link' >".$r['area']."</td>";
+                                            echo "<td class='link' >".$r['lista']."</td>";
+                                            if($usr == 1 || $usr == 2 || $usr == 6) {echo '<td class="modLista"><a href="aree_geom.php?a='.$r['id'].'">'.$azione.'</a></td>';}
                                         echo "</tr>";
                                     } ?>
                                 </tbody>
@@ -160,11 +158,14 @@ $e = pg_query($connection, $query);
                     </div>
                 </div>
             </div><!--content-->
-            <div id="footer"><?php require_once ("inc/footer.inc"); ?></div><!--footer-->
+            <div id="footer"><?php require_once ("inc/footer.php"); ?></div><!--footer-->
         </div><!-- wrap-->
     </div><!--container-->
  <!--div invisibili -->
     <div id="dialog">  </div>
+    <script type="text/javascript" src="lib/jquery-core/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
+    <script type="text/javascript" src="lib/funzioni.js"></script>
     <script type="text/javascript" >
         var locLength,legenda;
         var c = <?php echo $jc; ?>;
@@ -248,17 +249,15 @@ $e = pg_query($connection, $query);
                     success: function(data){ $("#test").html(data); }
                 });//ajax
             });
-            $('td.geom').click(function(){ 
-                var id = $(this).parent('tr').attr('id');
-                window.location.href = 'aree_geom_carto.php?a='+id;  
-            });
+
+            $('td.geom').click(function(){ var id = $(this).parent('tr').attr('id'); window.location.href = 'aree_geom.php?a='+id; });
 
             var righe = $('#catalogoTable tbody tr:visible').length;
             $('#legenda').html(legenda+'<b>'+righe+'</b> record');
-            $('.link').each(function(){
-                $(this).click(function(){
-                    var area = $(this).attr('area');
-                    var id = $(this).attr('id');
+            //$('.link').each(function(){
+                $('.link').click(function(){
+                    var area = $(this).parent('tr').attr('area');
+                    var id = $(this).parent('tr').attr('id');
                     $.ajax({
                         url: 'inc/form_update/areaCarto_update.php',
                         type: 'POST', 
@@ -269,17 +268,8 @@ $e = pg_query($connection, $query);
                         }
                     });
                 });
-            });
+            //});
         });
-
-        function addArea(){
-            checkLocChecked = $("input[name=localitaCartoCheck]:checked");
-            locLength = checkLocChecked.length;
-            if (locLength==0){$("#addArea").hide();}else{$("#addArea").show();}
-        }
-        function checkLocLi(){
-            if($("#locTot li").length > 0 ){$("button[name=salvaAree]").show();}else{$("button[name=salvaAree]").hide();};
-        }
     </script>
 </body>
 </html>

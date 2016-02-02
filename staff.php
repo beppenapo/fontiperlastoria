@@ -14,8 +14,6 @@ if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
   <meta name="copyright" content="&copy;2011 Museo Provinciale" />
  
   <title>Le fonti per la storia. Per un archivio delle fonti sulle valli di Primiero e Vanoi</title>
-  <script type="text/javascript" src="lib/jquery-core/jquery-1.4.4.min.js"></script>
-  <script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
 
   <link href="css/default.css" type="text/css" rel="stylesheet" media="screen" />
   <link rel="shortcut icon" href="img/icone/favicon.ico" />
@@ -23,11 +21,15 @@ if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 <body>
  <div id="container">
   <div id="wrap">
+  <?php if ($_SESSION['username']!='guest'){require("inc/sessione.php");}?>
   <div id="header"><?php require_once ("inc/header.php"); ?></div><!--header-->
   <div id="content"><?php require_once ("inc/staffContent.php"); ?></div><!--content-->
-  <div id="footer"><?php require_once ("inc/footer.inc"); ?></div><!--footer-->
+  <div id="footer"><?php require_once ("inc/footer.php"); ?></div><!--footer-->
  </div><!-- wrap-->
  </div><!--container-->
+<script type="text/javascript" src="lib/jquery-core/jquery-1.12.0.min.js"></script>
 <script type="text/javascript" src="lib/menu.js"></script>
+<script type="text/javascript" src="lib/funzioni.js"></script>
+
 </body>
 </html>

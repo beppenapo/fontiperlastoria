@@ -57,42 +57,4 @@
     <div style="clear:both"></div>
 </div>
 <?php } ?>
- <script type="text/javascript" >
-    $(document).ready(function() {
-        var idUsr = '<?php echo($idUsr); ?>';
-        var tipoUsr = '<?php echo($tipoUsr); ?>';
-        var hub = '<?php echo($hub); ?>';
-        $('.submenu').hide();
-        $('#nuova_scheda')
-            .click(function() {$(this).next().slideToggle();})
-            .toggle(function() {$('#schedaToggle').text('-');}, function() {$('#schedaToggle').text('+');});
-        $('#account').click(function() { $(this).next().slideToggle();})
- .toggle(
-   function() {$('#accountToggle').text('-');}, 
-   function() {$('#accountToggle').text('+');
- });
-   
- $('#liste').click(function() { 
-   $(this).next().slideToggle();
- })
- .toggle(
-   function() {$('#listeToggle').text('-');}, 
-   function() {$('#listaToggle').text('+');
- });
-   
- $('#catalogo').click(function() { 
-   $(this).next().slideToggle();
- })
- .toggle(
-   function() {$('#catalogoToggle').text('-');}, 
-   function() {$('#catalogoToggle').text('+');
- });
- 
- if(hub==2){
-  $("#nuovaScheda li").each(function(){
-   var remove = $( this ).attr("class");
-   $( "#nuovaScheda > li:not([class='link7']):not([class='link10'])" ).remove();
-  });
- }
-});
-</script>
+

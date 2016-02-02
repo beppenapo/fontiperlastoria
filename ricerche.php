@@ -54,13 +54,12 @@ ORDER BY dgn_numsch ASC;");
   <meta name="copyright" content="&copy;2011 Museo Provinciale" />
 
   <title>Le fonti per la storia. Per un archivio delle fonti sulle valli di Primiero e Vanoi</title>
-  <link href="lib/jquery_friuli/css/start/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet" media="screen" />
+  <link href="lib/jquery-ui-1.11.4/jquery-ui.min.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/default.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/scheda.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/ricerche.css" type="text/css" rel="stylesheet" media="screen" />
   <link rel="shortcut icon" href="img/icone/favicon.ico" />
-  <script type="text/javascript" src="lib/jquery-core/jquery-1.4.4.min.js"></script>
-  <script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
+
   <style type="text/css">
    #catalogoTable{width:100% !important;table-layout: fixed;} 
  </style>
@@ -243,13 +242,13 @@ ORDER BY dgn_numsch ASC;");
      </div>
     </div>
    </div><!--content-->
-   <div id="footer"><?php require_once ("inc/footer.inc"); ?></div><!--footer-->
+   <div id="footer"><?php require_once ("inc/footer.php"); ?></div><!--footer-->
   </div><!-- wrap-->
  </div><!--container-->
  
  <!--div invisibili -->
 <div class="loader"></div>
-<script type="text/javascript" src="lib/menu.js"></script>
+<?php require("inc/metaScript.php"); ?>
 <script type="text/javascript" >
 $(document).ready(function() {
  var legenda, legendaTipo, legendaLiv, tipo, liv,ci,cf,filtro,tutto,hub,andhub;
@@ -382,8 +381,8 @@ $(function() {
     val2 = '<span class="sliderTip2">'+ sliderObj.slider("values", 1) +'</span>';
     ci=sliderObj.slider("values", 0);
     cf=sliderObj.slider("values", 1);
-    sliderObj.children('.ui-slider-handle').first().html(val1);
-    sliderObj.children('.ui-slider-handle').last().html(val2);
+    sliderObj.children('.ui-slider-handle').first().html(val1).removeClass('ui-state-default').addClass('ui-state-default1');
+    sliderObj.children('.ui-slider-handle').last().html(val2).removeClass('ui-state-default').addClass('ui-state-default2');
     $('#ci').val(ci);  
     $('#cf').val(cf);                
   };
@@ -395,11 +394,6 @@ $(function() {
    slide: function( e, ui ){tooltip($(this),ui);},              
    create:function(e,ui){tooltip($(this),ui);}
   });
-});
-
-$('.ui-slider-handle').each(function(){
-  $('.ui-slider-handle').first().removeClass('ui-state-default').addClass('ui-state-default1');
-  $('.ui-slider-handle').last().removeClass('ui-state-default').addClass('ui-state-default2');     
 });
 $("#attivaFiltro").click(function(event){
    event.preventDefault();

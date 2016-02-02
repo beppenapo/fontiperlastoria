@@ -1,30 +1,39 @@
 <?php
 session_start();
-if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 ini_set( "display_errors", 0);
 require_once("inc/db.php");
-$id=$_GET['id'];
-$q0=("SELECT aree.id,comune.comune,localita.localita
-      FROM aree, comune, localita
-      WHERE aree.id_localita = localita.id AND aree.id_comune = comune.id AND aree.id = $id;");
-$r0=pg_query($connection, $q0);
-$a0=pg_fetch_array($r0, 0, PGSQL_ASSOC);
-$com=strtoupper(stripslashes($a0['comune']));
-$loc=strtoupper(stripslashes($a0['localita']));
+if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
+$id=$_GET['a'];
 
+$a=("select nome from area where id = $id");
+$ar = pg_query($connection, $a);
+$arr = pg_fetch_array($ar, 0, PGSQL_ASSOC);
+$area = $arr['nome'];
 /**********************************************************************************/
-
 $qgeom1=("select count(id) as num_poly from area_int_poly where id_area = $id");
 $qgeom1Res = pg_query($connection, $qgeom1);
-
-$qgeom2=("select count(id) as num_line from area_int_line where id_area = $id");
-$qgeom2Res = pg_query($connection, $qgeom2);
-
 $g1 = pg_fetch_array($qgeom1Res, 0, PGSQL_ASSOC);
-$g2 = pg_fetch_array($qgeom2Res, 0, PGSQL_ASSOC);
-
 $numPoly = $g1['num_poly'];
-$numLine = $g2['num_line'];
+
+$topo = " select ac.id, ac.nome area, array_to_string(array_agg(c.comune || ' (' || l.localita || ')' ), '<br/>') as lista from aree_carto ac inner join aree a on a.nome_area = ac.id inner join comune c on a.id_comune = c.id inner join localita l on a.id_localita = l.id where a.nome_area = $id group by ac.id,ac.nome, a.tipo order by area asc;";
+$topoExec = pg_query($connection, $topo);
+
+$extCom =  ("
+select max(xmax) as maxx, min(xmin) as minx, max(ymax) as maxy, min(ymin) as miny from(
+ select  st_xmin(geom) as xmin, st_xmax(geom) as xmax, st_ymin(geom) as ymin, st_ymax(geom) as ymax from(
+  select ST_Multi(ST_Union(comune.geom)) as geom 
+  from comune, aree
+  where aree.id_comune = comune.id and nome_area = $id
+ )as geom 
+) as ext;
+");
+$extComRes = pg_query($connection, $extCom);
+$extComArr = pg_fetch_array($extComRes, 0, PGSQL_ASSOC);
+$extComRow = pg_num_rows($extComRes);
+$xmin = $extComArr['minx'];
+$xmax = $extComArr['maxx'];
+$ymin = $extComArr['miny'];
+$ymax = $extComArr['maxy'];
 ?> 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//IT" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -49,7 +58,19 @@ $numLine = $g2['num_line'];
   <script type="text/javascript" src="lib/jquery-ui-lampi/js/jquery-ui-1.8.18.custom.min.js"></script>
   <script type="text/javascript" src="lib/OpenLayers-2.12/OpenLayers.js"></script>
   <script type="text/javascript" src="lib/OpenLayers-2.10/ScaleBar.js"></script>
-  
+  <style>
+    #topoLista{
+    position: absolute;
+    top: 25px;
+    left: -25px;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 10px #000;
+    display:none;
+}
+  </style>
 </head>
 <body onload="init()">
  <div id="container">
@@ -70,77 +91,27 @@ $numLine = $g2['num_line'];
     <div id="logoSchedaSx"><img src="img/layout/logo.png" alt="logo" /></div> 
     <div id="livelloScheda">
      <ul>
-      <li id="catalogoTitle" class="livAttivo">COMUNE DI <?php echo($com);?><br/><b><?php echo($loc);?></b></li>
+      <li id="catalogoTitle" class="livAttivo"><b><?php echo strtoupper($area);?></b></li>
      </ul>
     </div>
  
     <div id="skArcheoContent">
      <div class="inner primo">
-      
-      <div id="filtro">
-        <select id="filtroAree" class="form filtro" style="display:inline">
-         <option value=''>Scegli area</option>
-         <?php
-            $locquery = ("SELECT aree.id, aree.id_localita, aree.id_comune, comune.comune, localita.localita 
-                          FROM aree, comune, localita 
-                          WHERE aree.id_localita = localita.id AND 
-                                aree.id_comune = comune.id AND
-                                aree.tipo = 1 AND 
-                                aree.id != $id AND
-                                aree.id_localita != 6 AND 
-                                aree.id_localita != 175 
-                          order by comune asc, localita asc;");
-            $locexec = pg_query($connection, $locquery);
-            $locrow = pg_num_rows($locexec);
-            if($locrow != 0) {
-               for ($l = 0; $l < $locrow; $l++){
-                  $idArea = pg_result($locexec, $l,"id"); 	
-                  $localita = pg_result($locexec, $l,"localita");
-                  $localita = stripslashes($localita);
-                  $comune = pg_result($locexec, $l,"comune");
-                  $comune = stripslashes($comune);
-                  $comune=($comune == '-' OR $comune=='--')?'AREA SOVRACOMUNALE':$comune;
-                  $localita=($localita == '-')?'Area Comunale':$localita;
-                  echo "<option value='$idArea' data-loc='$localita' data-com='$comune'>$comune - $localita</option>"; 
+        <div id="filtro">
+            <label id="openListaTopo">Definizione topografica</label>
+            <div id="topoLista">
+            <?php
+                while($l = pg_fetch_array($topoExec)){
+                    echo $l['lista'];
                 }
-             }
-         ?>
-        </select>
-        <select id="filtroUbi" class="form filtro"  style="display:inline">
-         <option value=''>Scegli ubicazione</option>
-         <?php
-             $ubiquery = ("SELECT aree.id, aree.id_localita, aree.id_comune, comune.comune, localita.localita,indirizzo.indirizzo
-                          FROM aree, comune, localita, indirizzo
-                          WHERE aree.id_localita = localita.id AND 
-                                aree.id_comune = comune.id AND
-                                aree.id_indirizzo = indirizzo.id AND
-                                aree.tipo = 2 AND 
-                                aree.id != $id AND
-                                aree.id_localita != 6 AND 
-                                aree.id_localita != 175 
-                          order by comune asc, localita asc;");
-            $ubiexec = pg_query($connection, $ubiquery);
-            $ubirow = pg_num_rows($ubiexec);
-            if($ubirow != 0) {
-               for ($l = 0; $l < $ubirow; $l++){
-                  $idAreaUbi = pg_result($ubiexec, $l,"id"); 	
-                  $localita = pg_result($ubiexec, $l,"localita");
-                  $localita = stripslashes($localita);
-                  $comune = pg_result($ubiexec, $l,"comune");
-                  $comune = stripslashes($comune);
-                  $indirizzo = pg_result($ubiexec, $l,"indirizzo");
-                  $comune=($comune == '-' OR $comune=='--')?'AREA SOVRACOMUNALE':$comune;
-                  $localita=($localita == '-')?'Area Comunale':$localita;
-                  echo "<option value='$idAreaUbi' data-loc='$localita' data-com='$comune' data-ind='$indirizzo'>$comune - $indirizzo</option>"; 
-                }
-             }
-         ?>
-        </select>
-      </div>
-      <div id="panel" class="customEditingToolbar"></div>
-      <div id="nodelist"></div>     
-      <div id="mappa2"></div>   
-      <div id="coordinates">sistema visualizzato: WGS84 - EPSG:4326 -<span id="coo"></span></div>
+            ?>
+            </div>
+        </div>
+        
+        <div id="panel" class="customEditingToolbar"></div>
+        <div id="nodelist"></div>     
+        <div id="mappa2"></div>   
+        <div id="coordinates">sistema visualizzato: WGS84 - EPSG:4326 -<span id="coo"></span></div>
      </div>
     </div>
      <?php } ?>
@@ -154,36 +125,21 @@ $numLine = $g2['num_line'];
 
 <script type="text/javascript" >
 $(document).ready(function(){
- $('#filtroAree').change(function(){
-       var idNewArea = $(this).val();
-       var selected = $(this).find('option:selected');
-       var newLoc = selected.data('loc');
-       var newCom = selected.data('com');
-       var href = 'aree_geom.php?id='+idNewArea+'&c='+newCom+'&loc='+newLoc;
-       if (idNewArea) {window.location.href=href;}
- });
- 
- $('#filtroUbi').change(function(){
-       var idNewUbi = $(this).val();
-       var selected = $(this).find('option:selected');
-       var newUbiLoc = selected.data('loc');
-       var newUbiCom = selected.data('com');
-       var newUbiInd = selected.data('ind');
-       var href = 'point_geom.php?id='+idNewUbi+'&c='+newUbiCom+'&loc='+newUbiLoc+'&ind='+newUbiInd;
-       if (idNewUbi) {window.location.href=href;}
- });
+    $("#openListaTopo").mouseover(function(){$("#topoLista").fadeIn('fast');}).mouseout(function(){$("#topoLista").fadeOut('fast');});
 });
-</script>
 
+/******* OPEN LAYERS ********/
+var map, arrayOSM, osm, sat, poly, reg, numPoly, id_area, navigate, drawpoly, drawbox, drawline, edit, save, del, ruota, resize, panel, akt, ctrlPolyOptions, ctrlSelectFeatureOptions, ctrlSelectFeature,DeleteFeature,bingKey,numFeat,mainExtent,mainResolution, unit, epsg3857, epsg4326, mapOption, saveStrategy, mapextent,divPannello;
 
-<script type="text/javascript" >
-var map, line, poly, reg, numPoly, numLine, id_area;
-var navigate, drawpoly, drawbox, drawline, edit, save, del, ruota, resize, panel, akt;
-var ctrlPolyOptions, ctrlSelectFeatureOptions, ctrlSelectFeature;
+var xmin, ymin, xmax, ymax, extent, lat, lon;
+xmin = '<?php echo($xmin);?>';
+ymin = '<?php echo($ymin);?>';
+xmax = '<?php echo($xmax);?>';
+ymax = '<?php echo($ymax);?>';
+
 numPoly = '<?php echo($numPoly); ?>';
-numLine = '<?php echo($numLine); ?>';
-OpenLayers.ProxyHost = "/cgi-bin/proxy.cgi?url=";
-var DeleteFeature = OpenLayers.Class(OpenLayers.Control, {
+
+DeleteFeature = OpenLayers.Class(OpenLayers.Control, {
    initialize: function(layer, options) {
      OpenLayers.Control.prototype.initialize.apply(this, [options]);
      this.layer = layer;
@@ -209,185 +165,96 @@ var DeleteFeature = OpenLayers.Class(OpenLayers.Control, {
     },
     CLASS_NAME: "OpenLayers.Control.DeleteFeature"
 });
+bingKey = 'Arsp1cEoX9gu-KKFYZWbJgdPEa8JkRIUkxcPr8HBVSReztJ6b0MOz3FEgmNRd4nM';
+mainExtent = new OpenLayers.Bounds (-20037508.34,-20037508.34,20037508.34,20037508.34);
+mainResolution = [156543.03390625, 78271.516953125, 39135.7584765625, 19567.87923828125, 9783.939619140625, 4891.9698095703125, 2445.9849047851562, 1222.9924523925781, 611.4962261962891, 305.74811309814453, 152.87405654907226, 76.43702827453613, 38.218514137268066, 19.109257068634033, 9.554628534317017, 4.777314267158508, 2.388657133579254, 1.194328566789627, 0.5971642833948135, 0.29858214169740677, 0.14929107084870338, 0.07464553542435169, 0.037322767712175846, 0.018661383856087923, 0.009330691928043961, 0.004665345964021981, 0.0023326729820109904, 0.0011663364910054952, 5.831682455027476E-4, 2.915841227513738E-4, 1.457920613756869E-4];
+unit =  'm';
+epsg3857 = new OpenLayers.Projection("EPSG:3857");
+epsg4326 = new OpenLayers.Projection("EPSG:4326");
+mapOption = {maxExtent: mainExtent, resolutions: mainResolution, units:unit, projection: epsg3857, displayProjection: epsg4326, controls:[]};
 
-function showMsg(szMessage) {
-   document.getElementById("nodelist").innerHTML = szMessage;
-   setTimeout("document.getElementById('nodelist').innerHTML = ''",2000);
-}
- 
-function showSuccessMsg(){showMsg("<div class='nodeContent'>Salvatagio avvenuto correttamente</div>");};
-function showFailureMsg(){showMsg("<div class='nodeContent'>Errore durante il salvataggio! Riprova.</div>");};
-
-
-var bingKey = 'Arsp1cEoX9gu-KKFYZWbJgdPEa8JkRIUkxcPr8HBVSReztJ6b0MOz3FEgmNRd4nM';
-var numFeat;
 function init() {
- var saveStrategy = new OpenLayers.Strategy.Save();
- saveStrategy.events.register("success", '', showSuccessMsg); saveStrategy.events.register("failure", '', showFailureMsg);
- 
- map = new OpenLayers.Map ("mappa2", {   
-  controls:[
-    new OpenLayers.Control.Navigation(),
-    new OpenLayers.Control.PanZoom(),
-    new OpenLayers.Control.LayerSwitcher(),
-    new OpenLayers.Control.MousePosition({div:document.getElementById("coo")})   
-  ],
-  units: 'm',
-  projection: new OpenLayers.Projection("EPSG:3857"),
-  displayProjection: new OpenLayers.Projection("EPSG:4326")
- });
- 
-var mapextent = new OpenLayers.Bounds(1279972.812, 5782339.838, 1331677.275, 5838213.399);
+    OpenLayers.ProxyHost = "/cgi-bin/proxy.cgi?url=";
+    saveStrategy = new OpenLayers.Strategy.Save();
+    saveStrategy.events.register("success", '', showSuccessMsg); saveStrategy.events.register("failure", '', showFailureMsg);
+    map = new OpenLayers.Map ("mappa2", mapOption);
+    map.addControl(new OpenLayers.Control.Navigation());
+    map.addControl(new OpenLayers.Control.PanZoom());   
+    map.addControl(new OpenLayers.Control.LayerSwitcher());
+    map.addControl(new OpenLayers.Control.MousePosition({div:document.getElementById("coo")}));
+    //mapextent = new OpenLayers.Bounds(1279972.812, 5782339.838, 1331677.275, 5838213.399);
+    mapextent = new OpenLayers.Bounds(xmin, ymin, xmax, ymax);
+    sat = new OpenLayers.Layer.Bing({name: "Sat",key: bingKey,type: "Aerial"});
+    arrayOSM = ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg", "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg","http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg", "http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg"];
+    osm = new OpenLayers.Layer.OSM("osm", arrayOSM, {attribution: "Data, imagery and map information provided by <a href='http://www.mapquest.com/'  target='_blank'>MapQuest</a>, <a href='http://www.openstreetmap.org/' target='_blank'>Open Street Map</a> and contributors, <a href='http://creativecommons.org/licenses/by-sa/2.0/' target='_blank'>CC-BY-SA</a>  <img src='http://developer.mapquest.com/content/osm/mq_logo.png' border='0'>", transitionEffect: "resize"}); 
+    poly = new OpenLayers.Layer.Vector("poligoni", {
+         strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
+        ,protocol: new OpenLayers.Protocol.WFS({
+             version: "1.1.0"
+            ,url: "http://www.lefontiperlastoria.it/geoserver/wfs"
+            ,featureNS: "http://www.lefontiperlastoria.it/fonti"
+            ,srsName: "EPSG:3857"
+            ,featureType: "area_carto_poly"
+            ,geometryName: "geom",
+            schema: "http://www.lefontiperlastoria.it/fonti?service=WFS&version=1.0.0&request=DescribeFeatureType&TypeName=fonti:area_carto_poly"
+        })
+        ,filter: new OpenLayers.Filter.Comparison({
+             type: OpenLayers.Filter.Comparison.EQUAL_TO
+            ,property: "id_area"
+            ,value: "<?php echo($id); ?>"
+        })
+    });
+    map.addLayers([sat, osm, poly]);
 
-var sat = new OpenLayers.Layer.Bing({name: "Sat",key: bingKey,type: "Aerial"});
-arrayOSM = ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
-            "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
-            "http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
-            "http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg"];
-var osm = new OpenLayers.Layer.OSM("osm", arrayOSM, {
-                attribution: "Data, imagery and map information provided by <a href='http://www.mapquest.com/'  target='_blank'>MapQuest</a>, <a href='http://www.openstreetmap.org/' target='_blank'>Open Street Map</a> and contributors, <a href='http://creativecommons.org/licenses/by-sa/2.0/' target='_blank'>CC-BY-SA</a>  <img src='http://developer.mapquest.com/content/osm/mq_logo.png' border='0'>",
-                transitionEffect: "resize"
-            }); 
-//wfs-t editable overlay
-line = new OpenLayers.Layer.Vector("linee", {
- strategies: [new OpenLayers.Strategy.BBOX()],
- //projection: new OpenLayers.Projection("EPSG:3857"),
- protocol: new OpenLayers.Protocol.WFS({
-   version:      "1.1.0",
-   url:          "http://www.lefontiperlastoria.it/geoserver/wfs",
-   featureNS :   "http://www.lefontiperlastoria.it/fonti",
-   //maxExtent:    mapextent,
-   srsName:      "EPSG:3857",
-   featureType:  "area_int_line", 
-   geometryName: "the_geom", 
-   schema:       "http://www.lefontiperlastoria.it/fonti?service=WFS&version=1.0.0&request=DescribeFeatureType&TypeName=fonti:area_int_line"
- }),
- filter: new OpenLayers.Filter.Comparison({
-   type: OpenLayers.Filter.Comparison.EQUAL_TO,
-   property: "id_area",
-   value: "<?php echo($id); ?>"
- })
-});
-
-poly = new OpenLayers.Layer.Vector("poligoni", {
- strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy],
- //projection: new OpenLayers.Projection("EPSG:3857"),
- protocol: new OpenLayers.Protocol.WFS({
-   version:      "1.1.0",
-   url:          "http://www.lefontiperlastoria.it/geoserver/wfs",
-   featureNS :   "http://www.lefontiperlastoria.it/fonti",
-   //maxExtent:    mapextent,
-   srsName:      "EPSG:3857",
-   featureType:  "area_int_poly", 
-   geometryName: "the_geom", 
-   schema:       "http://www.lefontiperlastoria.it/fonti?service=WFS&version=1.0.0&request=DescribeFeatureType&TypeName=fonti:area_int_poly"
- }),
- filter: new OpenLayers.Filter.Comparison({
-   type: OpenLayers.Filter.Comparison.EQUAL_TO,
-   property: "id_area",
-   value: "<?php echo($id); ?>"
- })
-});
-
-map.addLayers([sat, osm, poly, line]);
-
-if (numPoly!=0) {poly.events.register("loadend", poly, function() {map.zoomToExtent(poly.getDataExtent());});}
-if (numPoly==0 && numLine!=0) {line.events.register("loadend", line, function() {map.zoomToExtent(line.getDataExtent());});}
-if (numPoly==0 && numLine==0) {map.zoomToExtent(mapextent);}
-console.log("poly= "+numPoly);
-
-// add the custom editing toolbar
- navigate = new OpenLayers.Control.DragPan({
-   isDefault: true,
-   title: "Pan map: muovi il mouse allinterno della mappa tenendo premuto il tasto sinistro",
-   displayClass: "olControlNavigation"
- });
-
- del = new DeleteFeature(poly, {title: "Elimina geometria"});
- drawpoly = new OpenLayers.Control.DrawFeature(poly, OpenLayers.Handler.Polygon,{
-    id: 'drawpoly',
-    title: "Disegna poligono irregolare",
-    displayClass:"olControlDrawFeaturePolygon",
-    handlerOptions: {freehand: false, multi: true},
-    featureAdded: onFeatureInsert
- });
- drawbox = new OpenLayers.Control.DrawFeature(poly,OpenLayers.Handler.RegularPolygon,{
-       id: 'drawbox',
-       handlerOptions: {sides: 4, irregular:true,freehand: false, multi: true},
-       title: " Disegna poligono regolare.\nPer disegnare un poligono regolare clicca in un punto sulla mapa e trascina il mouse",
-       displayClass:"olControlDrawFeatureBox",
-       featureAdded: onFeatureInsert
- });
- 
-save = new OpenLayers.Control.Button({
-         title: "Salva modifiche",
-         trigger: function() {
+    if (numPoly!=0) {poly.events.register("loadend", poly, function() {map.zoomToExtent(poly.getDataExtent());});}
+    if (numPoly==0) {map.zoomToExtent(mapextent);}
+    console.log("poly= "+numPoly);
+    navigate = new OpenLayers.Control.DragPan({isDefault: true, title: "Pan map: muovi il mouse allinterno della mappa tenendo premuto il tasto sinistro", displayClass: "olControlNavigation"});
+    del = new DeleteFeature(poly, {title: "Elimina geometria"});
+    drawpoly = new OpenLayers.Control.DrawFeature(poly, OpenLayers.Handler.Polygon,{
+        id: 'drawpoly',
+        title: "Disegna poligono irregolare",
+        displayClass:"olControlDrawFeaturePolygon",
+        handlerOptions: {freehand: false, multi: true},
+        featureAdded: onFeatureInsert
+    });
+    drawbox = new OpenLayers.Control.DrawFeature(poly,OpenLayers.Handler.RegularPolygon,{
+        id: 'drawbox',
+        handlerOptions: {sides: 4, irregular:true,freehand: false, multi: true},
+        title: " Disegna poligono regolare.\nPer disegnare un poligono regolare clicca in un punto sulla mapa e trascina il mouse",
+        displayClass:"olControlDrawFeatureBox",
+        featureAdded: onFeatureInsert
+    });
+    save = new OpenLayers.Control.Button({
+        title: "Salva modifiche",
+        trigger: function() {
             if(edit.feature) {edit.selectControl.unselectAll();}
             saveStrategy.save();
-         },
-         displayClass: "olControlSaveFeatures"
- }); 
- 
- 
- edit = new OpenLayers.Control.ModifyFeature(poly, {
-        title: "Modifica vertici geometria",
-        displayClass: "olControlModifyFeature"
-        //,vertexRenderIntent: "vertex"
- });
- 
- ruota = new OpenLayers.Control.ModifyFeature(poly, {title: "Ruota o sposta la geometria", displayClass: "olControlRotateFeature"});
- ruota.mode = OpenLayers.Control.ModifyFeature.ROTATE | OpenLayers.Control.ModifyFeature.DRAG;
- resize = new OpenLayers.Control.ModifyFeature(poly, {title: "Ridimensiona geometria",displayClass: "olControlResizeFeature"});
- resize.mode = OpenLayers.Control.ModifyFeature.RESIZE;
-/*
- ctrlSelectFeatureOptions = { 
-      clickout: true, 
-      toggle: true, 
-      multiple: true, 
-      hover: false, 
-      toggleKey: "ctrlKey", 
-      multipleKey: "altKey", 
-      box: true 
-    };
-    
- ctrlSelectFeature = new OpenLayers.Control.SelectFeature([line, poly], ctrlSelectFeatureOptions);
-*/ 
- var divPannello = document.getElementById("panel");
- panel = new OpenLayers.Control.Panel({
-       defaultControl: navigate,
-       displayClass: 'olControlPanel',
-       div: divPannello
- });
- panel.addControls([
-        navigate
-        , save
-        , del        
-        , drawpoly
-        , drawbox
-        , edit
-        , resize
-        , ruota
-        //, ctrlSelectFeature
-    ]);
-    
- map.addControl(panel);
+        },
+        displayClass: "olControlSaveFeatures"
+    }); 
+    edit = new OpenLayers.Control.ModifyFeature(poly, {title: "Modifica vertici geometria", displayClass: "olControlModifyFeature" });
+    ruota = new OpenLayers.Control.ModifyFeature(poly, {title: "Ruota o sposta la geometria", displayClass: "olControlRotateFeature"});
+    ruota.mode = OpenLayers.Control.ModifyFeature.ROTATE | OpenLayers.Control.ModifyFeature.DRAG;
+    resize = new OpenLayers.Control.ModifyFeature(poly, {title: "Ridimensiona geometria",displayClass: "olControlResizeFeature"});
+    resize.mode = OpenLayers.Control.ModifyFeature.RESIZE;
+    divPannello = document.getElementById("panel");
+    panel = new OpenLayers.Control.Panel({ defaultControl: navigate, displayClass: 'olControlPanel',  div: divPannello});
+    panel.addControls([navigate, save, del, drawpoly, drawbox, edit, resize, ruota]);
+    map.addControl(panel);
 }
-
-
+/******* funzioni *******/
+function showMsg(szMessage) { document.getElementById("nodelist").innerHTML = szMessage; setTimeout("document.getElementById('nodelist').innerHTML = ''",2000);}
+function showSuccessMsg(){showMsg("<div class='nodeContent'>Salvatagio avvenuto correttamente</div>");};
+function showFailureMsg(){showMsg("<div class='nodeContent'>Errore durante il salvataggio! Riprova.</div>");};
 function onPopupClose(evt) {selectControl.unselect(selectedFeature);}
-function onFeatureUnselect(feature) {
-    map.removePopup(feature.popup);
-    feature.popup.destroy();
-    feature.popup = null;
-}
+function onFeatureUnselect(feature) {map.removePopup(feature.popup); feature.popup.destroy(); feature.popup = null;}
 function onFeatureInsert(feature){
    selectedFeature = feature;
    var fid = selectedFeature.id;
    var area = selectedFeature.attributes['id_area'];
    id_area= '<?php echo($id);?>';
-      
    if (area == null) { 
-        // formulario
         htmlForm = "<div style='font-size:.8em'>"+
         "<input type='hidden' name='fid' id='fid' value='"+ fid +"'>" +
         "<input type='hidden' name='id_area' id='id_area' value='"+id_area+"'>"+
@@ -421,8 +288,6 @@ function onFeatureInsert(feature){
    miFeature.attributes.id_area = OpenLayers.Util.getElement('id_area').value;
    onFeatureUnselect(miFeature); 
  }
- // fin trigger insertar    
- // Trigger y funciÃ³n para pasar atributos del formulario en el update
  var btnUpdate = new OpenLayers.Control.Button({trigger: onTriggerUpdate});
  function onTriggerUpdate(){
      miFeature = [selectedFeature];
@@ -430,13 +295,10 @@ function onFeatureInsert(feature){
      miFeature[0].id = fid;
      miFeature[0].attributes.id_area = OpenLayers.Util.getElement('id_area').value;
      miFeature[0].state = OpenLayers.State.UPDATE;
-     // elimina el popup
      map.removePopup(miFeature[0].popup);
      selectControl.unselectAll();
      miFeature[0].popup = null;
   }
- // fin trigger  
 </script>
-
 </body>
 </html>
