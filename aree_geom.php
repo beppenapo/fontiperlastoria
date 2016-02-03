@@ -216,7 +216,7 @@ function init() {
         ,filter: new OpenLayers.Filter.Comparison({
              type: OpenLayers.Filter.Comparison.EQUAL_TO
             ,property: "id_area"
-            ,value: "<?php echo($idarea); ?>"
+            ,value: "<?php echo($id); ?>"
         })
     });
     map.addLayers([sat, osm, poly]);
