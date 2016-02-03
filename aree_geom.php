@@ -208,9 +208,9 @@ function init() {
             ,url: "http://www.lefontiperlastoria.it/geoserver/wfs"
             ,featureNS: "http://www.lefontiperlastoria.it/fonti"
             ,srsName: "EPSG:3857"
-            ,featureType: "area_carto_poly"
+            ,featureType: "area_int_poly"
             ,geometryName: "geom",
-            schema: "http://www.lefontiperlastoria.it/fonti?service=WFS&version=1.0.0&request=DescribeFeatureType&TypeName=fonti:area_carto_poly"
+            schema: "http://www.lefontiperlastoria.it/fonti?service=WFS&version=1.0.0&request=DescribeFeatureType&TypeName=fonti:area_int_poly"
         })
         ,filter: new OpenLayers.Filter.Comparison({
              type: OpenLayers.Filter.Comparison.EQUAL_TO
