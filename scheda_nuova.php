@@ -12,7 +12,7 @@ $tipoUsr = $_SESSION['tipo'];
 $hub = $_SESSION['hub'];
 $data = date("Y-m-d");
 
-$dv = ($hub==2)?260:261;
+$dv = ($hub==2)?1286:1287;
 
 if($tipoScheda==10){
     $opt = "<option value='".$dv."'>-- seleziona area di interesse cartografico --</option>";
