@@ -27,7 +27,7 @@ group by ac.id, ac.nome, a.tipo order by area asc;
 ";
 $topoExec = pg_query($connection, $topo);
 
-$extCom =  ("
+/*$extCom =  ("
 select max(xmax) as maxx, min(xmin) as minx, max(ymax) as maxy, min(ymin) as miny from(
  select  st_xmin(geom) as xmin, st_xmax(geom) as xmax, st_ymin(geom) as ymin, st_ymax(geom) as ymax from(
   select ST_Multi(ST_Union(comune.geom)) as geom 
@@ -42,7 +42,7 @@ $extComRow = pg_num_rows($extComRes);
 $xmin = $extComArr['minx'];
 $xmax = $extComArr['maxx'];
 $ymin = $extComArr['miny'];
-$ymax = $extComArr['maxy'];
+$ymax = $extComArr['maxy'];*/
 ?> 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//IT" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -146,11 +146,11 @@ $(document).ready(function(){
 /******* OPEN LAYERS ********/
 var map, arrayOSM, osm, sat, poly, reg, numPoly, id_area, navigate, drawpoly, drawbox, drawline, edit, save, del, ruota, resize, panel, akt, ctrlPolyOptions, ctrlSelectFeatureOptions, ctrlSelectFeature,DeleteFeature,bingKey,numFeat,mainExtent,mainResolution, unit, epsg3857, epsg4326, mapOption, saveStrategy, mapextent,divPannello;
 
-var xmin, ymin, xmax, ymax, extent, lat, lon;
+/*var xmin, ymin, xmax, ymax, extent, lat, lon;
 xmin = '<?php echo($xmin);?>';
 ymin = '<?php echo($ymin);?>';
 xmax = '<?php echo($xmax);?>';
-ymax = '<?php echo($ymax);?>';
+ymax = '<?php echo($ymax);?>';*/
 
 numPoly = '<?php echo($numPoly); ?>';
 
@@ -197,8 +197,8 @@ function init() {
     map.addControl(new OpenLayers.Control.PanZoom());
     map.addControl(new OpenLayers.Control.LayerSwitcher());
     map.addControl(new OpenLayers.Control.MousePosition({div:document.getElementById("coo")}));
-    //mapextent = new OpenLayers.Bounds(1279972.812, 5782339.838, 1331677.275, 5838213.399);
-    mapextent = new OpenLayers.Bounds(xmin, ymin, xmax, ymax);
+    mapextent = new OpenLayers.Bounds(1279972.812, 5782339.838, 1331677.275, 5838213.399);
+    //mapextent = new OpenLayers.Bounds(xmin, ymin, xmax, ymax);
     sat = new OpenLayers.Layer.Bing({name: "Sat",key: bingKey,type: "Aerial"});
     arrayOSM = ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg", "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg","http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg", "http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg"];
     osm = new OpenLayers.Layer.OSM("osm", arrayOSM, {attribution: "Data, imagery and map information provided by <a href='http://www.mapquest.com/'  target='_blank'>MapQuest</a>, <a href='http://www.openstreetmap.org/' target='_blank'>Open Street Map</a> and contributors, <a href='http://creativecommons.org/licenses/by-sa/2.0/' target='_blank'>CC-BY-SA</a>  <img src='http://developer.mapquest.com/content/osm/mq_logo.png' border='0'>", transitionEffect: "resize"}); 
@@ -216,13 +216,10 @@ function init() {
         ,filter: new OpenLayers.Filter.Comparison({
              type: OpenLayers.Filter.Comparison.EQUAL_TO
             ,property: "id_area"
-            ,value: "<?php echo($id); ?>"
+            ,value: "<?php echo($idarea); ?>"
         })
     });
     map.addLayers([sat, osm, poly]);
-
-    if (numPoly!=0) {poly.events.register("loadend", poly, function() {map.zoomToExtent(poly.getDataExtent());});}
-    if (numPoly==0) {map.zoomToExtent(mapextent);}
     console.log("poly= "+numPoly);
     navigate = new OpenLayers.Control.DragPan({isDefault: true, title: "Pan map: muovi il mouse allinterno della mappa tenendo premuto il tasto sinistro", displayClass: "olControlNavigation"});
     del = new DeleteFeature(poly, {title: "Elimina geometria"});
@@ -259,6 +256,7 @@ function init() {
     map.addControl(panel);
     if (numPoly!=0) {poly.events.register("loadend", poly, function() {map.zoomToExtent(poly.getDataExtent());});}
     if (numPoly==0) {map.zoomToExtent(mapextent);}
+    //map.zoomToExtent(mapextent);
 }
 /******* funzioni *******/
 function showMsg(szMessage) { document.getElementById("nodelist").innerHTML = szMessage; setTimeout("document.getElementById('nodelist').innerHTML = ''",2000);}
@@ -270,7 +268,7 @@ function onFeatureInsert(feature){
    selectedFeature = feature;
    var fid = selectedFeature.id;
    var area = selectedFeature.attributes['id_area'];
-   id_area= '<?php echo($idarea);?>';
+   id_area= '<?php echo($id);?>';
    if (area == null) { 
         htmlForm = "<div style='font-size:.8em'>"+
         "<input type='hidden' name='fid' id='fid' value='"+ fid +"'>" +
