@@ -15,7 +15,15 @@ $qgeom1Res = pg_query($connection, $qgeom1);
 $g1 = pg_fetch_array($qgeom1Res, 0, PGSQL_ASSOC);
 $numPoly = $g1['num_poly'];
 
-$topo = " select ac.id, ac.nome area, array_to_string(array_agg(c.comune || ' (' || l.localita || ')' ), '<br/>') as lista from aree_carto ac inner join aree a on a.nome_area = ac.id inner join comune c on a.id_comune = c.id inner join localita l on a.id_localita = l.id where a.nome_area = $id group by ac.id,ac.nome, a.tipo order by area asc;";
+$topo = " 
+select ac.id, ac.nome area, array_to_string(array_agg(c.comune || ' (' || l.localita || ')' ), '<br/>') as lista
+from area ac
+inner join aree a on a.nome_area = ac.id
+inner join comune c on a.id_comune = c.id
+inner join localita l on a.id_localita = l.id 
+where nome_area = $id 
+group by ac.id, ac.nome, a.tipo order by area asc;
+";
 $topoExec = pg_query($connection, $topo);
 
 $extCom =  ("
@@ -48,16 +56,13 @@ $ymax = $extComArr['maxy'];
   <meta name="copyright" content="&copy;2011 Museo Provinciale" />
 
   <title>Le fonti per la storia. Per un archivio delle fonti sulle valli di Primiero e Vanoi</title>
-  <link href="lib/jquery_friuli/css/start/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/scheda.css" type="text/css" rel="stylesheet" media="screen" /> 
   <link rel="stylesheet" href="css/google.css" type="text/css">
   <link rel="stylesheet" href="lib/OpenLayers-2.12/theme/default/style.css" type="text/css">  
+  <link href="lib/jquery-ui-1.11.4/jquery-ui.min.css" type="text/css" rel="stylesheet" media="screen" />
   <link rel="stylesheet" href="css/geom.css" type="text/css"> 
   <link rel="shortcut icon" href="img/icone/favicon.ico" />
-  <script type="text/javascript" src="lib/jquery-ui-lampi/js/jquery-1.7.1.min.js"></script>
-  <script type="text/javascript" src="lib/jquery-ui-lampi/js/jquery-ui-1.8.18.custom.min.js"></script>
-  <script type="text/javascript" src="lib/OpenLayers-2.12/OpenLayers.js"></script>
-  <script type="text/javascript" src="lib/OpenLayers-2.10/ScaleBar.js"></script>
+
   <style>
     #topoLista{
     position: absolute;
@@ -116,13 +121,18 @@ $ymax = $extComArr['maxy'];
     </div>
      <?php } ?>
    </div><!--content-->
-   <div id="footer"><?php require_once ("inc/footer.inc"); ?></div><!--footer-->
+   <div id="footer"><?php require_once ("inc/footer.php"); ?></div><!--footer-->
   </div><!-- wrap-->
  </div><!--container-->
  
  <!--div invisibili -->
 <div id="dialog">  </div>
 
+<script type="text/javascript" src="lib/jquery-core/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="lib/OpenLayers-2.12/OpenLayers.js"></script>
+  <script type="text/javascript" src="lib/OpenLayers-2.10/ScaleBar.js"></script>
+<script type="text/javascript" src="lib/funzioni.js"></script>
 <script type="text/javascript" >
 $(document).ready(function(){
     $("#openListaTopo").mouseover(function(){$("#topoLista").fadeIn('fast');}).mouseout(function(){$("#topoLista").fadeOut('fast');});
@@ -172,7 +182,7 @@ unit =  'm';
 epsg3857 = new OpenLayers.Projection("EPSG:3857");
 epsg4326 = new OpenLayers.Projection("EPSG:4326");
 mapOption = {maxExtent: mainExtent, resolutions: mainResolution, units:unit, projection: epsg3857, displayProjection: epsg4326, controls:[]};
-
+//8s161lhzp2
 function init() {
     OpenLayers.ProxyHost = "/cgi-bin/proxy.cgi?url=";
     saveStrategy = new OpenLayers.Strategy.Save();
@@ -242,6 +252,8 @@ function init() {
     panel = new OpenLayers.Control.Panel({ defaultControl: navigate, displayClass: 'olControlPanel',  div: divPannello});
     panel.addControls([navigate, save, del, drawpoly, drawbox, edit, resize, ruota]);
     map.addControl(panel);
+    if (numPoly!=0) {poly.events.register("loadend", poly, function() {map.zoomToExtent(poly.getDataExtent());});}
+    if (numPoly==0) {map.zoomToExtent(mapextent);}
 }
 /******* funzioni *******/
 function showMsg(szMessage) { document.getElementById("nodelist").innerHTML = szMessage; setTimeout("document.getElementById('nodelist').innerHTML = ''",2000);}
