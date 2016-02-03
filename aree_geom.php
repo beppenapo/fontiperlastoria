@@ -210,7 +210,7 @@ function init() {
             ,featureNS: "http://www.lefontiperlastoria.it/fonti"
             ,srsName: "EPSG:3857"
             ,featureType: "area_int_poly"
-            ,geometryName: "geom",
+            ,geometryName: "the_geom",
             schema: "http://www.lefontiperlastoria.it/fonti?service=WFS&version=1.0.0&request=DescribeFeatureType&TypeName=fonti:area_int_poly"
         })
         ,filter: new OpenLayers.Filter.Comparison({
