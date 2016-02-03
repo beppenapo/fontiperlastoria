@@ -12,5 +12,5 @@ $inserisci = ("INSERT INTO ricerca(denric,enresp,respric,data, hub) VALUES ('$de
 $result = pg_query($connection, $inserisci);
 
 if(!$result){die("Errore nella query: \n" . pg_last_error($connection));}
-else{echo "<div style='text-align:center;'><h2>Modifica completata con successo</h2></div>";}
+else{echo "La nuova ricerca è stata inserita correttamente!";}
 ?>

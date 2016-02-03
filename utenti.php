@@ -1,7 +1,7 @@
 <?php
 session_start();
 ini_set( "display_errors", 0);
-require_once("inc/db.php");
+require("inc/db.php");
 
 if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 $where = ($_SESSION['tipo']==1)?'usr.tipo = lista_tipo_usr.id' : 'usr.tipo = lista_tipo_usr.id and usr.tipo != 1';
@@ -20,11 +20,9 @@ $where = ($_SESSION['tipo']==1)?'usr.tipo = lista_tipo_usr.id' : 'usr.tipo = lis
   <meta name="copyright" content="&copy;2011 Museo Provinciale" />
 
   <title>Le fonti per la storia. Per un archivio delle fonti sulle valli di Primiero e Vanoi</title>
-  <link href="lib/jquery_friuli/css/start/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/scheda.css" type="text/css" rel="stylesheet" media="screen" />
+  <link href="lib/jquery-ui-1.11.4/jquery-ui.min.css" type="text/css" rel="stylesheet" media="screen" />
   <link rel="shortcut icon" href="img/icone/favicon.ico" />
-  <script type="text/javascript" src="lib/jquery-core/jquery-1.4.4.min.js"></script>
-  <script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
   <style type="text/css">
     div#content{border: 1px solid #C1FEAE;margin-top:50px;}
     table.mainData{width:100% !important;}
@@ -183,41 +181,17 @@ ORDER BY cognome ASC
   </div>
  </div>
    </div><!--content-->
-   <div id="footer"><?php require_once ("inc/footer.inc"); ?></div><!--footer-->
+   <div id="footer"><?php require_once ("inc/footer.php"); ?></div><!--footer-->
   </div><!-- wrap-->
  </div><!--container-->
  
  <!--div invisibili -->
 <div id="dialog">  </div>
-
+<script type="text/javascript" src="lib/jquery-core/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
 <script type="text/javascript" src="lib/select.js"></script>
+<script type="text/javascript" src="lib/funzioni.js"></script>
 <script type="text/javascript" >
-function pager(){
-//how much items per page to show  
-    var show_per_page = 20;  
-    //getting the amount of elements inside content div  
-    var number_of_items = $('#catalogoTable tbody tr:visible').length; 
-    //calculate the number of pages we are going to have  
-    var number_of_pages = Math.ceil(number_of_items/show_per_page);  
-  
-    //set the value of our hidden input fields  
-    $('#current_page').val(0);  
-    $('#show_per_page').val(show_per_page);  
-	var navigation_html = '<a class="previous_link" href="javascript:previous();">Prev</a>';
-	var current_link = 0;
-	while(number_of_pages > current_link){
-		navigation_html += '<a class="page_link" href="javascript:go_to_page(' + current_link +')" longdesc="' + current_link +'">'+ (current_link + 1) +'</a>';
-		current_link++;
-	}
-	navigation_html += '<a class="next_link" href="javascript:next();">Next</a>';
-	$('.page_navigation').html(navigation_html);
-	//add active_page class to the first page link
-	$('.page_navigation .page_link:first').addClass('active_page');
-	//hide all the elements inside content div
-	$("#catalogoTable tbody>tr").css('display', 'none');
-	//and show the first n (show_per_page) elements
-	$("#catalogoTable tbody>tr").slice(0, show_per_page).css('display', 'table-row');
-}
 $(document).ready(function() {
    $('.slide').hide();
    $('.sezioni').click(function(){
@@ -289,9 +263,7 @@ $(document).ready(function() {
    	errori = '<h3>I seguenti campi sono obbligatori e vanno compilati:</h3><ol>' + errori;
         $("<div id='errorDialog'>" + errori + "</ol></div>").dialog({
           resizable: false,
-          height: 'auto',
           width: 'auto',
-          position: 'top',
           title:'Errori',
           modal: true,
           buttons: {'Chiudi finestra': function() {$(this).dialog('close');} }//buttons
@@ -304,16 +276,15 @@ $(document).ready(function() {
           data: {cognome:cognome, nome:nome, email:email, password:password, username:username, tipo:tipo, stato:stato, schede:schede},
           success: function(data){
              $(data)
-               .dialog({position:['middle', 10]})
+               .dialog()
                .delay(2500)
-               .fadeOut(function(){ $(this).dialog("close");window.location.href = 'utenti.php'; });
+               .fadeOut(function(){ $(this).dialog("close");location.reload(); });
           }//success
      });//ajax
    }
  });
 
-	$('.link').each(function(){
-	  $(this).click(function(){
+	$('.link').click(function(){
 	    var id = $(this).attr('id');
        //alert(id); return false;
        $.ajax({
@@ -325,64 +296,13 @@ $(document).ready(function() {
              $("#dialog").dialog({
                resizable:false,
                modal:true,
-               height: 630,
                width: 700,
-               title: "Modifica sezione",
-             	position:['middle', 5]
+               title: "Modifica sezione"
              });
-          }//success
-     });//ajax
-	 });//click
-	});//each
-   
-   pager();
+          }
+     });
+	});
 });//funzione principale
-
-function previous(){
-
-	new_page = parseInt($('#current_page').val()) - 1;
-	//if there is an item before the current active link run the function
-	if($('.active_page').prev('.page_link').length==true){
-		go_to_page(new_page);
-	}
-
-}
-
-function next(){
-	new_page = parseInt($('#current_page').val()) + 1;
-	//if there is an item after the current active link run the function
-	if($('.active_page').next('.page_link').length==true){
-		go_to_page(new_page);
-	}
-
-}
-function go_to_page(page_num){
-	//get the number of items shown per page
-	var show_per_page = parseInt($('#show_per_page').val());
-
-	//get the element number where to start the slice from
-	start_from = page_num * show_per_page;
-
-	//get the element number where to end the slice
-	end_on = start_from + show_per_page;
-
-	//hide all children elements of content div, get specific items and show them
-	$("#catalogoTable tbody>tr").css('display', 'none').slice(start_from, end_on).css('display', 'table-row');
-
-	/*get the page link that has longdesc attribute of the current page and add active_page class to it
-	and remove that class from previously active page link*/
-	$('.page_link[longdesc=' + page_num +']').addClass('active_page').siblings('.active_page').removeClass('active_page');
-
-	//update the current page input field
-	$('#current_page').val(page_num);
-}
-
-function validEmail(v) {
-    var r = new RegExp("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
-    return (v.match(r) == null) ? false : true;
-}
-
-
 </script>
 
 </body>

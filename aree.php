@@ -52,7 +52,7 @@ $e = pg_query($connection, $query);
   <meta name="copyright" content="&copy;2011 Museo Provinciale" />
 
   <title>Le fonti per la storia. Per un archivio delle fonti sulle valli di Primiero e Vanoi</title>
-  <link href="lib/jquery_friuli/css/start/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet" media="screen" />
+  <link href="lib/jquery-ui-1.11.4/jquery-ui.min.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/scheda.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/ico-font/css/font-awesome.min.css" type="text/css" rel="stylesheet" media="screen" />
   <link rel="shortcut icon" href="img/icone/favicon.ico" />
@@ -70,8 +70,9 @@ $e = pg_query($connection, $query);
     #tableHeader{margin:30px 3px 5px 10px;}
     #legendaWrap{display:inline-block;width:49%;}
     #filtriWrap{display:inline-block;width:49%;text-align:right;}
-    button.submit{padding:3px 8px; background:#fff; border:1px solid #ccc;}
+    button.submit{padding:3px 8px; background:#fff; border:1px solid #ccc; cursor:pointer;}
     button.submit:hover,select.filtri:hover{background:#ccc;}
+    .modLista a{text-decoration:none;}
 </style>
 
 </head>
@@ -136,9 +137,9 @@ $e = pg_query($connection, $query);
                                 </thead>
                                 <tbody>
                                     <?php while($r = pg_fetch_array($e)){
-                                        if($r['tipo'] == 3 && $r['geom'] == 0) {$azione = '<span style="color:red !important">Inserisci</span>';}
-                                        elseif($r['tipo'] ==2 && $r['ubi'] == 0) {$azione = '<span style="color:red !important">Inserisci</span>';}
-                                        else {$azione = 'gestisci';}
+                                        if($r['tipo'] == 3 && $r['geom'] == 0) {$azione = '<span style="color:red !important">inserisci</span>';}
+                                        elseif($r['tipo'] ==2 && $r['ubi'] == 0) {$azione = '<span style="color:red !important">inserisci</span>';}
+                                        else {$azione = '<span style="color:#000 !important">gestisci</span>';}
                                         switch($r['tipo']){
                                             case 1: $tipo = 'Area di interesse'; break;
                                             case 2: $tipo = 'Ubicazione'; break;
@@ -164,7 +165,7 @@ $e = pg_query($connection, $query);
  <!--div invisibili -->
     <div id="dialog">  </div>
     <script type="text/javascript" src="lib/jquery-core/jquery-1.12.0.min.js"></script>
-    <script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
+    <script type="text/javascript" src="lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
     <script type="text/javascript" src="lib/funzioni.js"></script>
     <script type="text/javascript" >
         var locLength,legenda;
@@ -264,7 +265,7 @@ $e = pg_query($connection, $query);
                         data: {id:id, area:area},
                         success: function(data){
                             $("#dialog").html(data);
-                            $("#dialog").dialog({resizable:false, modal:true, height: 630,width: 700, title: "Modifica area "+area , position:['middle', 5]});
+                            $("#dialog").dialog({resizable:false, modal:true, width: 700, title: "Modifica area "+area });
                         }
                     });
                 });

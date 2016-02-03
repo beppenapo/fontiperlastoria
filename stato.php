@@ -2,8 +2,7 @@
 session_start();
 if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 ini_set( "display_errors", 0);
-require_once("inc/db.php");
-
+require("inc/db.php");
 ?> 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//IT"
@@ -19,12 +18,10 @@ require_once("inc/db.php");
   <meta name="copyright" content="&copy;2011 Museo Provinciale" />
 
   <title>Le fonti per la storia. Per un archivio delle fonti sulle valli di Primiero e Vanoi</title>
-  <link href="lib/jquery_friuli/css/start/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/scheda.css" type="text/css" rel="stylesheet" media="screen" />
+  <link type="text/css" rel="stylesheet" href="lib/qtip/jquery.qtip.min.css" />
+  <link href="lib/jquery-ui-1.11.4/jquery-ui.min.css" type="text/css" rel="stylesheet" media="screen" />
   <link rel="shortcut icon" href="img/icone/favicon.ico" />
-  <link type="text/css" rel="stylesheet" href="css/jquery.qtip.min.css" />
-  <script type="text/javascript" src="lib/jquery-core/jquery-1.4.4.min.js"></script>
-  <script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
   <style type="text/css">
     div#content{border: 1px solid #C1FEAE;margin-top:50px;}
     table.mainData{width:100% !important;}
@@ -53,13 +50,10 @@ require_once("inc/db.php");
    </div>
    <div style="float:left;width:90%;height:600px;overflow:auto;margin-left:30px;">
 <?php
-include("inc/db.php");
-
 $statoquery = ("SELECT * FROM stato ORDER BY stato ASC;");
 $statoexec = pg_query($connection, $statoquery);
 $statorow = pg_num_rows($statoexec);
 ?>
-
 <table id="vocabolariTable">
  <thead>
   <tr>
@@ -78,20 +72,19 @@ $statorow = pg_num_rows($statoexec);
  ?>  
   </tbody>
 </table>
-
-
   </div>
   <div style="clear:both;"></div>
   </div>
  </div>
    </div><!--content-->
-   <div id="footer"><?php require_once ("inc/footer.inc"); ?></div><!--footer-->
+   <div id="footer"><?php require_once ("inc/footer.php"); ?></div><!--footer-->
   </div><!-- wrap-->
  </div><!--container-->
- 
  <!--div invisibili -->
-
-<script type="text/javascript" src="lib/jquery.qtip.min-2.0.1.js"></script>
+<script type="text/javascript" src="lib/jquery-core/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+<script type="text/javascript" src="lib/qtip/jquery.qtip.min.js"></script>
+<script type="text/javascript" src="lib/funzioni.js"></script>
 <script type="text/javascript" >
 var tab;
 $(document).ready(function() {

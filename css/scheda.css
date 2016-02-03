@@ -25,8 +25,6 @@ select.addListe, select#filtroCatalogo, input#addDefinizione,input#addDefinizion
 select.addListe, input#addDefinizione,input#addDefinizione2, input#add,.qtip input{font-size:1.2em;}
 select.addListe, input#addDefinizione,input#addDefinizione2, .qtip input{padding:5px 7px;}
 input#add{padding:6px 7px; cursor:pointer;}
-
-
 table#vocabolariTable{width:100%;}
 table#vocabolariTable thead{white-space: nowrap;}
 table#vocabolariTable thead tr{height: auto;	position: relative;}
@@ -38,16 +36,7 @@ table#vocabolariTable tr.trIntestaz th {color:#907F73; text-transform: uppercase
 .trListe{border-bottom:1px dashed black;}
 .modLista{text-align:center;}
 .modLista:hover{cursor:pointer;background-color: lightslategrey;color:white;}
-.form{
-	display: block;
-   margin-bottom: 3px;
-   width: 94% !important;
-   /*font-size: 18px;
-   line-height: 18px;*/
-   color: #3b3b3b;
-   border: 1px solid #cacaca;
-   padding: 3px 5px;
-}
+.form{display: block;margin-bottom: 3px; width: 94% !important; color: #3b3b3b;border: 1px solid #cacaca; padding: 3px 5px;}
 .filtro{width:200px !important;}
 select{background-color: white;}
 textarea.noteform{height: 100px}
@@ -56,7 +45,6 @@ textarea.noteform{height: 100px}
 .primo{margin-top:32px !important;}
 .h2aperto{padding:0px !important; margin:5px 0px 0px 5px !important;font-size: 16px;}
 .disabilitata {background-color: #d2d2d2; color:#9D9898;}
-
 a.archeologica{background-color: rgba(113,255,64,0.1) !important;}
 a.archivistica{background-color: rgba(255,0,255,0.1) !important;}
 a.bibliografica{background-color: rgba(255,255,0,0.1) !important;}
@@ -71,90 +59,28 @@ a.generico:hover{text-decoration: underline;}
 .avviso, table.tableInfo label{font-size:1em !important;}
 table.tableInfo{width:100%; margin-left:-10px !important; font-size:1em;}
 .avviso{color:red !important;}
-.errore{background-color: #d86a6a;}
+.errore{/*background-color: #d86a6a;*/  border-color: red; box-shadow: #000 0px 0px 5px;}
 label.input{cursor: pointer;}
 label.labelInput{display:block;cursor: pointer;}
-a.altrif{
-	text-decoration: none;
- 	padding:0px 5px;
- 	margin-left: 5px;
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px; 
-}
-input:focus, textarea:focus {
-outline: none !important;
-border:1px solid orange;;
-box-shadow: 0 0 10px #719ECE;
-}
+a.altrif{text-decoration: none;padding:0px 5px;margin-left: 5px;border-radius: 10px;-moz-border-radius: 10px;	-webkit-border-radius: 10px; }
+input:focus, textarea:focus {outline: none !important;border:1px solid orange;box-shadow: 0 0 10px #719ECE;}
 input.submit{padding:3px 5px;cursor: pointer;border:1px solid #ccc;background:#fff;}
 input.submit:hover{background-color: #ccc;}
-
 div.checkboxDiv{background-color:white;width:93%;padding:10px; border:1px solid #cacaca;}
-
 .switchLabel{width:50px; padding:3px 6px;background-color: #dddddd;color:#3b3b3b;border:1px solid #cacaca;cursor:pointer;}
 .switchLabel:hover{background-color: #cacaca;}
 .switchLabelChecked{background-color: #cacaca;}
 .switchImgMapButton{visibility: hidden; }
-
-
-div#logoSchedaSx{
-	position:relative;
-	float: left;
-	margin:10px 0px 0px -35px;
-   width:145px;
-   height:50px;
-   z-index: 5;
-}
+div#logoSchedaSx{position:relative;float: left;margin:10px 0px 0px -35px; width:145px; height:50px; z-index: 5;}
 div#logoSchedaSx img{opacity:0.4; filter:alpha(opacity=40); /* IE8 */}
-
-div#livelloScheda{
- position:relative;
- float:left;
- margin:-10px auto 0px;
- width: 800px;
- /*z-index:1000;*/
-}
-div#livelloScheda ul{
- width:400px;
- margin:0px auto !important;
- padding:0px !important;
-}
-
-div#livelloScheda li,li#catalogoTitle{
- float:left;	
- text-align: center;
- padding:3px 0px !important;
- border:1px solid #FFBF96;
- background-color: rgba(255,255,255,0.7);
- color:#DAD6D1;
- margin:0px !important;
-}
+div#livelloScheda{ position:relative; float:left; margin:-10px auto 0px; width: 800px;}
+div#livelloScheda ul{ width:400px; margin:0px auto !important; padding:0px !important;}
+div#livelloScheda li,li#catalogoTitle{ float:left;	text-align: center; padding:3px 0px !important; border:1px solid #FFBF96; background-color: rgba(255,255,255,0.7); color:#DAD6D1; margin:0px !important;}
 div#livelloScheda li{width: 130px;}
 li#catalogoTitle {width: 390px !important;}
-div#logoSchedaDx{
- position:relative;
- float:right;
- margin: -35px -60px 0px 0px;
- width:170px;
- height:170px;
- z-index: 1000;
-}	
-
-div#skArcheoContent{
-	width: 950px;
-	height:100%;
-	margin:0px auto !important;
-}
-
-div.inner, div.halfInner{
-  position:relative;
-  z-index: 10;
-  border:1px solid #FFBF96;
-  background-color: #ffffff;
-  margin-bottom:10px;
-}
-
+div#logoSchedaDx{position:relative; float:right; margin: -35px -60px 0px 0px; width:170px; height:170px; z-index: 1000;}
+div#skArcheoContent{width: 950px;height:100%;margin:0px auto !important;}
+div.inner, div.halfInner{ position:relative; z-index: 10; border:1px solid #FFBF96; background-color: #ffffff; margin-bottom:10px;}
 div.inner{width:950px;}
 div.inner h1{font-size: 22px !important; width: 200px !important;margin:0px !important;padding:0px !important;}
 div.inner label {font-size: 13px;}
@@ -171,180 +97,48 @@ div.inner h1.materiale, a.materiale{color:#008000 !important;}
 div.inner h1.stoart, a.stoart{color:#0095D8 !important;}
 div.inner h1.architettonica, a.architettonica{color:#FF0000 !important;}
 div.inner h1.cartografica, a.cartografica{color:#D9162C !important;}
-
 div.valori{background-color: #fff; border:1px solid #96867B; padding: 2px 5px; min-width: 150px !important; width:100% !important;}
-
 div.sezioni{border-top:1px solid #96867B;/*border-bottom:1px solid #96867B;margin:-1px 2px;*/padding:0px 5px;}
 div.sezioni:hover{background-color:#CFC4B1; cursor:pointer;}
 div.sezioni h2{padding:1px 0px !important; margin:0px !important;font-size: 16px;}
-
 .sezAperta{background-color:#CFC4B1;}
-
 div#mapImgWrap{float:right;width:400px;height: 300px;margin-top:30px !important;padding:0px;}
 div#smallMap, div#noMap, div#imgDiv{width:400px;height: 300px; overflow:hidden;}
 div#noMapAlert, div#noImgAlert{position:relative;font-weight: bold;font-size: 16px;margin:0px auto !important; text-align: center;}
-/*div#noImgAlert img{width:390px;}*/
 div#switchImgMap{float: right;width: 400px;margin: 10px 0px -30px 0px;}
-div#panelFoto{
- position: absolute;
- bottom: 5px;
- right: 0px;
- background-color: rgba(255,255,255,0.4);
- text-align: center;
- width: 100%;
- padding: 5px;
-}
+div#panelFoto{position: absolute; bottom: 5px; right: 0px; background-color: rgba(255,255,255,0.4); text-align: center; width: 100%; padding: 5px;}
 div#panelFoto label{font-size:12px; color:black; cursor: pointer;}
 div#panelFoto label:hover{text-shadow:0px 0px 8px #000;}
 div#img{cursor: pointer;}
-
-div#tip{
-   display: none;
-   width:800px;
-   margin:10px auto !important; 
-   padding:10px;
-   background-color: orange; 
-   font-size: 130%;
-   text-align: center;
-   border-radius: 10px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px; 
-}
-
+div#tip{ display: none; width:800px; margin:10px auto !important;  padding:10px; background-color: orange;  font-size: 130%;text-align: center;border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
 div#fine{border-top:1px solid #96867B; border-bottom:1px solid #96867B; background-color: #CFC4B1; margin:10px 0px; padding:10px; font-weight: bold;}
 /************* pager *************************/
-.page_navigation{
- margin: 15px 0px 15px 10px;
-}
-.page_navigation a{
-	padding:5px; 
-	margin:0px 2px; 
-	/*background-color: rgba(255,191,150,0.8); */
-	color:black;
-	border:1px inset rgb(255,191,150);
-	text-decoration: none;
-	font-weight: bold;
-}
-.page_navigation a:hover{
-   background-color: rgb(255,191,150); 
-	/*color:rgb(255,191,150);*/
-}
-.active_page{
-	background-color: rgba(2,190,2,0.8) !important;
-	border:1px inset rgb(2,190,2) !important;
-}
+.page_navigation{margin: 15px 0px 15px 10px;}
+.page_navigation a{	padding:5px; margin:0px 2px; color:black;border:1px inset rgb(255,191,150);text-decoration: none; font-weight: bold;}
+.page_navigation a:hover{background-color: rgb(255,191,150); }
+.active_page{background-color: rgba(2,190,2,0.8) !important;border:1px inset rgb(2,190,2) !important;}
 /******* stile jquery dialog ****************/
-.ui-widget-overlay {
-  background: #000;
-  opacity: .70;
-  filter: Alpha(Opacity=70);
-}
-/*.ui-dialog-titlebar-close {visibility: hidden;}*/
-.ui-widget-content{
-	border:none;
-	padding:0px;
-}
-.ui-widget-content, .ui-corner-all {
-   -moz-border-radius: 0px;
-   -webkit-border-radius: 0px;
-   border-radius: 0px;
-}
-.ui-widget-header {
-	border:none;
-   background: #ECECEC;
-   color: #907F73;
-   font-weight: bold;
-}
-
-.ui-autocomplete {
-    max-height: 200px;
-    overflow-y: auto;
-    /* prevent horizontal scrollbar */
-    overflow-x: hidden;
-  }
-  /* IE 6 doesn't support max-height
-   * we use height instead, but this forces the menu to always be this tall
-   */
-  * html .ui-autocomplete {
-    height: 200px;
-  }
-
-
-
+.ui-widget-overlay { background: #000; opacity: .70; filter: Alpha(Opacity=70);}
+.ui-widget-content{border:none;padding:0px;}
+.ui-widget-content, .ui-corner-all {-moz-border-radius: 0px; -webkit-border-radius: 0px; border-radius: 0px;}
+.ui-widget-header {border:none; background: #ECECEC; color: #907F73; font-weight: bold;}
+.ui-autocomplete { max-height: 200px; overflow-y: auto; overflow-x: hidden; }
+  /* IE 6 doesn't support max-height we use height instead, but this forces the menu to always be this tall */
+  * html .ui-autocomplete {height: 200px;}
 /********** mappa piccola *****/
 div.olControlZoom a, a.baseButton {background: #F8F8F6 !important; background: rgba(248, 248, 246, 0.5) !important;	}
 div.olControlZoom a:hover, a.baseButton:hover {background: #A5A56B !important;}
-.olControlLayerSwitcher .layersDiv {
-	background-color: #bdbd9e !important; 
-	color:black !important;
-	font-size: 10px !important;
-}
-div#smallMapPanel, div#imgPanel{
-   position: absolute;
-   float:left;
-   z-index: 1003;
-   margin-top:8px;
-   margin-left:40px;
-   background: rgba(255,255,255,0.4);
-   border-radius: 4px;
-   padding: 6px 4px;
-   width:auto;
-}
-a.baseButton{
-   margin:-1px;
-   padding:4px;
-   color: white;
-   font-size: 12px;
-   font-weight: bold;
-   text-decoration: none;
-   text-align: center;
-   height: 22px;
-   width:40px;
-}
+.olControlLayerSwitcher .layersDiv {background-color: #bdbd9e !important; color:black !important;font-size: 10px !important;}
+div#smallMapPanel, div#imgPanel{ position: absolute; float:left; z-index: 1003; margin-top:8px; margin-left:40px; background: rgba(255,255,255,0.4); border-radius: 4px; padding: 6px 4px; width:auto;}
+a.baseButton{ margin:-1px; padding:4px; color: white; font-size: 12px; font-weight: bold; text-decoration: none; text-align: center; height: 22px; width:40px;}
 a#sat{border-radius: 4px 0px 0px 4px;}
 a#osm{border-radius: 0px 4px 4px 0px;}
-
 div#content{border: 1px solid #C1FEAE;margin-top:50px;}
 table.mainData{width:100% !important;}
 table.mainData td{vertical-align: top !important;}
 .fa{cursor:pointer;}
-
 /******** tooltip ******/
-.arrow_box {
- position: absolute;
- background: #96867B;
- border: 1px solid #73675e;
- border-radius: 2px;
- font-size: 1em;
- font-weight: bold;
- color: #ddf8c6;
- text-shadow: 0 1px 2px rgba(0,0,0,0.4);
- text-align: center;
- padding: 5px;
- margin-left: -27px;
- width: 300px;
- /*height: 48px;*/
-}
-.arrow_box:after, .arrow_box:before {
-	top: 100%;
-	left: 10%;
-	border: solid transparent;
-	content: " ";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
-}
-
-.arrow_box:after {
-	border-color: rgba(150, 134, 123, 0);
-	border-top-color: #96867B;
-	border-width: 5px;
-	margin-left: -5px;
-}
-.arrow_box:before {
-	border-color: rgba(115, 103, 94, 0);
-	border-top-color: #73675e;
-	border-width: 6px;
-	margin-left: -6px;
-}
+.arrow_box {position: absolute;background: #96867B; border: 1px solid #73675e; border-radius: 2px; font-size: 1em; font-weight: bold; color: #ddf8c6; text-shadow: 0 1px 2px rgba(0,0,0,0.4); text-align: center; padding: 5px; margin-left: -27px; width: 300px;}
+.arrow_box:after, .arrow_box:before {top: 100%;left: 10%;border: solid transparent;content: " ";	height: 0;width: 0;position: absolute;pointer-events: none;}
+.arrow_box:after {border-color: rgba(150, 134, 123, 0);border-top-color: #96867B;border-width: 5px;margin-left: -5px;}
+.arrow_box:before {border-color: rgba(115, 103, 94, 0);border-top-color: #73675e;border-width: 6px;margin-left: -6px;}

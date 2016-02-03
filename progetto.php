@@ -27,7 +27,6 @@ if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
             </div><!-- wrap-->
         </div><!--container-->
         <script type="text/javascript" src="lib/jquery-core/jquery-1.12.0.min.js"></script>
-        <script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
         <script type="text/javascript" src="lib/funzioni.js"></script>
         <script type="text/javascript" src="lib/menu.js"></script>
     </body>

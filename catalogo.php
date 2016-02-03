@@ -22,20 +22,19 @@ require_once("inc/db.php");
   <meta name="copyright" content="&copy;2011 Museo Provinciale" />
 
   <title>Le fonti per la storia. Per un archivio delle fonti sulle valli di Primiero e Vanoi</title>
-  <link href="lib/jquery_friuli/css/start/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/scheda.css" type="text/css" rel="stylesheet" media="screen" />
   <link rel="shortcut icon" href="img/icone/favicon.ico" />
-  
-  <script type="text/javascript" src="lib/jquery-core/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
-  
+ 
   <style type="text/css">
     div#content{border: 1px solid #C1FEAE;margin-top:50px;}
     table.mainData{width:100% !important;}
     table.mainData td{vertical-align: top !important;}
-    table#catalogoTable{margin:0 !important;}
+    table#catalogoTable{table-layout: fixed;margin:0 !important;}
     select#filtroCatalogo{border: 1px solid #d6d6d6 !important;border-radius: 5px !important; padding: 5px !important; background:none !important;}
     .export{display:inline-block;color:#FFBF96;padding:6px;border-radius:5px;border: 1px solid #d6d6d6;text-decoration:none !important ;font-weight:bold;}
+    #tool{margin:30px 10px 10px;}
+    #tool div{display:inline-block;width:49%;}
+    #tool div:nth-child(2){text-align:right;}
   </style>
 
 </head>
@@ -80,9 +79,9 @@ require_once("inc/db.php");
    $row = pg_num_rows($exec);
    if($tipo == 0) {$caption = "Il database contiene ".$row." schede";} else {$caption="Il database contiene ".$row." schede relative a fonti <b>".$legenda."</b>";}
   ?> 
-  <div style="margin:30px 10px 0px 10px;">
-   <div style="float:left"><legend id="legenda"></legend></div>
-   <div style="float:right">
+  <div id="tool">
+   <div><legend id="legenda"></legend></div>
+   <div>
      filtra ricerca:
      <select id="filtroCatalogo">
       <option value="0" selected >tutte le fonti</option>
@@ -99,20 +98,17 @@ require_once("inc/db.php");
   </div>
   <div style="clear:both;"></div>
   
-<input type='hidden' id='current_page' />  
-<input type='hidden' id='show_per_page' /> 
-<div class='page_navigation'></div> 
-  <table id="catalogoTable">
+ <table id="catalogoTable">
    <caption></caption>
    <thead>
     <tr>
-     <th>ID</th>
+     <th style="width:20px;">ID</th>
      <th style="width:90px;">NUM.SCH.</th>
      <th style="width:100px;">LIV.IND.</th>
-     <th style="width:300px;">OGGETTO</th>
-     <th>NOTE</th>
+     <th style="width:310px;">OGGETTO</th>
+     <th style="width:300px;">NOTE</th>
      <?php 
-      if($tipoUSr!=3) {echo "<th style='width:60px;'>Stato scheda</th>";}
+      if($tipoUSr!=3) {echo "<th style='width:70px;'>Stato scheda</th>";}
      ?>
     </tr>
    </thead>
@@ -145,21 +141,20 @@ require_once("inc/db.php");
   </div>
  </div>
    </div>
-   <div id="footer"><?php require_once ("inc/footer.inc"); ?></div>
+   <div id="footer"><?php require_once ("inc/footer.php"); ?></div>
   </div>
  </div> 
  <!--div invisibili -->
-
+<script type="text/javascript" src="lib/jquery-core/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" src="lib/funzioni.js"></script>
 <script type="text/javascript" >
 $(document).ready(function() {
    //var tipo;
-	var legenda;
-	var pre = 'Il database contiene ';
-	var post = ' schede relative a fonti '; 
-	var righe = $('#catalogoTable tbody tr:visible').length;
-	$('#legenda').html(pre+'<b>'+righe+'</b> schede');
-
-
+    var legenda;
+    var pre = 'Il database contiene ';
+    var post = ' schede relative a fonti '; 
+    var righe = $('#catalogoTable tbody tr:visible').length;
+    $('#legenda').html(pre+'<b>'+righe+'</b> schede');
     $("#filtroCatalogo").change(function(){
    	    var tipo = $(this).val();
    	    switch (tipo) {
@@ -172,7 +167,7 @@ $(document).ready(function() {
             case '8': legenda = "<b>architettoniche</b>"; break;
             case '9': legenda = "<b>storico-artistiche</b>"; break;	
             case '10': legenda = "<b>cartografiche</b>"; break;
-        }	
+        }
         if( tipo != 0){
             $("#catalogoTable tbody>tr").hide();
             $("#catalogoTable tr."+tipo).show();
@@ -184,14 +179,13 @@ $(document).ready(function() {
             $('#legenda').html(pre+'<b>'+righe+'</b> schede');
         }
     });
-	$('.link').click(function(){
+    $('.link').click(function(){
         var id = $(this).attr('ref');
-	    var link = 'scheda_archeo.php?id='+id;
-	    window.open(link, '_blank');
+        var link = 'scheda_archeo.php?id='+id;
+        window.open(link, '_blank');
     });
-	//pager();
-	
- function exportTableToCSV($table, filename) {
+    
+function exportTableToCSV($table, filename) {
   var $rows = $table.find('tr'),
   tmpColDelim = String.fromCharCode(11),
   tmpRowDelim = String.fromCharCode(0),
@@ -221,41 +215,6 @@ $(document).ready(function() {
  $("#csv").click(function (event) {exportTableToCSV.apply(this, [$('#catalogoTable'), 'catalogo.csv']);}); 
 });
 
-function pager(){
-    var show_per_page = 40;   
-    var number_of_items = $('#catalogoTable tbody tr:visible').length; 
-    var number_of_pages = Math.ceil(number_of_items/show_per_page);  
-    $('#current_page').val(0);  
-    $('#show_per_page').val(show_per_page);  
-    var navigation_html = '<a class="previous_link" href="javascript:previous();">Prev</a>';
-    var current_link = 0;
-    while(number_of_pages > current_link){
-      navigation_html += '<a class="page_link" href="javascript:go_to_page(' + current_link +')" longdesc="' + current_link +'">'+ (current_link + 1) +'</a>';
-      current_link++;
-    }
-    navigation_html += '<a class="next_link" href="javascript:next();">Next</a>';
-    $('.page_navigation').html(navigation_html);
-    $('.page_navigation .page_link:first').addClass('active_page');
-    $("#catalogoTable tbody>tr").css('display', 'none');
-    $("#catalogoTable tbody>tr").slice(0, show_per_page).css('display', 'table-row');
-}
-function previous(){
-	new_page = parseInt($('#current_page').val()) - 1;
-	if($('.active_page').prev('.page_link').length==true){go_to_page(new_page);}
-}
-
-function next(){
-	new_page = parseInt($('#current_page').val()) + 1;
-	if($('.active_page').next('.page_link').length==true){go_to_page(new_page);}
-}
-function go_to_page(page_num){
-	var show_per_page = parseInt($('#show_per_page').val());
-	start_from = page_num * show_per_page;
-	end_on = start_from + show_per_page;
-	$("#catalogoTable tbody>tr").css('display', 'none').slice(start_from, end_on).css('display', 'table-row');
-	$('.page_link[longdesc=' + page_num +']').addClass('active_page').siblings('.active_page').removeClass('active_page');
-	$('#current_page').val(page_num);
-}
 </script>
 
 </body>

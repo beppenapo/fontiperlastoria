@@ -11,18 +11,12 @@ $idUsr = $_SESSION['id'];
 $tipoUsr = $_SESSION['tipo'];
 $hub = $_SESSION['hub'];
 $data = date("Y-m-d");
-
-/* query area di interesse */
-
-
 if($tipoScheda==10){
     $opt = "<option value='261'>-- seleziona area di interesse cartografico --</option>";
-    //$qai =  "SELECT id, nome from area order by nome asc;";
     $t=3;
     $defVal = 261;
 }else{
     $opt = "<option value='261'>-- seleziona area di interesse --</option>";
-    //$qai =  "SELECT distinct aree.id, comune.comune, localita.localita FROM aree, localita,comune WHERE aree.id_comune = comune.id AND aree.id_localita = localita.id AND aree.tipo = 1 order by comune asc, localita asc;";
     $t=1;
     $defVal = 261;
 }
@@ -43,12 +37,10 @@ $resai = pg_query($connection, $qai);
   <meta name="copyright" content="&copy;2011 Museo Provinciale" />
 
   <title>Le fonti per la storia. Per un archivio delle fonti sulle valli di Primiero e Vanoi</title>
-  <link href="lib/jquery_friuli/css/start/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet" media="screen" />
+  <link href="lib/jquery-ui-1.11.4/jquery-ui.min.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/scheda.css" type="text/css" rel="stylesheet" media="screen" />
   <link rel="shortcut icon" href="img/icone/favicon.ico" />
   <link type="text/css" rel="stylesheet" href="css/jquery.qtip.min.css" />
-  <script type="text/javascript" src="lib/jquery-core/jquery-1.4.4.min.js"></script>
-  <script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
   <style type="text/css">
     div#content{border: 1px solid #C1FEAE;margin-top:50px;}
     table.mainData{width:100% !important;}
@@ -551,7 +543,7 @@ $resai = pg_query($connection, $qai);
      <?php } ?>
     </div><!--content-->
 
-   <div id="footer"><?php require_once ("inc/footer.inc"); ?></div><!--footer-->
+   <div id="footer"><?php require_once ("inc/footer.php"); ?></div><!--footer-->
 
 
   </div><!-- wrap-->
@@ -559,7 +551,8 @@ $resai = pg_query($connection, $qai);
 
  <!--div invisibili -->
   <div id="confirm"></div>
-
+ <script type="text/javascript" src="lib/jquery-core/jquery-1.12.0.min.js"></script>
+ <script type="text/javascript" src="lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
   <script type="text/javascript" src="lib/jquery.qtip.min-2.0.1.js"></script>
   <script type="text/javascript" src="lib/menu.js"></script>
   <script type="text/javascript" src="lib/select.js"></script>
@@ -744,9 +737,7 @@ $(document).ready(function() {
    	errori = '<h3>I seguenti campi sono obbligatori e vanno compilati:</h3><ol>' + errori;
         $("<div id='errorDialog'>" + errori + "</ol></div>").dialog({
           resizable: false,
-          height: 'auto',
           width: 'auto',
-          position: 'top',
           title:'Errori',
           modal: true,
           buttons: {'Chiudi finestra': function() {$(this).dialog('close');} }//buttons
@@ -795,9 +786,7 @@ $(document).ready(function() {
                //alert('Record inserito correttamente');
               $("#confirm").html(data);
               $("#confirm").dialog({
-                 position:['middle', 10],
                  resizable: false,
-                 height:600,
                  width:600,
                  title:'Risultato query'
               });//dialog

@@ -2,11 +2,9 @@
 session_start();
 ini_set( "display_errors", 0);
 require_once("inc/db.php");
-
 if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 $id=$_SESSION['id_user'];
 $attivo=($_SESSION['attivo']==1 ? $attivo='attivo' : $attivo='non attivo');
-
 ?> 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//IT"
@@ -22,17 +20,14 @@ $attivo=($_SESSION['attivo']==1 ? $attivo='attivo' : $attivo='non attivo');
   <meta name="copyright" content="&copy;2011 Museo Provinciale" />
 
   <title>Le fonti per la storia. Per un archivio delle fonti sulle valli di Primiero e Vanoi</title>
-  <link href="lib/jquery_friuli/css/start/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/scheda.css" type="text/css" rel="stylesheet" media="screen" />
   <link rel="shortcut icon" href="img/icone/favicon.ico" />
-  <script type="text/javascript" src="lib/jquery-core/jquery-1.4.4.min.js"></script>
-  <script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
   <style type="text/css">
-    /*div#content{border: 1px solid #C1FEAE;margin-top:50px;}*/
     table{width:100% !important;}
     table td{vertical-align: top !important;padding:0px !important;}
     div.slide{margin:0px 10px 0px 10px; border:1px solid #CFC4B1;padding:10px;}
     textarea{height: 20px !important;}
+    span.msg{margin-left:20px;color:red;}
   </style>
 
 </head>
@@ -75,7 +70,7 @@ $attivo=($_SESSION['attivo']==1 ? $attivo='attivo' : $attivo='non attivo');
     </td>
    </tr>
    <tr>
-    <td colspan="3"><label class="update" id="informazioni">modifica sezione</label></td>
+    <td colspan="3"><label class="update" id="informazioni">modifica sezione</label><span id="infoMsg" class="msg"></span></td>
    </tr>
   </table>
     
@@ -88,7 +83,7 @@ $attivo=($_SESSION['attivo']==1 ? $attivo='attivo' : $attivo='non attivo');
     </td>
    </tr>
    <tr>
-    <td><label class="update" id="datiLogin">modifica sezione</label></td>
+    <td><label class="update" id="datiLogin">modifica sezione</label><span id="loginMsg" class="msg"></span></td>
    </tr>
   </table>
    
@@ -105,7 +100,7 @@ $attivo=($_SESSION['attivo']==1 ? $attivo='attivo' : $attivo='non attivo');
     </td>
    </tr>
    <tr>
-    <td colspan="3"><label class="update" id="cambiaPassword">modifica sezione</label></td>
+    <td colspan="3"><label class="update" id="cambiaPassword">modifica sezione  </label><span id="pwdMsg" class="msg"></span></td>
    </tr>
   </table>
  <hr />
@@ -133,116 +128,117 @@ $attivo=($_SESSION['attivo']==1 ? $attivo='attivo' : $attivo='non attivo');
   </div>
  </div>
    </div><!--content-->
-   <div id="footer"><?php require_once ("inc/footer.inc"); ?></div><!--footer-->
+   <div id="footer"><?php require_once ("inc/footer.php"); ?></div><!--footer-->
   </div><!-- wrap-->
  </div><!--container-->
  
  <!--div invisibili -->
 <div id="dialog">  </div>
-
-<script type="text/javascript" src="lib/select.js"></script>
+<script type="text/javascript" src="lib/jquery-core/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" src="lib/funzioni.js"></script>
 <script type="text/javascript" >
 var id='<?php echo($id);?>';
 $(document).ready(function() {
-   $('#informazioni').click(function(){
-    var cognome = $('#cognome').val();
-    var nome = $('#nome').val();
-    var email = $('#email').val();
-    var errori1='';
-    if (!cognome) {errori1 += 'Il campo COGNOME non può essere vuoto<br/>';$('#cognome').addClass('errore');}
-    else{$('#cognome').removeClass('errore');}
-    if (!nome) {errori1 += 'Il campo NOME non può essere vuoto<br/>';$('#nome').addClass('errore');}
-    else{$('#nome').removeClass('errore');}   
-    if (!email) {errori1 += 'Il campo MAIL non può essere vuoto<br/>';$('#email').addClass('errore');}
-    else{
-       if (!validEmail(email)) {errori1 += 'La MAIL inserita non è valida<br/>';$('#email').addClass('errore');}
-       else{$('#email').removeClass('errore');}
-      $('#email').removeClass('errore');
-    }
-    if(errori1){
-   	errori1 = '<h3>I seguenti campi sono obbligatori e vanno compilati:</h3><ol>' + errori1;
-        $("<div id='errorDialog'>" + errori1 + "</ol></div>").dialog({
-          resizable: false,height: 'auto',width: 'auto',position: 'top',title:'Errori',modal: true,
-          buttons: {'Chiudi finestra': function() {$(this).dialog('close');} }//buttons
-       });//dialog
-       return false;
-   }else{   
-      $.ajax({
-          url: 'inc/account1_update.php',
-          type: 'POST', 
-          data: {id:id,cognome:cognome, nome:nome, email:email},
-          success: function(data){
-             $("<div>"+data+"</div>").dialog({position:['middle', 10]}).delay(2500).fadeOut(function(){ $(this).dialog("close");});
-             $('#cognome').val(cognome);
-             $('#nome').val(nome);
-             $('#email').val(email);
-          }//success
-     });//ajax
-    }
-   });
-   
-   $('#datiLogin').click(function(){
-    var username = $('#username').val();
-    var errori2='';
-    if (!username) {errori2 += 'Il campo USERNAME non può essere vuoto<br/>';$('#username').addClass('errore');}
-    else{$('#username').removeClass('errore');}
-    if(errori2){
-   	errori2 = '<h3>I seguenti campi sono obbligatori e vanno compilati:</h3><ol>' + errori2;
-        $("<div id='errorDialog'>" + errori2 + "</ol></div>").dialog({
-          resizable: false,height: 'auto',width: 'auto',position: 'top',title:'Errori',modal: true,
-          buttons: {'Chiudi finestra': function() {$(this).dialog('close');} }//buttons
-       });//dialog
-       return false;
-   }else{   
-      $.ajax({
-          url: 'inc/account2_update.php',
-          type: 'POST', 
-          data: {id:id,username:username},
-          success: function(data){
-             $("<div>"+data+"</div>").dialog({position:['middle', 10]}).delay(2500).fadeOut(function(){ $(this).dialog("close");});
-             $('#username').val(username);
-          }//success
-     });//ajax
-    }
-   });  
+    $('#informazioni').click(function(){
+        var cognome = $('#cognome').val();
+        var nome = $('#nome').val();
+        var email = $('#email').val();
+        if (!cognome) {
+            $('#infoMsg').text('Il campo COGNOME non può essere vuoto.');
+            $('#cognome').addClass('errore');
+            return false;
+        }else{
+            $('#infoMsg').text('');
+            $('#cognome').removeClass('errore');
+        }
+        if (!nome) {
+            $('#infoMsg').text('Il campo NOME non può essere vuoto');
+            $('#nome').addClass('errore');
+            return false;
+        }else{
+            $('#infoMsg').text('');
+            $('#nome').removeClass('errore');
+        }
+        if (!email) {
+            $('#infoMsg').text('Il campo MAIL non può essere vuoto');
+            $('#email').addClass('errore');
+            return false;
+        }else{
+            if (!validEmail(email)) {
+                $('#infoMsg').text('La MAIL inserita non è valida');
+                $('#email').addClass('errore');
+                return false;
+            }else{
+                $('#infoMsg').text('');
+                $('#email').removeClass('errore');
+            }
+            $('#email').removeClass('errore');
+        }
+        $.ajax({
+            url: 'inc/account1_update.php',
+            type: 'POST', 
+            data: {id:id,cognome:cognome, nome:nome, email:email},
+            success: function(data){
+                $('#infoMsg').text(data).delay(2500).fadeOut();
+                $('#cognome').val(cognome);
+                $('#nome').val(nome);
+                $('#email').val(email);
+            }//success
+        });//ajax
+    });
+
+    $('#datiLogin').click(function(){
+        var username = $('#username').val();
+        if (!username) {
+            $('#loginMsg').text('Il campo USERNAME non può essere vuoto');
+            $('#username').addClass('errore');
+            return false;
+        }else{
+            $('#loginMsg').text('');
+            $('#username').removeClass('errore');
+        }
+        $.ajax({
+            url: 'inc/account2_update.php',
+            type: 'POST', 
+            data: {id:id,username:username},
+            success: function(data){
+                $('#loginMsg').delay(2500).fadeOut();
+                $('#username').val(username);
+            }
+        });
+    });  
    
    $('#cambiaPassword').click(function(){
     var pwd = $('#password').val();
     var pwd_check = $('#password_check').val(); 
-    var errori3='';
-    if (!pwd) {errori3 += 'Il campo PASSWORD non può essere vuoto<br/>';$('#password').addClass('errore');}
-    else{$('#password').removeClass('errore');}
-
+    if (!pwd) {
+        $("#pwdMsg").text('Per cambiare password ne devi inserire una nuova!');
+        $('#password').addClass('errore'); 
+        return false;
+    }else{
+        $("#pwdMsg").text('');
+        $('#password').removeClass('errore');
+    }
     if (pwd != pwd_check) {
-      errori3 += 'Le due PASSWORD non corrispondono<br/>';
-      $('#password, #password_check').addClass('errore');}
-    else{$('#password, #password_check').removeClass('errore');}
-    if(errori3){
-   	errori3 = '<h3>I seguenti campi sono obbligatori e vanno compilati:</h3><ol>' + errori3;
-        $("<div id='errorDialog'>" + errori3 + "</ol></div>").dialog({
-          resizable: false,height: 'auto',width: 'auto',position: 'top',title:'Errori',modal: true,
-          buttons: {'Chiudi finestra': function() {$(this).dialog('close');} }//buttons
-       });//dialog
-       return false;
-   }else{   
-      $.ajax({
+      $("#pwdMsg").text('Le due PASSWORD non corrispondono');
+      $('#password, #password_check').addClass('errore');
+      return false;
+    }else{
+        $("#pwdMsg").text('');
+        $('#password, #password_check').removeClass('errore');
+    }
+    $.ajax({
           url: 'inc/account3_update.php',
           type: 'POST', 
           data: {id:id,pwd:pwd},
           success: function(data){
-             $("<div>"+data+"</div>").dialog({position:['middle', 10]}).delay(2500).fadeOut(function(){ $(this).dialog("close");});
+             $("#pwdMsg").text(data).delay(2500).fadeOut();
              $('#password').val('');
              $('#password_check').val('');
           }//success
      });//ajax
-    }
    });    
 });//funzione principale
-
-function validEmail(v) {
-    var r = new RegExp("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
-    return (v.match(r) == null) ? false : true;
-}
 </script>
 
 </body>

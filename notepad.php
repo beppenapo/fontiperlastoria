@@ -3,7 +3,7 @@ session_start();
 if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 $idUsr = $_SESSION['id'];
 ini_set( "display_errors", 0);
-require_once("inc/db.php");
+require("inc/db.php");
 
 ?> 
 
@@ -20,12 +20,7 @@ require_once("inc/db.php");
   <meta name="copyright" content="&copy;2011 Museo Provinciale" />
 
   <title>Le fonti per la storia. Per un archivio delle fonti sulle valli di Primiero e Vanoi</title>
-  <script type="text/javascript" src="lib/jquery-core/jquery-1.4.4.min.js"></script>
-  <script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
-  <script type="text/javascript" src="lib/jHtmlArea-0.7.5.min.js"></script>
-  <script type="text/javascript" src="lib/jHtmlArea.ColorPickerMenu-0.7.0.js"></script>	
-
-  <link href="lib/jquery_friuli/css/start/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet" media="screen" />
+  <link href="lib/jquery-ui-1.11.4/jquery-ui.min.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/jHtmlArea.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/jHtmlArea.ColorPickerMenu.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/scheda.css" type="text/css" rel="stylesheet" media="screen" />
@@ -204,6 +199,11 @@ require_once("inc/db.php");
  <div id="si2" class="login2">SI, procedi con l'eliminazione</div>
 </div>
 
+<script type="text/javascript" src="lib/jquery-core/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+<script type="text/javascript" src="lib/funzioni.js"></script>
+<script type="text/javascript" src="lib/jHtmlArea-0.7.5.min.js"></script>
+<script type="text/javascript" src="lib/jHtmlArea.ColorPickerMenu-0.7.0.js"></script>
 <script type="text/javascript" >
 $(document).ready(function() {
  $('#wrapEditor').hide();

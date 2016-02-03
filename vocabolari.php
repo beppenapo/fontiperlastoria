@@ -19,12 +19,10 @@ require_once("inc/db.php");
   <meta name="copyright" content="&copy;2011 Museo Provinciale" />
 
   <title>Le fonti per la storia. Per un archivio delle fonti sulle valli di Primiero e Vanoi</title>
-  <link href="lib/jquery_friuli/css/start/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet" media="screen" />
+  <link href="lib/jquery-ui-1.11.4/jquery-ui.min.css" type="text/css" rel="stylesheet" media="screen" />
+  <link type="text/css" rel="stylesheet" href="lib/qtip/jquery.qtip.min.css" />
   <link href="css/scheda.css" type="text/css" rel="stylesheet" media="screen" />
   <link rel="shortcut icon" href="img/icone/favicon.ico" />
-  <link type="text/css" rel="stylesheet" href="css/jquery.qtip.min.css" />
-  <script type="text/javascript" src="lib/jquery-core/jquery-1.4.4.min.js"></script>
-  <script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
   <style type="text/css">
     div#content{border: 1px solid #C1FEAE;margin-top:50px;}
     table.mainData{width:100% !important;}
@@ -65,7 +63,7 @@ require_once("inc/db.php");
   <?php
    if($row != 0) {
      for ($x = 0; $x < $row; $x++){
-       $id = pg_result($exec, $x,"id"); 	
+       $id = pg_result($exec, $x,"id"); 
        $tab = pg_result($exec, $x,"tabella");
        $nome = substr($tab, 6);
        echo "<tr class='link' title='Clicca per modificare la lista valori' ref='$tab'><td>$nome</td></tr>";
@@ -92,40 +90,34 @@ require_once("inc/db.php");
   </div>
  </div>
    </div><!--content-->
-   <div id="footer"><?php require_once ("inc/footer.inc"); ?></div><!--footer-->
+   <div id="footer"><?php require_once ("inc/footer.php"); ?></div><!--footer-->
   </div><!-- wrap-->
  </div><!--container-->
  
  <!--div invisibili -->
-
-<script type="text/javascript" src="lib/jquery.qtip.min-2.0.1.js"></script>
+<script type="text/javascript" src="lib/jquery-core/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+<script type="text/javascript" src="lib/qtip/jquery.qtip.min.js"></script>
+<script type="text/javascript" src="lib/funzioni.js"></script>
 <script type="text/javascript" >
 var tab;
 $(document).ready(function() {
- $('.link').each(function(){
-   $(this).click(function(){
-     var cliccata = $(this);
-     $('.link').not(cliccata).removeClass('cliccata');
-     cliccata.addClass('cliccata');
-     
-     tab = cliccata.attr('ref');
-     $('#intestaz').html('Stai modificando i valori della tabella <b>'+tab+'</b>');
-     $.ajax({
-       url: 'inc/update_liste.php',
-       type: 'POST', 
-       data: {tab:tab},	
-       success: function(data){$('#vocabolariTable tbody').html(data);}//success
-     });//ajax
-     
-     var button = '<input id="addDefinizione" name="addDefinizione" type="text" /><input type="button" id="add" name="add" value="Aggiungi definizione" />';
-     $('#pulsanti').html(button);
-     
-   });//.link click
- });//.link each
-
-
+    $('.link').click(function(){
+        var cliccata = $(this);
+        $('.link').not(cliccata).removeClass('cliccata');
+        cliccata.addClass('cliccata');
+        tab = cliccata.attr('ref');
+        $('#intestaz').html('Stai modificando i valori della tabella <b>'+tab+'</b>');
+        $.ajax({
+            url: 'inc/update_liste.php',
+            type: 'POST', 
+            data: {tab:tab},	
+            success: function(data){$('#vocabolariTable tbody').html(data);}
+        });//ajax
+        var button = '<input id="addDefinizione" name="addDefinizione" type="text" /><input type="button" id="add" name="add" value="Aggiungi definizione" />';
+        $('#pulsanti').html(button);
+    });
 });
 </script>
-
 </body>
 </html>

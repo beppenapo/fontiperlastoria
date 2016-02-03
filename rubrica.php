@@ -2,9 +2,7 @@
 session_start();
 if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 ini_set( "display_errors", 0);
-
 require_once("inc/db.php");
-
 ?> 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//IT"
@@ -20,17 +18,16 @@ require_once("inc/db.php");
   <meta name="copyright" content="&copy;2011 Museo Provinciale" />
 
   <title>Le fonti per la storia. Per un archivio delle fonti sulle valli di Primiero e Vanoi</title>
-  <link href="lib/jquery_friuli/css/start/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet" media="screen" />
+  <link href="lib/jquery-ui-1.11.4/jquery-ui.min.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/scheda.css" type="text/css" rel="stylesheet" media="screen" />
   <link rel="shortcut icon" href="img/icone/favicon.ico" />
-  <script type="text/javascript" src="lib/jquery-core/jquery-1.4.4.min.js"></script>
-  <script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
   <style type="text/css">
     div#content{border: 1px solid #C1FEAE;margin-top:50px;}
     table.mainData{width:100% !important;}
     table.mainData td{vertical-align: top !important;}
     div.slide{margin:0px 10px 0px 10px; border:1px solid #CFC4B1;padding:10px;}
     textarea{height: 20px !important;}
+    #newRubMsg{margin-left:20px;}
   </style>
 
 </head>
@@ -197,6 +194,7 @@ ORDER BY nome ASC;
   
    <br/>
    <label class="update" id="new_rubrica">Salva record </label>
+   <span id="newRubMsg"></span>
   </div>
 </div>
         
@@ -254,93 +252,47 @@ ORDER BY nome ASC;
   </div>
  </div>
    </div><!--content-->
-   <div id="footer"><?php require_once ("inc/footer.inc"); ?></div><!--footer-->
+   <div id="footer"><?php require_once ("inc/footer.php"); ?></div><!--footer-->
   </div><!-- wrap-->
  </div><!--container-->
  
  <!--div invisibili -->
 <div id="dialog">  </div>
-
+<script type="text/javascript" src="lib/jquery-core/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+<script type="text/javascript" src="lib/funzioni.js"></script>
 <script type="text/javascript" src="lib/select.js"></script>
 <script type="text/javascript" >
-function pager(){
-//how much items per page to show  
-    var show_per_page = 20;  
-    //getting the amount of elements inside content div  
-    var number_of_items = $('#catalogoTable tbody tr:visible').length; 
-    //calculate the number of pages we are going to have  
-    var number_of_pages = Math.ceil(number_of_items/show_per_page);  
-  
-    //set the value of our hidden input fields  
-    $('#current_page').val(0);  
-    $('#show_per_page').val(show_per_page);  
-	var navigation_html = '<a class="previous_link" href="javascript:previous();">Prev</a>';
-	var current_link = 0;
-	while(number_of_pages > current_link){
-		navigation_html += '<a class="page_link" href="javascript:go_to_page(' + current_link +')" longdesc="' + current_link +'">'+ (current_link + 1) +'</a>';
-		current_link++;
-	}
-	navigation_html += '<a class="next_link" href="javascript:next();">Next</a>';
-	$('.page_navigation').html(navigation_html);
-	//add active_page class to the first page link
-	$('.page_navigation .page_link:first').addClass('active_page');
-	//hide all the elements inside content div
-	$("#catalogoTable tbody>tr").css('display', 'none');
-	//and show the first n (show_per_page) elements
-	$("#catalogoTable tbody>tr").slice(0, show_per_page).css('display', 'table-row');
-}
 $(document).ready(function() {
-   $('.slide').hide();
-   $('.sezioni').click(function(){
-   	$('.slide').slideToggle();
-   	//$('.sezioni').toggleClass('sezAperta');
-   });
-   
-   $('#new_rubrica').click(function(){
-    var nome_ins = $('#nome_ins').val();
-    var comune_ins = $('#comune_ana_update').val();
-    var localita_ins = $('#localita_ana_update').val();
-    var indirizzo_ins = $('#indirizzo_ana_update').val();
-    var tel_ins = $('#tel_ins').val();
-    var cell_ins = $('#cell_ins').val();
-    var fax_ins = $('#fax_ins').val();
-    var mail_ins = $('#mail_ins').val();
-    var web_ins = $('#web_ins').val();
-    var note_ins = $('#note_ins').val();
-    var tipo_ins = $('#tipo_ins').val();
-    var errori='';
-    
-    if (!nome_ins) {errori += 'Il campo NOME non può essere vuoto<br/>';$('#nome_ins').addClass('errore');}
-    else{$('#nome_ins').removeClass('errore');}
-    
-
-    if(errori){
-   	errori = '<h3>I seguenti campi sono obbligatori e vanno compilati:</h3><ol>' + errori;
-        $("<div id='errorDialog'>" + errori + "</ol></div>").dialog({
-          resizable: false,
-          height: 'auto',
-          width: 'auto',
-          position: 'top',
-          title:'Errori',
-          modal: true,
-          buttons: {'Chiudi finestra': function() {$(this).dialog('close');} }//buttons
-       });//dialog
-       return false;
-   }else{
-   	//alert('nome_ins:' +nome_ins+'\ncomune_ins: '+comune_ins+'\nlocalita_ins: '+localita_ins+'\nindirizzo_ins: '+indirizzo_ins+'\n tel: '+tel_ins+'\ncell: '+cell_ins+'\nfax: '+fax_ins+'\nmai: '+mail_ins+'\nweb: '+web_ins+'\nnote: '+note_ins); return false;
-   	$.ajax({
-          url: 'inc/rubrica_ins_script.php',
-          type: 'POST', 
-          data: {nome_ins:nome_ins, tipo_ins:tipo_ins, comune_ins:comune_ins, localita_ins:localita_ins, indirizzo_ins:indirizzo_ins, tel_ins:tel_ins, cell_ins:cell_ins, fax_ins:fax_ins, mail_ins:mail_ins, web_ins:web_ins, note_ins:note_ins},
-          success: function(data){
-             $(data)
-               .dialog({position:['middle', 10]})
-               .delay(2500)
-               .fadeOut(function(){ $(this).dialog("close");window.location.href = 'rubrica.php'; });
-          }//success
-     });//ajax
-   }
- });
+    $('.slide').hide();
+    $('.sezioni').click(function(){$('.slide').slideToggle();});
+    $('#new_rubrica').click(function(){
+        var nome_ins = $('#nome_ins').val();
+        var comune_ins = $('#comune_ana_update').val();
+        var localita_ins = $('#localita_ana_update').val();
+        var indirizzo_ins = $('#indirizzo_ana_update').val();
+        var tel_ins = $('#tel_ins').val();
+        var cell_ins = $('#cell_ins').val();
+        var fax_ins = $('#fax_ins').val();
+        var mail_ins = $('#mail_ins').val();
+        var web_ins = $('#web_ins').val();
+        var note_ins = $('#note_ins').val();
+        var tipo_ins = $('#tipo_ins').val();
+        if (!nome_ins) {$('#nome_ins').addClass('errore');}
+        else{$('#nome_ins').removeClass('errore');}
+        if($('#nome_ins').hasClass('errore')){
+            $("#newRubMsg").text('Il campo NOME è obbligatorio e va compilato.');
+            return false;
+        }else{
+            $("#newRubMsg").text('');
+            $.ajax({
+                url: 'inc/rubrica_ins_script.php',
+                type: 'POST', 
+                data: {nome_ins:nome_ins, tipo_ins:tipo_ins, comune_ins:comune_ins, localita_ins:localita_ins, indirizzo_ins:indirizzo_ins, tel_ins:tel_ins, cell_ins:cell_ins, fax_ins:fax_ins, mail_ins:mail_ins, web_ins:web_ins, note_ins:note_ins},
+                success: function(data){ $("#newRubMsg").text(data).delay(2500).fadeOut(function(){location.reload(); }); }
+            });//ajax
+        }
+    });
   
    
    //var tipo;
@@ -350,8 +302,7 @@ $(document).ready(function() {
 	var righe = $('#catalogoTable tbody tr:visible').length;
 	$('#legenda').html(pre+'<b>'+righe+'</b> schede');
 
-	$('.link').each(function(){
-	  $(this).click(function(){
+	$('.link').click(function(){
 	    var id = $(this).attr('id');
 	    var nome = $(this).attr('nome');
 	    var id_comune = $(this).attr('id_comune');
@@ -378,57 +329,14 @@ $(document).ready(function() {
              $("#dialog").dialog({
                resizable:false,
                modal:true,
-               height: 630,
                width: 700,
-               title: "Modifica sezione",
-             	position:['middle', 5]
+               title: "Modifica sezione"
              });
           }//success
      });//ajax
 	 });//click
-	});//each
    
-   pager();
-});//funzione principale
-
-function previous(){
-
-	new_page = parseInt($('#current_page').val()) - 1;
-	//if there is an item before the current active link run the function
-	if($('.active_page').prev('.page_link').length==true){
-		go_to_page(new_page);
-	}
-
-}
-
-function next(){
-	new_page = parseInt($('#current_page').val()) + 1;
-	//if there is an item after the current active link run the function
-	if($('.active_page').next('.page_link').length==true){
-		go_to_page(new_page);
-	}
-
-}
-function go_to_page(page_num){
-	//get the number of items shown per page
-	var show_per_page = parseInt($('#show_per_page').val());
-
-	//get the element number where to start the slice from
-	start_from = page_num * show_per_page;
-
-	//get the element number where to end the slice
-	end_on = start_from + show_per_page;
-
-	//hide all children elements of content div, get specific items and show them
-	$("#catalogoTable tbody>tr").css('display', 'none').slice(start_from, end_on).css('display', 'table-row');
-
-	/*get the page link that has longdesc attribute of the current page and add active_page class to it
-	and remove that class from previously active page link*/
-	$('.page_link[longdesc=' + page_num +']').addClass('active_page').siblings('.active_page').removeClass('active_page');
-
-	//update the current page input field
-	$('#current_page').val(page_num);
-}
+});
 
 </script>
 

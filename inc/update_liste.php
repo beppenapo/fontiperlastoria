@@ -1,12 +1,9 @@
 <?php
 include("db.php");
 $tab = $_POST['tab'];
-
 $select = ("select * FROM $tab ORDER BY definizione ASC;");
-
 $result = pg_query($connection, $select);
 $righe = pg_num_rows($result);
-
 if($righe != 0) {
      for ($y = 0; $y < $righe; $y++){
        $id = pg_result($result, $y,"id"); 	
