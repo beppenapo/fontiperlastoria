@@ -132,10 +132,14 @@ $ymax = $extComArr['maxy'];
 <script type="text/javascript" src="lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
   <script type="text/javascript" src="lib/OpenLayers-2.12/OpenLayers.js"></script>
   <script type="text/javascript" src="lib/OpenLayers-2.10/ScaleBar.js"></script>
-<script type="text/javascript" src="lib/funzioni.js"></script>
 <script type="text/javascript" >
 $(document).ready(function(){
     $("#openListaTopo").mouseover(function(){$("#topoLista").fadeIn('fast');}).mouseout(function(){$("#topoLista").fadeOut('fast');});
+     $('.submenu').hide();
+    $("#sessionMenu li").on({
+          mouseenter: function() {$(this).find('.submenu').slideDown('fast');}
+        , mouseleave: function() {$(this).find('.submenu').slideUp('fast');}
+    });
 });
 
 /******* OPEN LAYERS ********/
@@ -189,7 +193,7 @@ function init() {
     saveStrategy.events.register("success", '', showSuccessMsg); saveStrategy.events.register("failure", '', showFailureMsg);
     map = new OpenLayers.Map ("mappa2", mapOption);
     map.addControl(new OpenLayers.Control.Navigation());
-    map.addControl(new OpenLayers.Control.PanZoom());   
+    map.addControl(new OpenLayers.Control.PanZoom());
     map.addControl(new OpenLayers.Control.LayerSwitcher());
     map.addControl(new OpenLayers.Control.MousePosition({div:document.getElementById("coo")}));
     //mapextent = new OpenLayers.Bounds(1279972.812, 5782339.838, 1331677.275, 5838213.399);
