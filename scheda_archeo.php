@@ -172,12 +172,13 @@ $extent2 = str_replace(' ', ',', $extent2);
   <meta name="copyright" content="&copy;2011 Museo Provinciale" />
 
   <title>Le fonti per la storia. Per un archivio delle fonti sulle valli di Primiero e Vanoi</title>
-  <link href="lib/jquery_friuli/css/start/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet" media="screen" />
+  <link rel="stylesheet" href="lib/OpenLayers-2.12/theme/default/style.css" type="text/css">  
+  <link href="lib/jquery-ui-1.11.4/jquery-ui.min.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/scheda.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/ico-font/css/font-awesome.min.css" type="text/css" rel="stylesheet" media="screen" />
+    <link rel="stylesheet" href="css/google.css" type="text/css">
   <link rel="shortcut icon" href="img/icone/favicon.ico" />
-  <script type="text/javascript" src="lib/jquery-core/jquery-1.4.4.min.js"></script>
-  <script type="text/javascript" src="lib/jquery_friuli/js/jquery-ui-1.8.10.custom.min.js"></script>
+
 
   <style>
     #mapImgWrap{position:relative;}
@@ -1130,13 +1131,13 @@ order by id_scheda asc;
 </div>
 
 <div id="fotoOrig" style="display:none;"><img src="foto/<?php echo($img); ?>" /></div>
-
+<script type="text/javascript" src="lib/jquery-core/jquery-1.12.0.min.js"></script>
+<script type="text/javascript" src="lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
   <script type="text/javascript" src="lib/OpenLayers-2.12/OpenLayers.js"></script>
   <script src="http://maps.google.com/maps/api/js?v=3.2&amp;sensor=false"></script>
   <script type="text/javascript" src="lib/menu.js"></script>
   <script type="text/javascript" src="lib/select.js"></script>
   <script type="text/javascript" src="lib/update.js"></script>
-  <script type="text/javascript" src="lib/funzioni.js"></script>
 
 <script type="text/javascript" >
 var hub = '<?php echo($hub); ?>'
@@ -1160,7 +1161,11 @@ $(document).ready(function() {
     cache: false
   });//ajax1
  });
-
+$('.submenu').hide();
+    $("#sessionMenu li").on({
+          mouseenter: function() {$(this).find('.submenu').slideDown('fast');}
+        , mouseleave: function() {$(this).find('.submenu').slideUp('fast');}
+    });
  if(hub==2){$( "div.check:not([class~='bassa'])" ).remove();}
     
     $("a#removeArea").click(function(e){
