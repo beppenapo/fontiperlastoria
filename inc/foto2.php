@@ -1,7 +1,6 @@
 <?php
 $nd = '-';
 $q2 =  ("SELECT 
-  scheda.id, 
   foto2.id as id_foto2,
   foto2.fot_collocazione as collocazione, 
   foto2.sog_titolo as titolo, 
@@ -21,10 +20,8 @@ $q2 =  ("SELECT
   foto2.dtc_tpapp as apparecchio, 
   foto2.alt_note as note3
 FROM 
-  public.foto2, 
-  public.scheda
+  public.foto2
 WHERE 
-  foto2.dgn_numsch2 = scheda.dgn_numsch AND
   scheda.id = $id;");
 $r2 = pg_query($connection, $q2);
 $a2 = pg_fetch_array($r2, 0, PGSQL_ASSOC);

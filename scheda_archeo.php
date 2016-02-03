@@ -1138,6 +1138,7 @@ order by id_scheda asc;
   <script type="text/javascript" src="lib/menu.js"></script>
   <script type="text/javascript" src="lib/select.js"></script>
   <script type="text/javascript" src="lib/update.js"></script>
+  <script type="text/javascript" src="lib/funzioniScheda.js"></script>
 
 <script type="text/javascript" >
 var hub = '<?php echo($hub); ?>'
@@ -1211,7 +1212,7 @@ $( "#termfiga2" ).autocomplete({
    $('#liv'+livello).addClass('livAttivo');
 
    $('.slide').hide();
-   $('.toggle').click(function(){$(this).children('.slide').slideToggle(); });
+   $('.toggle > div > h2').click(function(){$(this).parent().next('.slide').slideToggle(); });
 
    if((tiposch==7)||(pag==92)||(pag==63)||(pag==23)) {
     if(hub==1){
@@ -1326,6 +1327,10 @@ $('.update').each(function(){
     return false;
     });//click
    });//each
+
+$("#area_interesse_add").click(function(){
+    
+});
 
 $('.chiudiForm').click(function(){ $(this).closest('.ui-dialog-content').dialog('close'); });
 

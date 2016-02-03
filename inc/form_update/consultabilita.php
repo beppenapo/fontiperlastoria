@@ -26,13 +26,13 @@
 
 </div>
 <script type="text/javascript" >
-$(document).ready(function(){
+//$(document).ready(function(){
 /*---------- servizi ---------*/
-var a=$('#array').val();
+/*var a=$('#array').val();
 var esplodi = a.split(', ');
 for(var i=0;i<esplodi.length;i++){
    $('#servizio'+esplodi[i]).attr('checked', 'checked');
-}
+}*/
 /*---------------------------------------*/
-});
+//});
 </script>

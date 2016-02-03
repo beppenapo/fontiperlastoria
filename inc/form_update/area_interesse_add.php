@@ -56,7 +56,7 @@
     <div class="chiudiForm login2">Annulla modifiche</div>
 </div>
 <script type="text/javascript" >
-$(document).ready(function() {
+/*$(document).ready(function() {
     $("#area_add, #areeWrap, #areeListCanc").hide();
     $("#areeAdd").click(function () {
         $("#areaDefault").remove();
@@ -77,5 +77,5 @@ $(document).ready(function() {
         $("div[class=areeList]:last").remove();
         areeFunc();
     });
-});
+});*/
 </script>
