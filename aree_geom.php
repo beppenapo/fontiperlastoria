@@ -5,10 +5,11 @@ require_once("inc/db.php");
 if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 $id=$_GET['a'];
 
-$a=("select nome from area where id = $id");
+$a=("select a.nome, aa.id from area a, aree aa where aa.nome_area = a.id and a.id = $id");
 $ar = pg_query($connection, $a);
 $arr = pg_fetch_array($ar, 0, PGSQL_ASSOC);
 $area = $arr['nome'];
+$idarea = $arr['id'];
 /**********************************************************************************/
 $qgeom1=("select count(id) as num_poly from area_int_poly where id_area = $id");
 $qgeom1Res = pg_query($connection, $qgeom1);
@@ -215,7 +216,7 @@ function init() {
         ,filter: new OpenLayers.Filter.Comparison({
              type: OpenLayers.Filter.Comparison.EQUAL_TO
             ,property: "id_area"
-            ,value: "<?php echo($id); ?>"
+            ,value: "<?php echo($idarea); ?>"
         })
     });
     map.addLayers([sat, osm, poly]);
@@ -269,7 +270,7 @@ function onFeatureInsert(feature){
    selectedFeature = feature;
    var fid = selectedFeature.id;
    var area = selectedFeature.attributes['id_area'];
-   id_area= '<?php echo($id);?>';
+   id_area= '<?php echo($idarea);?>';
    if (area == null) { 
         htmlForm = "<div style='font-size:.8em'>"+
         "<input type='hidden' name='fid' id='fid' value='"+ fid +"'>" +
