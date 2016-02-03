@@ -12,16 +12,16 @@ $tipoUsr = $_SESSION['tipo'];
 $hub = $_SESSION['hub'];
 $data = date("Y-m-d");
 
-$def = ($hub==2)?260:261;
+$dv = ($hub==2)?260:261;
 
 if($tipoScheda==10){
-    $opt = "<option value='".$def."'>-- seleziona area di interesse cartografico --</option>";
+    $opt = "<option value='".$dv."'>-- seleziona area di interesse cartografico --</option>";
     $t=3;
-    $defVal = $def;
+    $defVal = $dv;
 }else{
-    $opt = "<option value='".$def."'>-- seleziona area di interesse --</option>";
+    $opt = "<option value='".$dv."'>-- seleziona area di interesse --</option>";
     $t=1;
-    $defVal = $def;
+    $defVal = $dv;
 }
 $qai =  "SELECT id, nome from area where tipo = $t order by nome asc;";
 $resai = pg_query($connection, $qai);
@@ -116,8 +116,8 @@ $resai = pg_query($connection, $qai);
                $i=0;
                for ($i = 0; $i < $righe; $i++){
                 $id_livind = pg_result($result, $i, "id");
-                $def = pg_result($result, $i, "definizione");
-                echo "<option value=\"$id_livind\">$def</option>";
+                $d = pg_result($result, $i, "definizione");
+                echo "<option value=\"$id_livind\">$d</option>";
                }
                ?>
               </select>
@@ -185,8 +185,8 @@ $resai = pg_query($connection, $qai);
                 $i=0;
                 for ($i = 0; $i < $righe; $i++){
                   $idcro = pg_result($result, $i, "id");
-                  $def = pg_result($result, $i, "definizione");
-                  echo "<option value=\"$idcro\">$def</option>";
+                  $d = pg_result($result, $i, "definizione");
+                  echo "<option value=\"$idcro\">$d</option>";
                 }
                ?>
               </select>
@@ -564,7 +564,8 @@ $resai = pg_query($connection, $qai);
 
 <script type="text/javascript" >
 var tpsch = "<?php echo($tipoScheda); ?>";
-var hub = '<?php echo($hub); ?>'
+var hub = '<?php echo($hub); ?>';
+var def = <?php echo($defVal); ?>;
 var numItems;
 $(document).ready(function() {
   $('#tip').fadeIn(3000).delay(5000).fadeOut("slow");
@@ -734,7 +735,7 @@ $(document).ready(function() {
    if (!dgn_numsch) {errori += '<li>NUMERO SCHEDA</li>';$('#dgn_numsch').addClass('errore');}else{$('#dgn_numsch').removeClass('errore');}
    if (!dgn_livind) {errori += '<li>LIVELLO INDIVIDUAZIONE DATI</li>';$('#dgn_livind').addClass('errore');}else{$('#dgn_livind').removeClass('errore');}
    if (!dgn_dnogg) {errori += '<li>DEFINIZIONE OGGETTO</li>';$('#dgn_dnogg').addClass('errore');}else{$('#dgn_dnogg').removeClass('errore');}
-   if (ana_ubi!=261 && motivubi_update == 16) {errori+= '<li>MOTIVAZIONE UBICAZIONE</li>';$('#motivubi_update').addClass('errore');}else {$('#motivubi_update').removeClass('errore');}
+   if (ana_ubi!=def && motivubi_update == 16) {errori+= '<li>MOTIVAZIONE UBICAZIONE</li>';$('#motivubi_update').addClass('errore');}else {$('#motivubi_update').removeClass('errore');}
    if(errori){
    	//alert('I sguenti campi sono obbligatori e vanno compilati: \n' + errori); return false;
    	errori = '<h3>I seguenti campi sono obbligatori e vanno compilati:</h3><ol>' + errori;
