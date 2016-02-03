@@ -580,7 +580,7 @@ $(document).ready(function() {
   if(hub==1){$("tr.compilatoreLast").remove();}
   if(hub==2){
    $( "div.check:not([class~='bassa']), #note" ).hide();
-   $("#areaDefault").attr("val","1375,16"); 
+   //$("#areaDefault").attr("val","1286,16"); 
    $("tr.compilatoreFirst").remove();
   }
 
