@@ -11,14 +11,17 @@ $idUsr = $_SESSION['id'];
 $tipoUsr = $_SESSION['tipo'];
 $hub = $_SESSION['hub'];
 $data = date("Y-m-d");
+
+$def = ($hub==2)?260:261;
+
 if($tipoScheda==10){
-    $opt = "<option value='261'>-- seleziona area di interesse cartografico --</option>";
+    $opt = "<option value='".$def."'>-- seleziona area di interesse cartografico --</option>";
     $t=3;
-    $defVal = 261;
+    $defVal = $def;
 }else{
-    $opt = "<option value='261'>-- seleziona area di interesse --</option>";
+    $opt = "<option value='".$def."'>-- seleziona area di interesse --</option>";
     $t=1;
-    $defVal = 261;
+    $defVal = $def;
 }
 $qai =  "SELECT id, nome from area where tipo = $t order by nome asc;";
 $resai = pg_query($connection, $qai);
