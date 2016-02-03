@@ -32,7 +32,7 @@ select max(xmax) as maxx, min(xmin) as minx, max(ymax) as maxy, min(ymin) as min
  select  st_xmin(geom) as xmin, st_xmax(geom) as xmax, st_ymin(geom) as ymin, st_ymax(geom) as ymax from(
   select ST_Multi(ST_Union(comune.geom)) as geom 
   from comune, aree
-  where aree.id_comune = comune.id and nome_area = $id
+  where aree.id_comune = comune.id and aree.id = $id
  )as geom 
 ) as ext;
 ");
