@@ -64,8 +64,8 @@ $e = pg_query($connection, $query);
     table#catalogoTable{font-size: 12px;}
     #localitaCartoWrap{display:none;}
     #localitaCarto{position:relative; display:block; width:92%;height:auto;padding:1%; border:1px solid #cacaca;}
-    #listaDiv{ padding: 10px; background: #fff; width: 91%; border: 1px solid #ccc;}
-    #listaDiv label{cursor:pointer;}
+    .listaDiv{ padding: 10px; background: #fff; width: 91%; border: 1px solid #ccc;}
+    .listaDiv label{cursor:pointer;}
     label.main{display:inline-block;margin-top:10px;}
     #tableHeader{margin:30px 3px 5px 10px;}
     #legendaWrap{display:inline-block;width:49%;}
@@ -182,35 +182,9 @@ $e = pg_query($connection, $query);
                 var i=$(this).val();
                 if (i==2) {$("#rubrica").fadeIn("slow");}else {$("#rubrica").fadeOut("slow");}
             });
-            $("#comuneCarto").change(function() {
+            $("select[name=comuneCarto]").change(function() {
                 var comId = $(this).val();
-                var com = $("#comuneCarto option:selected").text();
-                if(comId==15){
-                    $('#localitaCartoWrap').hide();
-                    $("#addArea").hide();
-                }else{
-                    $('#localitaCartoWrap').show();
-                    $("#addArea").show();
-                }
-                $.ajax({
-                    type: "POST"
-                    , url: "inc/dinSelLocalitaCarto.php"
-                    , data: {id:comId}
-                    , cache: false
-                    , success: function(data){
-                        $("#localitaCarto").html(data);
-                        var checkLoc = $("input[name=localitaCartoCheck]");
-                        var checkAll = $("input[name=lcAll");
-                        var checkLocChecked;
-                        checkAll.click(function(){
-                            if($(this).attr('checked')){ 
-                                checkLoc.attr('checked',true); 
-                            }else{
-                                checkLoc.attr('checked',false); 
-                            }
-                        });
-                    }
-                });
+                loc(comId);
             });
             var arrLoc = new Array();
             $("button[name=salvaAree]").hide();
@@ -247,7 +221,7 @@ $e = pg_query($connection, $query);
                     url: 'inc/areeIns.php',
                     type: 'POST', 
                     data: {n:nomeArea,a:arrLoc, t:tipoArea},
-                    success: function(data){ $("#test").html(data); }
+                    success: function(data){ $("#test").html(data).delay(5000).fadeOut(function(){ location.reload(); }); }
                 });//ajax
             });
 
@@ -255,8 +229,7 @@ $e = pg_query($connection, $query);
 
             var righe = $('#catalogoTable tbody tr:visible').length;
             $('#legenda').html(legenda+'<b>'+righe+'</b> record');
-            //$('.link').each(function(){
-                $('.link').click(function(){
+            $('.link').click(function(){
                     var area = $(this).parent('tr').attr('area');
                     var id = $(this).parent('tr').attr('id');
                     $.ajax({
@@ -269,7 +242,6 @@ $e = pg_query($connection, $query);
                         }
                     });
                 });
-            //});
         });
     </script>
 </body>

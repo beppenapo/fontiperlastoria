@@ -4,6 +4,7 @@
   $idUsr = $_SESSION['id_user'];
   $tipoUsr = $_SESSION['tipo'];
   $hub = $_SESSION['hub'];
+  $andHub = ($hub==2)?'and hub = 2':'';
 ?>
 <div id='utente'>
     <ul id="sessionMenu">
@@ -29,7 +30,7 @@
             <a href="#" id="nuova_scheda" class='sessionLink' title="Inserisci una nuova scheda" > nuova scheda <span id="schedaToggle" class="oc">+</span></a>
             <ul class="submenu" id="nuovaScheda"> 
             <?php 
-                $ql=("select * from lista_tipo_scheda where id <> 3 order by etichetta asc;");
+                $ql=("select * from lista_tipo_scheda where id <> 3 $andHub order by etichetta asc;");
                 $qlr=pg_query($connection, $ql);
                 while ($obj = pg_fetch_array($qlr)) {
                     echo "<li class='link".$obj["id"]."'><a href='scheda_nuova.php?tpsch=".$obj["id"]."&def=".$obj["fonte"]."'>".$obj["etichetta"]."</a></li>";

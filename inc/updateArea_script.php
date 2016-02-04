@@ -1,15 +1,23 @@
 <?php
-include("db.php");
-$id = $_POST['idUpdate']; 
-$comune = $_POST['comuneubi_update'];
-$localita = $_POST['localitaubi_update'];
-$indirizzo = $_POST['indirizzoubi_update'];
-$rubrica = $_POST['rubrica_up'];
-$tipo = $_POST['tipo_update'];
-
+require("db.php");
+$id=$_POST['id'];
+$tipo=$_POST['tipo'];
+$nome=pg_escape_string($_POST['nome']);
+$arrNew=$_POST['arrNew'];
+$arrDel=$_POST['arrDel'];
+foreach($arrNew as $a) {
+    if($a == 0){$add = '';}
+    else{$add .= "insert into aree(nome_area, id_comune, id_localita) values(".$id.", ".$a['com'].", ".$a['loc'].");";}
+}
+foreach($arrDel as $b) {
+    if($b == 0){$del = '';}
+    else{$add .= "delete from aree where id = $b;";}
+}
 $update = ("
 BEGIN;
- UPDATE aree SET id_localita=$localita, id_comune=$comune, id_indirizzo=$indirizzo, tipo=$tipo, id_rubrica=$rubrica WHERE id = $id;
+update area set nome = '$nome', tipo = $tipo where id = $id;
+$add
+$del 
 COMMIT;
 ");
 $result = pg_query($connection, $update);

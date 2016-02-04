@@ -1,7 +1,7 @@
 <?php
 include("db.php");
 $id = $_POST['idDel'];
-$elimina = ("DELETE from aree WHERE id = $id;");
+$elimina = ("DELETE from area WHERE id = $id;");
 $result = pg_query($connection, $elimina);
 
 if(!$result){die("Errore nella query: \n" . pg_last_error($connection));}
