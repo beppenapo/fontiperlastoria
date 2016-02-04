@@ -20,9 +20,9 @@ $q2 =  ("SELECT
   foto2.dtc_tpapp as apparecchio, 
   foto2.alt_note as note3
 FROM 
-  public.foto2
+  foto2
 WHERE 
-  scheda.id = $id;");
+  foto2.id_scheda = $id;");
 $r2 = pg_query($connection, $q2);
 $a2 = pg_fetch_array($r2, 0, PGSQL_ASSOC);
 $rC2 = pg_num_rows($r2);

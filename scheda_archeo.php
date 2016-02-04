@@ -1304,8 +1304,7 @@ $('#ingrFoto').click(function () {
 
 
 ///////// FORM UPDATE /////////////////
-$('.update').each(function(){
-   $(this).click(function(){
+$('.update').click(function(){
     var form = $(this).attr('id');
     $('#'+form+'_form').dialog({
       autoOpen: false,
@@ -1326,7 +1325,6 @@ $('.update').each(function(){
      $('#'+form+'_form').dialog("option", "position", ['center','center']);
     return false;
     });//click
-   });//each
 
 $("#area_interesse_add").click(function(){
     
