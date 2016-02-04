@@ -107,9 +107,7 @@ require_once("inc/db.php");
      <th style="width:100px;">LIV.IND.</th>
      <th style="width:310px;">OGGETTO</th>
      <th style="width:300px;">NOTE</th>
-     <?php 
-      if($tipoUSr!=3) {echo "<th style='width:70px;'>Stato scheda</th>";}
-     ?>
+     <th style='width:70px;'>Stato scheda</th>
     </tr>
    </thead>
    <tbody>
@@ -126,11 +124,7 @@ require_once("inc/db.php");
        $note = stripslashes($note);
        $fine = pg_result($exec, $x,"fine");
        if($fine==1) {$statoSch='aperta';}else {$statoSch='chiusa';}
-       if($tipoUsr==3) {
-         echo "<tr class='$tpsch link' title='Clicca per aprire la scheda $numsch' ref='$id'><td>$id</td><td>$numsch</td><td>$livind</td><td>$dgn_note</td><td>$note</td></tr>";
-       }else {
-         echo "<tr class='$tpsch link' title='Clicca per aprire la scheda $numsch' ref='$id'><td>$id</td><td>$numsch</td><td>$livind</td><td>$dgn_note</td><td>$note</td><td>$statoSch</td></tr>";
-       }
+       echo "<tr class='$tpsch link' title='Clicca per aprire la scheda $numsch' ref='$id'><td>$id</td><td>$numsch</td><td>$livind</td><td>$dgn_note</td><td>$note</td><td>$statoSch</td></tr>";
      }
    }
   ?>
