@@ -134,7 +134,7 @@ $('#salva').click(function(){
     var checkLocDel = $("input[name=locDel]:checked");
         var locDelLength = checkLocDel.length;
         if (locDelLength==0){
-            arrDel.push(0);
+            arrDel.push=0;
         }else{
             checkLocDel.each(function(){
                 var id = $(this).val(); 
