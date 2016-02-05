@@ -519,7 +519,7 @@ left join localita on aree.id_localita = localita.id
 left join comune on aree.id_comune = comune.id 
 left join provincia on comune.provincia = provincia.id 
 left join stato on comune.stato=stato.id
-where aree_scheda.id_scheda = $id and aree_scheda.tipo <> 2 order by comune asc, localita asc;
+where aree_scheda.id_scheda = $id and area.tipo <> 2 order by comune asc, localita asc;
 ");
 $rai = pg_query($connection, $qai);
 $rowai = pg_num_rows($rai);
