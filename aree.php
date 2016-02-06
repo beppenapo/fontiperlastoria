@@ -31,7 +31,7 @@ $query = ("
     inner join comune c on a.id_comune = c.id
     inner join localita l on a.id_localita = l.id
     left join area_int_poly on area_int_poly.id_area = ac.id
-    left join ubicazione on ac.id = ubicazione.area and ac.tipo = 2
+    left join ubicazione on ac.id = ubicazione.id_area and ac.tipo = 2
     where a.nome_area is not null and a.id_comune$and and ac.tipo$and2
     group by ac.id,ac.nome, ac.tipo
     order by area asc;
