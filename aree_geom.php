@@ -5,17 +5,17 @@ require_once("inc/db.php");
 if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 $id=$_GET['a'];
 
-$a=("select a.nome, aa.id, aa.tipo from area a, aree aa where aa.nome_area = a.id and a.id = $id");
+$a=("select a.nome, aa.id, a.tipo from area a, aree aa where aa.nome_area = a.id and a.id = $id");
 $ar = pg_query($connection, $a);
 $arr = pg_fetch_array($ar, 0, PGSQL_ASSOC);
 $area = $arr['nome'];
 $idarea = $arr['id'];
 /**********************************************************************************/
-$qgeom1=("select count(id) as num_poly from area_int_poly where id_area = $id");
+$qgeom1=($arr['tipo']==2)? "select count(id) as geom from ubicazione where id_area = $id" :"select count(id) as geom from area_int_poly where id_area = $id";
 $qgeom1Res = pg_query($connection, $qgeom1);
 $g1 = pg_fetch_array($qgeom1Res, 0, PGSQL_ASSOC);
-$numPoly = $g1['num_poly'];
-
+$numGeom = $g1['geom'];
+echo $qgeom1;
 $topo = " 
 select ac.id, ac.nome area, array_to_string(array_agg(c.comune || ' (' || l.localita || ')' ), '<br/>') as lista
 from area ac
@@ -134,6 +134,11 @@ $ymax = $extComArr['maxy'];*/
   <script type="text/javascript" src="lib/OpenLayers-2.12/OpenLayers.js"></script>
   <script type="text/javascript" src="lib/OpenLayers-2.10/ScaleBar.js"></script>
 <script type="text/javascript" >
+var id = "<?php echo($id); ?>";
+var numGeom = '<?php echo($numGeom); ?>';
+var tipo ="<?php echo($arr['tipo']); ?>";
+var tab = (tipo == 2)? 'ubicazione':'area_int_poly';
+
 $(document).ready(function(){
     $("#openListaTopo").mouseover(function(){$("#topoLista").fadeIn('fast');}).mouseout(function(){$("#topoLista").fadeOut('fast');});
      $('.submenu').hide();
@@ -144,7 +149,7 @@ $(document).ready(function(){
 });
 
 /******* OPEN LAYERS ********/
-var map, arrayOSM, osm, sat, poly, reg, numPoly, id_area, navigate, drawpoly, drawbox, drawline, edit, save, del, ruota, resize, panel, akt, ctrlPolyOptions, ctrlSelectFeatureOptions, ctrlSelectFeature,DeleteFeature,bingKey,numFeat,mainExtent,mainResolution, unit, epsg3857, epsg4326, mapOption, saveStrategy, mapextent,divPannello;
+var map, arrayOSM, osm, sat, poly, reg, id_area, navigate, drawpoly, drawbox, drawline, edit, save, del, ruota, resize, panel, akt, ctrlPolyOptions, ctrlSelectFeatureOptions, ctrlSelectFeature,DeleteFeature,bingKey,numFeat,mainExtent,mainResolution, unit, epsg3857, epsg4326, mapOption, saveStrategy, mapextent,divPannello;
 
 /*var xmin, ymin, xmax, ymax, extent, lat, lon;
 xmin = '<?php echo($xmin);?>';
@@ -152,9 +157,8 @@ ymin = '<?php echo($ymin);?>';
 xmax = '<?php echo($xmax);?>';
 ymax = '<?php echo($ymax);?>';*/
 
-numPoly = '<?php echo($numPoly); ?>';
-tipo = <?php echo($arr['tipo']); ?>;
-tab = (tipo == 2)? 'ubicazione':'area_int_poly';
+
+
 DeleteFeature = OpenLayers.Class(OpenLayers.Control, {
    initialize: function(layer, options) {
      OpenLayers.Control.prototype.initialize.apply(this, [options]);
@@ -203,25 +207,25 @@ function init() {
     sat = new OpenLayers.Layer.Bing({name: "Sat",key: bingKey,type: "Aerial"});
     arrayOSM = ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg", "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg","http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg", "http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg"];
     osm = new OpenLayers.Layer.OSM("osm", arrayOSM, {attribution: "Data, imagery and map information provided by <a href='http://www.mapquest.com/'  target='_blank'>MapQuest</a>, <a href='http://www.openstreetmap.org/' target='_blank'>Open Street Map</a> and contributors, <a href='http://creativecommons.org/licenses/by-sa/2.0/' target='_blank'>CC-BY-SA</a>  <img src='http://developer.mapquest.com/content/osm/mq_logo.png' border='0'>", transitionEffect: "resize"}); 
-    poly = new OpenLayers.Layer.Vector("poligoni", {
+    poly = new OpenLayers.Layer.Vector("geometrie", {
          strategies: [new OpenLayers.Strategy.BBOX(), saveStrategy]
         ,protocol: new OpenLayers.Protocol.WFS({
              version: "1.1.0"
             ,url: "http://www.lefontiperlastoria.it/geoserver/wfs"
             ,featureNS: "http://www.lefontiperlastoria.it/fonti"
             ,srsName: "EPSG:3857"
-            ,featureType: "area_int_poly"
+            ,featureType: tab
             ,geometryName: "the_geom",
-            schema: "http://www.lefontiperlastoria.it/fonti?service=WFS&version=1.0.0&request=DescribeFeatureType&TypeName=fonti:area_int_poly"
+            schema: "http://www.lefontiperlastoria.it/fonti?service=WFS&version=1.0.0&request=DescribeFeatureType&TypeName=fonti:"+tab
         })
         ,filter: new OpenLayers.Filter.Comparison({
              type: OpenLayers.Filter.Comparison.EQUAL_TO
-            ,property: "id_area"
-            ,value: "<?php echo($id); ?>"
+            ,property: 'id_area'
+            ,value: id
         })
     });
     map.addLayers([sat, osm, poly]);
-    console.log("poly= "+numPoly);
+    console.log("geom = "+numGeom);
     navigate = new OpenLayers.Control.DragPan({isDefault: true, title: "Pan map: muovi il mouse allinterno della mappa tenendo premuto il tasto sinistro", displayClass: "olControlNavigation"});
     del = new DeleteFeature(poly, {title: "Elimina geometria"});
     drawpoly = new OpenLayers.Control.DrawFeature(poly, OpenLayers.Handler.Polygon,{
@@ -236,6 +240,11 @@ function init() {
         handlerOptions: {sides: 4, irregular:true,freehand: false, multi: true},
         title: " Disegna poligono regolare.\nPer disegnare un poligono regolare clicca in un punto sulla mapa e trascina il mouse",
         displayClass:"olControlDrawFeatureBox",
+        featureAdded: onFeatureInsert
+    });
+    drawpoint = new OpenLayers.Control.DrawFeature(poly, OpenLayers.Handler.Point,{
+        title: "Disegna punto",
+        displayClass:"olControlDrawFeaturePoint",
         featureAdded: onFeatureInsert
     });
     save = new OpenLayers.Control.Button({
@@ -253,10 +262,21 @@ function init() {
     resize.mode = OpenLayers.Control.ModifyFeature.RESIZE;
     divPannello = document.getElementById("panel");
     panel = new OpenLayers.Control.Panel({ defaultControl: navigate, displayClass: 'olControlPanel',  div: divPannello});
-    panel.addControls([navigate, save, del, drawpoly, drawbox, edit, resize, ruota]);
+    
+    if(tipo==2){
+        var c = [navigate, save, del, drawpoint, edit];
+    }else{
+        var c = [navigate, save, del, drawbox, drawpoly, edit, resize, ruota];
+    }
+    
+    panel.addControls(c);
     map.addControl(panel);
-    if (numPoly!=0) {poly.events.register("loadend", poly, function() {map.zoomToExtent(poly.getDataExtent());});}
-    if (numPoly==0) {map.zoomToExtent(mapextent);}
+    
+
+    
+    
+    if (numGeom!=0) {poly.events.register("loadend", poly, function() {map.zoomToExtent(poly.getDataExtent());});}
+    if (numGeom==0) {map.zoomToExtent(mapextent);}
     //map.zoomToExtent(mapextent);
 }
 /******* funzioni *******/
@@ -315,6 +335,7 @@ function onFeatureInsert(feature){
      selectControl.unselectAll();
      miFeature[0].popup = null;
   }
+
 </script>
 </body>
 </html>

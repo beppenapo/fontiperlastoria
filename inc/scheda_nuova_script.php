@@ -118,45 +118,6 @@ if(!$result){
  $i=0;
  $max=pg_fetch_array($result, 0, PGSQL_ASSOC);
  $id_scheda = $max['id_scheda'];
-
-/* if($schAssoc) {
-  $schAssocTrim = substr($schAssoc, 0, -1);//tolgo l'ultimo carattere
-  $arrayschAssoc = explode("|", $schAssocTrim); //esplodo l'array in corrispondenza del carattere | che divide i valori da salvare
-  $c = count($arrayschAssoc);
-   for($z = 0; $z < $c; $z++){
-    list($tipoSch, $idSchAssoc, $livAltrif) = explode(",", $arrayschAssoc[$z]);//esplodo il singolo array nei singoli valori
-     $querySelectDgn_numsch = "SELECT dgn_numsch FROM scheda WHERE id = $tipoSch";
-     $r_numsch = pg_query($connection, $querySelectDgn_numsch);
-     $a_numsch = pg_fetch_array($r_numsch, 0, PGSQL_ASSOC);
-
-    $queryAltrif = ("
-     BEGIN;
-     INSERT INTO altrif(scheda,numsch,tpsch,livello,scheda_altrif,numsch_altrif,tpsch_altrif,livello_altrif)
-     VALUES($tipoSch,'".$a_numsch['dgn_numsch']."', $idSchAssoc, $livAltrif , $id_scheda, '$dgn_numsch', $dgn_tpsch, $livello);
-     COMMIT;
-    ");
-
-
-    // echo "<p>$queryAltrif</p>";
-    $resultAltrif = pg_query($connection, $queryAltrif);
-  }
- }*/
-
-/* if($areeList) {
-  $areeListTrim = substr($areeList, 0, -1);//tolgo l'ultimo carattere
-  $arrayareeList = explode("|", $areeListTrim); //esplodo l'array in corrispondenza del carattere | che divide i valori da salvare
-  $c = count($arrayareeList);
-   for($z = 0; $z < $c; $z++){
-    list($area, $area_motiv) = explode(",", $arrayareeList[$z]);//esplodo il singolo array nei singoli valori
-    $queryAreeList = ("
-     BEGIN;
-     INSERT INTO aree_scheda(id_scheda, id_area, id_motivazione) values ($id_scheda, $area, $area_motiv);
-
-     COMMIT;
-    ");
-    $resultAreeList = pg_query($connection, $queryAreeList);
-  }
- }*/
 ?>
 <div style='text-align:center;'>
  <h2>Salvataggio avvenuto correttamente!</h2>

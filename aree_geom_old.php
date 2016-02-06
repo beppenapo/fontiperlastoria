@@ -3,7 +3,7 @@ session_start();
 if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 ini_set( "display_errors", 0);
 require_once("inc/db.php");
-$id=$_GET['id'];
+$id=$_GET['a'];
 $q0=("SELECT aree.id,comune.comune,localita.localita
       FROM aree, comune, localita
       WHERE aree.id_localita = localita.id AND aree.id_comune = comune.id AND aree.id = $id;");
