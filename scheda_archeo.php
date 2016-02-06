@@ -1326,10 +1326,6 @@ $('.update').click(function(){
     return false;
     });//click
 
-$("#area_interesse_add").click(function(){
-    
-});
-
 $('.chiudiForm').click(function(){ $(this).closest('.ui-dialog-content').dialog('close'); });
 
 //var ratio, height, width;
