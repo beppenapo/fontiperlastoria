@@ -5,14 +5,8 @@ table{margin:0px !important; padding:0px !important}
 table.mainData th{padding-left: 10px}
 input[type=checkbox]{vertical-align:middle;}
 table#catalogoTable{width:98%;margin:0px 10px 10px 10px !important;}
-table#catalogoTable thead,table#vocabolariTable thead, table.mainData thead{
-	background-color: #F8F8F6;
-	color: #907F73;
-	border-bottom: 1px solid #FFBF96; 
-	border-top: 1px solid #FFBF96;
-}
+table#catalogoTable thead,table#vocabolariTable thead, table.mainData thead{background-color: #F8F8F6;color: #907F73;border-bottom: 1px solid #FFBF96; border-top: 1px solid #FFBF96;}
 table#catalogoTable thead th, table#catalogoTable tbody td, table#vocabolariTable thead th, table#vocabolariTable tbody td{padding:10px 5px;}
-
 table#catalogoTable tbody tr{cursor: pointer;}
 table#catalogoTable tbody tr:hover td{background-color: yellowgreen !important;}
 table.zebra tbody tr:nth-child(even) td, table#catalogoTable tbody tr:nth-child(even) td{background-color: whitesmoke;}
@@ -41,6 +35,7 @@ table#vocabolariTable tr.trIntestaz th {color:#907F73; text-transform: uppercase
 select{background-color: white;}
 textarea.noteform{height: 100px}
 /********** classi generiche ******************/
+.red{color:#ff0000;}
 .livAttivo{background-color: rgba(236,236,236,1) !important; color:#907F73 !important;}
 .primo{margin-top:32px !important;}
 .h2aperto{padding:0px !important; margin:5px 0px 0px 5px !important;font-size: 16px;}
@@ -123,8 +118,7 @@ div#fine{border-top:1px solid #96867B; border-bottom:1px solid #96867B; backgrou
 .ui-widget-content, .ui-corner-all {-moz-border-radius: 0px; -webkit-border-radius: 0px; border-radius: 0px;}
 .ui-widget-header {border:none; background: #ECECEC; color: #907F73; font-weight: bold;}
 .ui-autocomplete { max-height: 200px; overflow-y: auto; overflow-x: hidden; }
-  /* IE 6 doesn't support max-height we use height instead, but this forces the menu to always be this tall */
-  * html .ui-autocomplete {height: 200px;}
+* html .ui-autocomplete {height: 200px;}
 /********** mappa piccola *****/
 div.olControlZoom a, a.baseButton {background: #F8F8F6 !important; background: rgba(248, 248, 246, 0.5) !important;	}
 div.olControlZoom a:hover, a.baseButton:hover {background: #A5A56B !important;}
