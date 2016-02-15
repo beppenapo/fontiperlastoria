@@ -4,20 +4,8 @@ ini_set( "display_errors", 0);
 if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 require("inc/db.php");
 $usr = $_SESSION['id_user'];
-if(!isset($_POST['c']) || $_POST['c']==0) {
-    $and='>0';
-    $jc = 0;
-}else{
-    $and= '='.$_POST['c'];
-    $jc = $_POST['c'];
-}
-if(!isset($_POST['t']) || $_POST['t']==0) {
-    $and2='>0';
-    $jt = 0;
-}else{
-    $and2= '='.$_POST['t'];
-    $jt = $_POST['t'];
-}
+if(!isset($_POST['c']) || $_POST['c']==0) { $and='>0'; $jc = 0;}else{ $and= '='.$_POST['c']; $jc = $_POST['c'];}
+if(!isset($_POST['t']) || $_POST['t']==0) { $and2='>0'; $jt = 0;}else{ $and2= '='.$_POST['t']; $jt = $_POST['t'];}
 
 $query = ("
     select ac.id 
@@ -137,7 +125,7 @@ $e = pg_query($connection, $query);
                                 </thead>
                                 <tbody>
                                     <?php while($r = pg_fetch_array($e)){
-                                        if($r['tipo'] == 3 && $r['geom'] == 0) {$azione = '<span style="color:red !important">inserisci</span>';}
+                                        if($r['tipo'] != 2 && $r['geom'] == 0) {$azione = '<span style="color:red !important">inserisci</span>';}
                                         elseif($r['tipo'] ==2 && $r['ubi'] == 0) {$azione = '<span style="color:red !important">inserisci</span>';}
                                         else {$azione = '<span style="color:#000 !important">gestisci</span>';}
                                         switch($r['tipo']){
