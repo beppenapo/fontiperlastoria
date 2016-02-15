@@ -4,13 +4,10 @@ ini_set( "display_errors", 0);
 require_once("inc/db.php");
 if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 $id=$_GET['a'];
-<<<<<<< HEAD
 
 $a=("select a.nome, aa.id, a.tipo from area a, aree aa where aa.nome_area = a.id and a.id = $id");
-=======
-$a=("select a.nome, aa.id, aa.tipo from area a, aree aa where aa.nome_area = a.id and a.id = $id");
+//$a=("select a.nome, aa.id, aa.tipo from area a, aree aa where aa.nome_area = a.id and a.id = $id");
 
->>>>>>> f8fe64b64408edbdd394f1df9de966d71e4ccaf9
 $ar = pg_query($connection, $a);
 $arr = pg_fetch_array($ar, 0, PGSQL_ASSOC);
 $area = $arr['nome'];
