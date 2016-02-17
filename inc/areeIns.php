@@ -1,13 +1,18 @@
 <?php
 include("db.php");
-$tipo = $_POST['t'];
-$nome = $_POST['n'];
-$arr = $_POST['a'];
+$tipo = $_POST['tipo'];
+$nome = $_POST['nome'];
+$comune = $_POST['comune'];
+$arr = $_POST['localita'];
+$ana = $_POST['rubrica'];
+$ind = $_POST['indirizzo'];
 $query;
 $query .= "BEGIN;";
 $query .= "insert into area(nome, tipo) values('$nome', $tipo);";
-foreach($arr as $k) {
-  $query .= "insert into aree(nome_area, id_comune, id_localita) values(currval('aree_carto_id_seq'), ".$k['com'].", ".$k['loc'].");";
+if($tipo==2){
+    $query .= "insert into aree(nome_area, id_comune, id_rubrica, id_indirizzo) values(currval('aree_carto_id_seq'), ".$comune.", ".$ana.", ".$ind.");";
+}else{
+    foreach($arr as $k) { $query .= "insert into aree(nome_area, id_comune, id_localita) values(currval('aree_carto_id_seq'), ".$k['com'].", ".$k['loc'].");"; }
 }
 $query .= "COMMIT;";
 

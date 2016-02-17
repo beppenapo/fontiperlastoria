@@ -11,13 +11,13 @@ $query = ("
     select ac.id 
             , ac.nome area
             , ac.tipo
-            , array_to_string(array_agg(c.comune || ' (' || l.localita || ')' ), '<br/>') as lista
+            , array_to_string(array_agg(c.comune || ' (' || coalesce(l.localita, 'non determinabile') || ')' ), '<br/>') as lista
             , count(area_int_poly.id)::integer as geom
             , count(ubicazione.id)::integer as ubi
     from area ac
     inner join aree a on a.nome_area = ac.id
     inner join comune c on a.id_comune = c.id
-    inner join localita l on a.id_localita = l.id
+    left join localita l on a.id_localita = l.id
     left join area_int_poly on area_int_poly.id_area = ac.id
     left join ubicazione on ac.id = ubicazione.id_area and ac.tipo = 2
     where a.nome_area is not null and a.id_comune$and and ac.tipo$and2
@@ -50,7 +50,6 @@ $e = pg_query($connection, $query);
     table.mainData td{vertical-align: top !important;}
     div.slide{margin:0px 10px 0px 10px; border:1px solid #CFC4B1;padding:10px;}
     table#catalogoTable{font-size: 12px;}
-    #localitaCartoWrap{display:none;}
     #localitaCarto{position:relative; display:block; width:92%;height:auto;padding:1%; border:1px solid #cacaca;}
     .listaDiv{ padding: 10px; background: #fff; width: 91%; border: 1px solid #ccc;}
     .listaDiv label{cursor:pointer;}
@@ -61,6 +60,10 @@ $e = pg_query($connection, $query);
     button.submit{padding:3px 8px; background:#fff; border:1px solid #ccc; cursor:pointer;}
     button.submit:hover,select.filtri:hover{background:#ccc;}
     .modLista a{text-decoration:none;}
+    button[name=salvaAree]{color: #3b3b3b; background: #dddddd; border: 1px solid #cacaca; cursor: pointer;}
+    button[name=salvaAree]:hover{background: #cacaca;}
+    #addArea{display:inline-block;margin:10px 0px;padding:5px;border:1px solid #96867B;cursor:pointer;}
+    #addArea:hover{background:#96867B;color:#fff;}
 </style>
 
 </head>
@@ -160,22 +163,29 @@ $e = pg_query($connection, $query);
         var c = <?php echo $jc; ?>;
         var t = <?php echo $jt; ?>;
         $(document).ready(function() {
-            $('.slide, #addArea').hide();
+            $('.slide, #addArea, #rubrica,#indirizzo,#localita').hide();
             $('.sezioni').click(function(){$('.slide').slideToggle();});
             $('#c option[value='+c+']').attr('selected','selected');
             $('#t option[value='+t+']').attr('selected','selected');
             legenda = (t==0 && c==0)?'Il database contiene ':'La ricerca ha prodotto ';
-            $("#rubrica").hide();
-            $("#tipo").change(function () {  
-                var i=$(this).val();
-                if (i==2) {$("#rubrica").fadeIn("slow");}else {$("#rubrica").fadeOut("slow");}
+            $("#tipo").change(function () { 
+                var i=$(this).val(); 
+                if (i==2) { $("#rubrica,#indirizzo").fadeIn("slow"); }else { $("#rubrica,#indirizzo").fadeOut("slow"); } 
+                
+                $("#localita,#locTot").fadeOut('fast');
+                $("#locTot").html('');
+                $("#comuneCarto").val(15);
+                $("select[name=rubrica]").val(7);
+                $("select[name=indirizzo]").val(0);
+                arrLoc=[];
             });
-            $("select[name=comuneCarto]").change(function() {
-                var comId = $(this).val();
-                loc(comId);
+            $("select[name=comuneCarto]").change(function() { 
+                var tipo = $("#tipo").val();
+                var comId = $(this).val(); 
+                if(tipo == 1 || tipo == 3){ loc(comId); }else{ubi(comId);}
             });
             var arrLoc = new Array();
-            $("button[name=salvaAree]").hide();
+            
             $("#addArea").click(function(){
                 var arrLocNome = new Array();
                 var com = $("#comuneCarto option:selected").text();
@@ -193,22 +203,28 @@ $e = pg_query($connection, $query);
                         arrLoc.push({com: comId, loc:id});
                     });
                 }
-                $("#locTot").append("<li><i class='fa fa-times removeArea' title='Elimina area'></i> Comune: "+com+", Località: <span class='idLoc' data-arrloc='"+arrLoc.join()+"'>"+arrLocNome.join(", ")+"</span></li>"); 
-                $(".removeArea").click(function(){$(this).parent("li").remove();checkLocLi();});
-                $("#localitaCartoWrap").fadeOut('fast');
+                $("#locTot").append("<li><i class='fa fa-times removeArea' title='Elimina area'></i> Comune: "+com+", Località: <span class='idLoc' data-arrloc='"+arrLoc.join()+"'>"+arrLocNome.join(", ")+"</span></li>").show(); 
+                $(".removeArea").click(function(){$(this).parent("li").remove();/*checkLocLi();*/});
+                $("#localita").fadeOut('fast');
                 $("#comuneCarto").val(15);
-                checkLocLi();
+                //checkLocLi();
             });
             $("button[name=salvaAree]").click(function(){
-                var tipoArea = $("#tipo").val();
-                var nomeArea = $("#nomeArea").val();
+                var tipo = $("#tipo").val();
+                var nome = $("#nomeArea").val();
+                var comune = $("#comuneCarto").val();
                 var rubrica = $("select[name=rubrica]").val();
-                if(!tipoArea){ $("#test").text("Il campo tipologia area è obbligatorio"); return false; }
-                if(!nomeArea){ $("#test").text("Il campo nome area è obbligatorio"); return false; }
+                var indirizzo = $("select[name=indirizzo]").val();
+                var l = $("#locTot li").length;
+                if(tipo==0){ $("#test").text("Il campo tipologia area è obbligatorio"); return false; }
+                if(!nome){ $("#test").text("Il campo nome area è obbligatorio"); return false; }
+                if(comune == 15 && l == 0){ $("#test").text("Il campo Comune è obbligatorio"); return false; }
+                if((tipo == 1 || tipo == 3) && comune != 15 && nome && l == 0){$("#test").text("Per il tipo di area scelto devi aggiungere almeno una località"); return false;}
+                //console.log(tipo+' '+nome+' '+comune+' '+rubrica+' '+indirizzo+' '+arrLoc);return false;
                 $.ajax({
                     url: 'inc/areeIns.php',
                     type: 'POST', 
-                    data: {n:nomeArea,a:arrLoc, t:tipoArea},
+                    data: {tipo:tipo, nome:nome, comune:comune, localita:arrLoc, rubrica:rubrica, indirizzo:indirizzo},
                     success: function(data){ $("#test").html(data).delay(5000).fadeOut(function(){ location.reload(); }); }
                 });//ajax
             });

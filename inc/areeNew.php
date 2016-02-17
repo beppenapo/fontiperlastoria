@@ -11,34 +11,33 @@
         </select>
         <label>* NOME AREA</label>
         <textarea id="nomeArea" class="form" style="width:93% !important; height:16px !important;"></textarea>
-        <div id="rubrica">   
-            <label>RIFERIMENTO RUBRICA</label>
-            <select name="rubrica" class="form">
-                <option value="7">--non determinabile--</option>
+        <div id="comune">
+            <label>* COMUNE</label>
+            <select id="comuneCarto" name="comuneCarto" class="form">
+                <option value="15">--non determinabile--</option>
                 <?php
-                $q2 = ("SELECT DISTINCT id, nome FROM anagrafica WHERE id != 7 order by nome asc;");
-                $q2ex = pg_query($connection, $q2);
-                while($rub = pg_fetch_array($q2ex)){echo "<option value='". $rub['id']."'>".$rub['nome']."</option>";}
+                $q1 = ("SELECT DISTINCT id, comune FROM comune WHERE id != 15 order by comune asc;");
+                $q1ex = pg_query($connection, $q1);
+                $q1r = pg_num_rows($q1ex);
+                while($row = pg_fetch_array($q1ex)){echo "<option value=".$row['id'].">".stripslashes($row['comune'])."</option>"; }
                 ?>
-   </select>
-   </div>
-        <label>* COMUNE</label>
-        <select id="comuneCarto" name="comuneCarto" class="form">
-            <option value="15">--non determinabile--</option>
-            <?php
-            $q1 = ("SELECT DISTINCT id, comune FROM comune WHERE id != 15 order by comune asc;");
-            $q1ex = pg_query($connection, $q1);
-            $q1r = pg_num_rows($q1ex);
-            while($row = pg_fetch_array($q1ex)){echo "<option value=".$row['id'].">".stripslashes($row['comune'])."</option>"; }
-            ?>
-        </select>
-        <div id="localitaCartoWrap">
-            <label>LOCALITA'</label>
+            </select>
+        </div>
+        <div id="localita">
+            <label>* LOCALITA'</label>
             <div id="localitaCarto"></div>
-            <label class="update" id="addArea">Aggiungi area </label>
+            <label id="addArea"><i class="fa fa-plus-circle"></i> Aggiungi area </label>
         </div>
         <ul id="locTot"></ul>
+        <div id="indirizzo">
+            <label>INDIRIZZO</label>
+            <select name="indirizzo" class="form"><option value="0">--non determinabile--</option></select>
+        </div>
+        <div id="rubrica">   
+            <label>RIFERIMENTO RUBRICA</label>
+            <select name="rubrica" class="form"><option value="7">--non determinabile--</option></select>
+        </div>
         <button type="button" name="salvaAree" class="pulsanti" >Salva area</button>
-        <span id="test"></span>
+        <span id="test"></span>        
     </div>
 </div>
