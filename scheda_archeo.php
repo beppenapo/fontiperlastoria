@@ -591,61 +591,35 @@ $param = '';
 
        <?php 
          $qubi =  ("
-SELECT
- aree_scheda.id as id_as,
- aree_scheda.id_scheda,
- stato.id as id_stato,
- provincia.id as id_prov,
- aree.nome_area as area_id,
- aree.id_localita,
- aree.id_comune,
- aree.id_indirizzo,
- aree.id AS ai_id,
- aree_scheda.id_motivazione as id_motiv,
- localita.localita,
- comune.comune,
- lista_ai_motiv.definizione as motiv,
- indirizzo.indirizzo,
- provincia.provincia,
- stato.stato,
- anagrafica.tel,
- anagrafica.mail,
- anagrafica.web
-FROM aree_scheda
-LEFT JOIN aree ON aree.nome_area = aree_scheda.id_area
-LEFT JOIN anagrafica ON aree.id_rubrica = anagrafica.id
+         SELECT aree_scheda.id as id_as, area.id as area_id, area.nome as area, comune.comune, localita.localita, indirizzo.indirizzo, indirizzo.cap, anagrafica.nome, anagrafica.tel, anagrafica.cell, anagrafica.fax, anagrafica.mail, anagrafica.web, provincia.provincia,
+         stato.stato, lista_ai_motiv.definizione as motiv 
+         FROM aree_scheda
+        LEFT JOIN area ON aree_scheda.id_area = area.id
+LEFT JOIN aree ON aree.nome_area = area.id 
 LEFT JOIN comune ON aree.id_comune = comune.id
-LEFT JOIN provincia ON comune.provincia = provincia.id
-LEFT JOIN stato ON comune.stato = stato.id
 LEFT JOIN localita ON aree.id_localita = localita.id
-LEFT JOIN lista_ai_motiv ON lista_ai_motiv.id = aree_scheda.id_motivazione
-LEFT JOIN indirizzo ON indirizzo.id = aree.id_indirizzo
-WHERE aree.tipo = 2 AND aree_scheda.id_scheda = $id;");
-
+LEFT JOIN indirizzo ON aree.id_indirizzo = indirizzo.id
+LEFT JOIN anagrafica ON aree.id_rubrica = anagrafica.id
+LEFT JOIN provincia ON comune.provincia = provincia.id
+LEFT JOIN stato ON provincia.stato = stato.id
+LEFT JOIN lista_ai_motiv ON aree_scheda.id_motivazione = lista_ai_motiv.id
+WHERE aree_scheda.id_scheda = $id AND area.tipo = 2;
+");
          $rubi = pg_query($connection, $qubi);
          $aubi = pg_fetch_array($rubi, 0, PGSQL_ASSOC);
          $rowubi = pg_num_rows($rubi);
          
          $id_as= $aubi['id_as'];
-         $id_stato_ubi= $aubi['id_stato'];
-         $id_prov_ubi= $aubi['id_prov'];
-         $id_loc_ubi= $aubi['id_localita'];
-         $id_com_ubi= $aubi['id_comune'];
-         $id_indirizzo_ubi= $aubi['id_indirizzo'];
-         $id_motiv_ubi= $aubi['id_motiv'];
-         $localitaubi= stripslashes($aubi['localita']); if($localitaubi == '') {$localitaubi=$nd;}
-         $comuneubi= stripslashes($aubi['comune']); if($comuneubi== '') {$comuneubi=$nd;}
-         $motivubi= stripslashes($aubi['motiv']); if($motivubi == '') {$motivubi=$nd;}
-         $indirizzoubi= stripslashes($aubi['indirizzo']); if($indirizzoubi == '') {$indirizzoubi=$nd;}
-         $provinciaubi= stripslashes($aubi['provincia']); if($provinciaubi == '') {$provinciaubi=$nd;}
-         $statoubi= stripslashes($aubi['stato']); if($statoubi == '') {$statoubi=$nd;}
-         $telubi= stripslashes($aubi['tel']); if($telubi == '') {$telubi=$nd;}
-         $mailubi= stripslashes($aubi['mail']); if($mailubi == '') {$mailubi=$nd;}
-         $webubi= stripslashes($aubi['web']);
          $id_ubi = $aubi['area_id'];
-         if($webubi == '') {$linkubi=$nd;}
-         else {$linkubi='<a href="'.$webubi.'" target="_blank" class="generico" title="[link esterno]">'.$webubi.'</a>';}
-
+         $localitaubi = ($aubi['localita']=="") ? $nd : stripslashes($aubi['localita']);
+         $comuneubi = ($aubi['comune']=="") ? $nd : stripslashes($aubi['comune']);
+         $motivubi = ($aubi['motiv']=="") ? $nd : stripslashes($aubi['motiv']);
+         $indirizzoubi = ($aubi['indirizzo']=="") ? $nd : stripslashes($aubi['indirizzo']);
+         $provinciaubi = ($aubi['provincia']=="") ? $nd : stripslashes($aubi['provincia']);
+         $statoubi = ($aubi['stato']=="") ? $nd : stripslashes($aubi['stato']);
+         $telubi = ($aubi['tel']=="") ? $nd : stripslashes($aubi['tel']);
+         $mailubi = ($aubi['mail']=="") ? $nd : stripslashes($aubi['mail']);
+         $linkubi = ($aubi['web']=="") ? $nd : '<a href="'.stripslashes($aubi['web']).'" target="_blank" class="generico" title="[link esterno]">'.stripslashes($aubi['web']).'</a>';
         ?>
        <div class="toggle check">
         <div class="sezioni"><h2>UBICAZIONE</h2></div>
@@ -655,37 +629,19 @@ WHERE aree.tipo = 2 AND aree_scheda.id_scheda = $id;");
          <table class="mainData" style="width:98% !important;">
             <tr>
              <td width="50%;">
-               <label>INDIRIZZO</label>
-               <div class="valori"><?php echo($indirizzoubi); ?></div>
-               <br/>
-               <label>LOCALITA'</label>
-               <div class="valori"><?php echo($localitaubi); ?></div>
-               <br/>
-               <label>COMUNE</label>
-               <div class="valori"><?php echo($comuneubi); ?></div>
-               <br/>
-               <label>PROVINCIA</label>
-               <div class="valori"><?php echo($provinciaubi); ?></div>
-               <br/>
-               <label>STATO</label>
-               <div class="valori"><?php echo($statoubi); ?></div>
-               <br/>
-               <label>MOTIVAZIONE UBICAZIONE</label>
-               <div class="valori"><?php echo($motivubi); ?></div>
+               <label>INDIRIZZO</label><div class="valori"><?php echo($indirizzoubi); ?></div><br/>
+               <label>LOCALITA'</label><div class="valori"><?php echo($localitaubi); ?></div><br/>
+               <label>COMUNE</label><div class="valori"><?php echo($comuneubi); ?></div><br/>
+               <label>PROVINCIA</label><div class="valori"><?php echo($provinciaubi); ?></div><br/>
+               <label>STATO</label><div class="valori"><?php echo($statoubi); ?></div><br/>
+               <label>MOTIVAZIONE UBICAZIONE</label><div class="valori"><?php echo($motivubi); ?></div>
              </td>
              <td>
-               <label>TELEFONO</label>
-               <div class="valori"><?php echo($telubi); ?></div>
-               <br/>
-               <label>INDIRIZZO E-MAIL</label>
-               <div class="valori"><?php echo($mailubi); ?></div>
-               <br/>
-               <label>SITO WEB</label>
-               <div class="valori"><?php echo($linkubi); ?></div>
-               <br/>
-               <label>NOTE</label>
-               <div class="valori" style="height:108px;"><?php echo(nl2br($noteUbi))?></div>
-             </td>
+               <label>TELEFONO</label><div class="valori"><?php echo($telubi); ?></div><br/>
+               <label>INDIRIZZO E-MAIL</label><div class="valori"><?php echo($mailubi); ?></div><br/>
+               <label>SITO WEB</label><div class="valori"><?php echo($linkubi); ?></div><br/>
+               <label>NOTE</label><div class="valori" style="height:108px;"><?php echo(nl2br($noteUbi))?></div>
+            </td>
            </tr>
            <?php if($_SESSION['username']!='guest') {?>
           <tr>
@@ -703,36 +659,10 @@ WHERE aree.tipo = 2 AND aree_scheda.id_scheda = $id;");
        </div>
 
       <?php
-         $qana =  ("SELECT
-  scheda.id AS id_scheda,
-  anagrafica.id as ana_id,
-  anagrafica.nome,
-  comune.id AS id_comune,
-  comune.comune,
-  indirizzo.id AS id_indirizzo,
-  indirizzo.indirizzo,
-  localita.id AS id_localita,
-  localita.localita,
-  anagrafica.tel,
-  anagrafica.cell,
-  anagrafica.fax,
-  anagrafica.mail,
-  anagrafica.web,
-  anagrafica.note
-FROM
-  public.anagrafica,
-  public.comune,
-  public.indirizzo,
-  public.localita,
-  public.scheda
-WHERE
-  anagrafica.comune = comune.id AND
-  anagrafica.indirizzo = indirizzo.id AND
-  anagrafica.localita = localita.id AND
-  scheda.ana_id = anagrafica.id AND
-  scheda.id = $id
-order by id_scheda asc;
-");
+         $qana =  ("SELECT scheda.id AS id_scheda, anagrafica.id as ana_id, anagrafica.nome,  comune.id AS id_comune,  comune.comune,  indirizzo.id AS id_indirizzo,  indirizzo.indirizzo,  localita.id AS id_localita,  localita.localita, anagrafica.tel,  anagrafica.cell,  anagrafica.fax,  anagrafica.mail,  anagrafica.web,  anagrafica.note
+         FROM anagrafica, comune, indirizzo, localita, scheda
+         WHERE anagrafica.comune = comune.id AND  anagrafica.indirizzo = indirizzo.id AND  anagrafica.localita = localita.id AND  scheda.ana_id = anagrafica.id AND  scheda.id = $id
+         order by id_scheda asc; ");
          $rana = pg_query($connection, $qana);
          $aana = pg_fetch_array($rana, 0, PGSQL_ASSOC);
          $rowana = pg_num_rows($rana);
@@ -743,13 +673,8 @@ order by id_scheda asc;
          $id_indirizzo_ana=$aana['id_indirizzo'];
          $localita_ana=$aana['localita'];
          $indirizzo_ana=$aana['indirizzo'];
-         //if($id_localita_ana != 6) {$localita_ana=$aana['localita'];}
-         //if($id_indirizzo_ana != 42) {$indirizzo_ana=$aana['indirizzo'];}
-
-
          $idana = $aana['ana_id'];
          $nomeana= $aana['nome']; if($nomeana == '') {$nomeana=$nd;}
-         //$indirizzoana= $comune_ana." ".$indirizzo_ana." ".$localita_ana;
          $telana= $aana['tel']; if($telana == '') {$telana=$nd;}
          $mailana= $aana['mail']; if($mailana == '') {$mailana=$nd;}
          $webana= $aana['web'];
@@ -762,35 +687,19 @@ order by id_scheda asc;
        <div class="toggle check bassa">
         <div class="sezioni"><h2>ANAGRAFICA</h2></div>
         <div class="slide">
-
-
          <table class="mainData" style="width:98% !important;">
             <tr>
              <td width="50%;">
-               <label>NOME</label>
-               <div class="valori"><?php echo($nomeana); ?></div>
-               <br/>
-               <label>COMUNE</label>
-               <div class="valori"><?php echo($comune_ana); ?></div>
-               <br/>
-               <label>LOCALITA'</label>
-               <div class="valori"><?php echo($localita_ana); ?></div>
-               <br/>
-               <label>INDIRIZZO</label>
-               <div class="valori"><?php echo($indirizzo_ana); ?></div>
-               <br/>
-               <label>TELEFONO</label>
-               <div class="valori"><?php echo($telana); ?></div>
-               <br/>
-               <label>INDIRIZZO E-MAIL</label>
-               <div class="valori"><?php echo($mailana); ?></div>
-             </td>
+               <label>NOME</label> <div class="valori"><?php echo($nomeana); ?></div> <br/>
+               <label>COMUNE</label> <div class="valori"><?php echo($comune_ana); ?></div>  <br/>
+               <label>LOCALITA'</label> <div class="valori"><?php echo($localita_ana); ?></div> <br/>
+               <label>INDIRIZZO</label> <div class="valori"><?php echo($indirizzo_ana); ?></div> <br/>
+               <label>TELEFONO</label> <div class="valori"><?php echo($telana); ?></div> <br/>
+               <label>INDIRIZZO E-MAIL</label> <div class="valori"><?php echo($mailana); ?></div>
+            </td>
              <td>
-               <label>SITO WEB</label>
-               <div class="valori"><?php echo($linkana); ?></div>
-               <br/>
-               <label>NOTE</label>
-               <div class="valori" style="height:240px;overflow:auto;"><?php echo(nl2br($noteana)); ?></div>
+               <label>SITO WEB</label> <div class="valori"><?php echo($linkana); ?></div> <br/>
+               <label>NOTE</label><div class="valori" style="height:240px;overflow:auto;"><?php echo(nl2br($noteana)); ?></div>
              </td>
            </tr>
            <?php if($_SESSION['username']!='guest') {?>
