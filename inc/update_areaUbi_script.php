@@ -7,7 +7,7 @@ $motiv_update= $_POST['motiv_update'];
 $noteUbiUpdate=pg_escape_string($_POST['noteUbiUpdate']);
 if ($motiv_update && $area_update){
   $update = ("
-    BEGIN; 
+    BEGIN;
     UPDATE aree_scheda SET id_area = $area_update, id_motivazione = $motiv_update  WHERE id_scheda = $id AND id = $old_ubi;
     UPDATE scheda SET noteubi = '$noteUbiUpdate' WHERE id = $id;
     COMMIT;
@@ -17,7 +17,7 @@ if ($motiv_update && $area_update){
   else {die("Salvataggio avvenuto correttamente" . pg_last_error($connection));}
 }
 else{
-    die("Devi selezionare il campo ".($motiv_update?'Località' : 'Motivazione'));
+    die("Devi selezionare il campo ".($motiv_update?'LocalitÃ ' : 'Motivazione'));
 }
 
 ?>

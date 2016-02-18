@@ -266,9 +266,9 @@ $resai = pg_query($connection, $qai);
            <td>
             <label>Seleziona un'area dall'elenco</label>
             <select id="id_area" name="id_area" class="form">
-             <?php 
+             <?php
                 echo $opt;
-                while($x = pg_fetch_array($resai)){ echo "<option value='".$x['id']."'>".$x['nome']."</option>"; } 
+                while($x = pg_fetch_array($resai)){ echo "<option value='".$x['id']."'>".$x['nome']."</option>"; }
             ?>
             </select>
           </td>
@@ -315,14 +315,11 @@ $resai = pg_query($connection, $qai);
           <div style="margin:10px">
            <label>ANAGRAFICA UBICAZIONE</label>
            <select id="ana_ubi" name="ana_ubi" class="form">
-            <option value="<?php echo $defVal; ?>">--seleziona un valore dalla lista--</option>
+            <option value="1107">--seleziona un valore dalla lista--</option>
             <?php
-             //$query =  ("SELECT distinct aree.id, comune.comune, localita.localita, indirizzo.indirizzo, anagrafica.nome FROM aree, localita,comune,indirizzo, anagrafica WHERE aree.id_comune = comune.id AND  aree.id_indirizzo = indirizzo.id AND  aree.id_localita = localita.id AND  aree.id_rubrica = anagrafica.id and aree.tipo = 2 order by comune asc, localita asc, indirizzo asc, nome asc; ");
-             $query =  ("SELECT a.id, a.nome AS area, an.nome FROM aree, area a, anagrafica an  WHERE aree.nome_area = a.id  AND aree.id_rubrica = an.id  AND a.tipo = 2;");
+             $query = "SELECT a.id, a.nome AS area, an.nome FROM aree, area a, anagrafica an  WHERE aree.nome_area = a.id  AND aree.id_rubrica = an.id  AND a.tipo = 2;";
              $result = pg_query($connection, $query);
-             while($x = pg_fetch_array($result)){
-               echo "<option value='".$x['id']."'>".$x['area']." - ".$x['nome']."</option>";
-             }
+             while($x = pg_fetch_array($result)){ echo "<option value='".$x['id']."'>".$x['area']." - ".$x['nome']."</option>"; }
             ?>
            </select>
            <label>MOTIVAZIONE UBICAZIONE</label>
@@ -331,27 +328,16 @@ $resai = pg_query($connection, $qai);
             <?php
              $query =  ("SELECT * FROM lista_ai_motiv order by definizione asc; ");
              $result = pg_query($connection, $query);
-             $righe = pg_num_rows($result);
-             $i=0;
-             for ($i = 0; $i < $righe; $i++){
-               $idMotivAi = pg_result($result, $i, "id");
-               $def = pg_result($result, $i, "definizione");
-               echo "<option value=\"$idMotivAi\">$def</option>";
-             }
+             while ($m = pg_fetch_array($result)) { echo "<option value='".$m['id']."'>".$m['definizione']."</option>"; }
             ?>
            </select>
-           <div id="ubi_info" style="margin:0px 10px;">
-
-           </div>
+           <div id="ubi_info" style="margin:0px 10px;"></div>
             <label>NOTE</label>
             <textarea id="noteUbi" class="form" placeholder="Inserisci note" style="height:100px !important"></textarea>
           </div>
         </div>
        </div>
-
-      <?php
-
-      ?>
+       
  <div class="toggle check bassa">
   <div class="sezioni"><h2>ANAGRAFICA</h2></div>
   <div class="slide" style="margin:10px;">
@@ -580,7 +566,7 @@ $(document).ready(function() {
   if(hub==1){$("tr.compilatoreLast").remove();}
   if(hub==2){
    $( "div.check:not([class~='bassa']), #note" ).hide();
-   //$("#areaDefault").attr("val","1286,16"); 
+   //$("#areaDefault").attr("val","1286,16");
    $("tr.compilatoreFirst").remove();
   }
 
@@ -625,7 +611,7 @@ $(document).ready(function() {
         $("div[class=areeList]:last").remove();
         areeFunc();
     });
-    
+
   $('.avviso').hide();
   $('#livello').change(function(){
     var livello_list = $(this).val();
