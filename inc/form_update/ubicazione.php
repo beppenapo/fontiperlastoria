@@ -15,7 +15,7 @@
         $result = pg_query($connection, $query);
         while($u = pg_fetch_array($result)){
             $attr = ($id_ubi == $u['area'])?'selected="selected"':'';
-            echo "<option ".$attr."  value='".$u['area']."'>".$u['area_def']." ".$u['nome']."</option>";
+            echo "<option ".$attr."  value='".$u['area']."'>".$u['area_def']." - ".$u['rubrica']."</option>";
         }
             ?>
   </select>
