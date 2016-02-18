@@ -275,7 +275,7 @@ $resai = pg_query($connection, $qai);
           <td>
            <label>MOTIVAZIONE AREA DI INTERESSE</label>
            <select id="motiv_update" name="motiv_update" class="form">
-            <option value="16">--seleziona un valore dalla lista--</option>
+            <option value="20">--seleziona un valore dalla lista--</option>
             <?php
              $query =  ("SELECT * FROM lista_ai_motiv order by definizione asc; ");
              $result = pg_query($connection, $query);
@@ -324,7 +324,7 @@ $resai = pg_query($connection, $qai);
            </select>
            <label>MOTIVAZIONE UBICAZIONE</label>
            <select id="motivubi_update" name="motivubi_update" class="form">
-            <option value="16">--seleziona un valore dalla lista--</option>
+            <option value="20">--seleziona un valore dalla lista--</option>
             <?php
              $query =  ("SELECT * FROM lista_ai_motiv order by definizione asc; ");
              $result = pg_query($connection, $query);
