@@ -337,7 +337,7 @@ $resai = pg_query($connection, $qai);
           </div>
         </div>
        </div>
-       
+
  <div class="toggle check bassa">
   <div class="sezioni"><h2>ANAGRAFICA</h2></div>
   <div class="slide" style="margin:10px;">
@@ -596,7 +596,7 @@ $(document).ready(function() {
         $("#areaDefault").remove();
         var id_area=$("#id_area").val();
         var motiv=$("#motiv_update").val();
-        if(id_area == 261 || motiv == 16){return false; }
+        if(id_area == def || motiv == 20){return false; }
         else{
             $("#areeMsg").fadeOut('fast');
             var area = $( "#id_area option:selected" ).text();
@@ -721,7 +721,7 @@ $(document).ready(function() {
    if (!dgn_numsch) {errori += '<li>NUMERO SCHEDA</li>';$('#dgn_numsch').addClass('errore');}else{$('#dgn_numsch').removeClass('errore');}
    if (!dgn_livind) {errori += '<li>LIVELLO INDIVIDUAZIONE DATI</li>';$('#dgn_livind').addClass('errore');}else{$('#dgn_livind').removeClass('errore');}
    if (!dgn_dnogg) {errori += '<li>DEFINIZIONE OGGETTO</li>';$('#dgn_dnogg').addClass('errore');}else{$('#dgn_dnogg').removeClass('errore');}
-   if (ana_ubi!=def && motivubi_update == 16) {errori+= '<li>MOTIVAZIONE UBICAZIONE</li>';$('#motivubi_update').addClass('errore');}else {$('#motivubi_update').removeClass('errore');}
+   if (ana_ubi!=1107 && motivubi_update == 20) {errori+= '<li>MOTIVAZIONE UBICAZIONE</li>';$('#motivubi_update').addClass('errore');}else {$('#motivubi_update').removeClass('errore');}
    if(errori){
    	//alert('I sguenti campi sono obbligatori e vanno compilati: \n' + errori); return false;
    	errori = '<h3>I seguenti campi sono obbligatori e vanno compilati:</h3><ol>' + errori;
@@ -789,4 +789,3 @@ $(document).ready(function() {
 </script>
 </body>
 </html>
-        else{$("#areeListCanc").text("Annulla inserimento area");}
