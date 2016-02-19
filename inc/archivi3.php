@@ -32,7 +32,7 @@ $segnatura= stripslashes($a2['segnatura']); if($segnatura == '') {$segnatura=$nd
 $note= stripslashes($a2['note']); if($note == '') {$note=$nd;}
 $data= stripslashes($a2['dsc_data']); if($data == '') {$data=$nd;}
 $luogo= stripslashes($a2['dsc_luogo']); if($luogo == '') {$luogo=$nd;}
-$contenuto2=nl2br($contenuto);
+
 ?>
    <div class="inner">
          <div class="toggle">

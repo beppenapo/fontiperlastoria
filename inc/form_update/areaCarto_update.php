@@ -14,8 +14,7 @@ while($lista = pg_fetch_array($listaExec)){$listaArr .="<li><input type='checkbo
 <div id="compilazione_form">
     <label>* Tipologia area</label>
     <select id="tipoUp" name="tipoUp" class="form">
-        <option value="1">area di interesse</option>
-        <option value="2">ubicazione</option>
+        <option value="1">area di interesse</option>        
         <option value="3">cartografia</option>
     </select>
     <label class='main'>* Nome area</label>

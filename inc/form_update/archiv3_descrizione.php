@@ -57,7 +57,7 @@
 </select>
 
 <label>CONTENUTO</label>
-<textarea id="archiv3_contenuto_update" class="form noteform"><?php echo($contenuto); ?></textarea>
+<textarea id="archiv3_contenuto_update" class="form noteform"><?php echo htmlentities($contenuto); ?></textarea>
 
 <label>DESCRIZIONE FISICA</label>
 <textarea id="archiv3_descrizione_update" class="form noteform"><?php echo($descrizione); ?> </textarea>
