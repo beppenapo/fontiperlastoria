@@ -57,10 +57,10 @@
 </select>
 
 <label>CONTENUTO</label>
-<textarea id="archiv3_contenuto_update" class="form noteform"><?php echo htmlentities($contenuto); ?></textarea>
+<textarea id="archiv3_contenuto_update" class="form noteform"><?php echo html_entity_decode($contenuto); ?></textarea>
 
 <label>DESCRIZIONE FISICA</label>
-<textarea id="archiv3_descrizione_update" class="form noteform"><?php echo($descrizione); ?> </textarea>
+<textarea id="archiv3_descrizione_update" class="form noteform"><?php echo html_entity_decode($descrizione); ?> </textarea>
 
 <label>LINGUA</label>
 <input type="hidden" value="<?php echo($lingua);?>" id="arrArchiv3Lingua"/>
@@ -77,7 +77,7 @@
 
   ?>
 <label>NOTE
-<textarea id="archiv3_note_update" class="form noteform"><?php echo($note); ?> </textarea>
+<textarea id="archiv3_note_update" class="form noteform"><?php echo html_entity_decode($note); ?> </textarea>
 
 <div class="login2" style="margin-top:20px;" id="archiv3_descrizione_salva">Salva modifiche</div>
 <div class="chiudiForm login2">Annulla modifiche</div>

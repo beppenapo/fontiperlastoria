@@ -27,7 +27,7 @@ $tipo= stripslashes($a2['tipo']); if($tipo == '') {$tipo=$nd;}
 $supporto=stripslashes($a2['supporto']); if($supporto == '') {$supporto=$nd;}
 $descrizione=stripslashes($a2['descrizione']); if($descrizione == '') {$descrizione=$nd;}
 $lingua= stripslashes($a2['lingua']); if($lingua == '') {$lingua=$nd;}
-$contenuto= stripslashes(nl2br($a2['contenuto'])); if($contenuto == '') {$contenuto=$nd;}
+$contenuto= stripslashes($a2['contenuto']); if($contenuto == '') {$contenuto=$nd;}
 $segnatura= stripslashes($a2['segnatura']); if($segnatura == '') {$segnatura=$nd;}
 $note= stripslashes($a2['note']); if($note == '') {$note=$nd;}
 $data= stripslashes($a2['dsc_data']); if($data == '') {$data=$nd;}
@@ -82,17 +82,17 @@ $luogo= stripslashes($a2['dsc_luogo']); if($luogo == '') {$luogo=$nd;}
        <tr>
         <td>
          <label>CONTENUTO</label>
-         <div class="valori"><?php echo($contenuto); ?> </div>
+         <div class="valori"><?php echo nl2br($contenuto); ?> </div>
         </td>
         <td>
          <label>DESCRIZIONE FISICA</label>
-         <div class="valori"><?php echo($descrizione); ?> </div>
+         <div class="valori"><?php echo nl2br($descrizione); ?> </div>
          <br/>
          <label>LINGUA</label>
          <div class="valori"><?php echo($lingua); ?> </div>
          <br/>
          <label>NOTE</label>
-         <div class="valori"><?php echo($note); ?> </div>
+         <div class="valori"><?php echo nl2br($note); ?> </div>
         </td>
        </tr>
        <?php if($_SESSION['username']!='guest') {?>
