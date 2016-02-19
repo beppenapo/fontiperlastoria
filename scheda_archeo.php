@@ -31,9 +31,9 @@ $q1 =  ("
         cronologia.cro_fin,
         scheda.fine
     FROM scheda, lista_dgn_tpsch, lista_dgn_livind, cronologia
-    WHERE scheda.dgn_tpsch = lista_dgn_tpsch.id 
-        AND  scheda.dgn_livind = lista_dgn_livind.id 
-        AND  cronologia.id_scheda = scheda.id 
+    WHERE scheda.dgn_tpsch = lista_dgn_tpsch.id
+        AND  scheda.dgn_livind = lista_dgn_livind.id
+        AND  cronologia.id_scheda = scheda.id
         AND  scheda.id = $id;
 ");
 $r = pg_query($connection, $q1);
@@ -106,7 +106,7 @@ switch ($pag) {
 
 $qgeom1=("
   SELECT count(area_int_poly.id) as num_poly
-  FROM area_int_poly,aree,aree_scheda 
+  FROM area_int_poly,aree,aree_scheda
   WHERE area_int_poly.id_area = aree.nome_area AND
         aree_scheda.id_area = aree.nome_area AND
         aree_scheda.id_scheda = $id;
@@ -114,28 +114,28 @@ $qgeom1=("
 
 $qgeom2=("
   SELECT count(area_int_line.id) as num_line
-  FROM area_int_line,aree,aree_scheda 
+  FROM area_int_line,aree,aree_scheda
   WHERE area_int_line.id_area = aree.nome_area AND
         aree_scheda.id_area = aree.nome_area AND
         aree_scheda.id_scheda = $id;
   ");
 
 $qgeom3=("
-select st_extent(area_int_poly.the_geom) as extent 
-  FROM area_int_poly, aree,aree_scheda 
+select st_extent(area_int_poly.the_geom) as extent
+  FROM area_int_poly, aree,aree_scheda
   WHERE area_int_poly.id_area = aree.nome_area AND
         aree_scheda.id_area = aree.nome_area AND
         aree_scheda.id_scheda = $id;
 ");
 $qgeom4=("
-select st_extent(area_int_line.the_geom) as extent2 
-  FROM area_int_line, aree,aree_scheda 
+select st_extent(area_int_line.the_geom) as extent2
+  FROM area_int_line, aree,aree_scheda
   WHERE area_int_line.id_area = aree.nome_area AND
         aree_scheda.id_area = aree.nome_area AND
         aree_scheda.id_scheda = $id;
 ");
 
-$qgeom1Res = pg_query($connection, $qgeom1); 
+$qgeom1Res = pg_query($connection, $qgeom1);
 $qgeom2Res = pg_query($connection, $qgeom2);
 $qgeom3Res = pg_query($connection, $qgeom3);
 $qgeom4Res = pg_query($connection, $qgeom4);
@@ -172,13 +172,14 @@ $extent2 = str_replace(' ', ',', $extent2);
   <meta name="copyright" content="&copy;2011 Museo Provinciale" />
 
   <title>Le fonti per la storia. Per un archivio delle fonti sulle valli di Primiero e Vanoi</title>
-  <link rel="stylesheet" href="lib/OpenLayers-2.12/theme/default/style.css" type="text/css">  
+  <link rel="stylesheet" href="lib/OpenLayers-2.12/theme/default/style.css" type="text/css">
   <link href="lib/jquery-ui-1.11.4/jquery-ui.min.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/scheda.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/ico-font/css/font-awesome.min.css" type="text/css" rel="stylesheet" media="screen" />
     <link rel="stylesheet" href="css/google.css" type="text/css">
   <link rel="shortcut icon" href="img/icone/favicon.ico" />
-
+  <script type="text/javascript" src="lib/jquery-core/jquery-1.12.0.min.js"></script>
+  <script type="text/javascript" src="lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
 
   <style>
     #mapImgWrap{position:relative;}
@@ -215,12 +216,12 @@ $extent2 = str_replace(' ', ',', $extent2);
         <table class="mainData">
           <tr>
            <td>
-            
+
             <label>NUMERO SCHEDA</label>
             <h1 class="<?php echo($stile);?>"><?php echo($numSch); ?></h1>
            </td>
            <td>
-             
+
              <label>TIPO SCHEDA</label>
              <div class="valori"><?php echo($a['tipo_scheda']); ?></div>
            </td>
@@ -264,19 +265,19 @@ $extent2 = str_replace(' ', ',', $extent2);
           <?php require("inc/form_update/dati_principali.php"); ?>
          </div>
        </div>
-       
+
        <?php if(($tpsch==7)||($pag==92)||($pag==63)||($pag==23))  {?>
         <div id="switchImgMap">
           <label class="switchLabel" for="switchMappa">Mappa</label>
           <label class="switchLabel" for="switchImg"> Foto</label>
-          <input type="radio" id="switchMappa" class="switchImgMapButton" name="switchImgMapButton" /> 
+          <input type="radio" id="switchMappa" class="switchImgMapButton" name="switchImgMapButton" />
           <input type="radio" id="switchImg" class="switchImgMapButton" name="switchImgMapButton" />
         </div>
        <?php }  ?>
-       
+
        <div id="mapImgWrap">
        <?php if($numPoly == 0 && $numLine == 0){?>
-         <div id="noMap"> 
+         <div id="noMap">
           <div id="noMapAlert">
            <h2>Non sono presenti geometrie per la scheda visualizzata</h2>
           </div>
@@ -289,8 +290,8 @@ $extent2 = str_replace(' ', ',', $extent2);
           </div>
          </div>
        <?php } ?>
-         
-       <?php 
+
+       <?php
           if(($tpsch==7)||($pag==92)||($pag==63)||($pag==23)) {
              $imgq = ("select path from file where id_scheda = $id;");
              $imgexec = pg_query($connection, $imgq);
@@ -310,7 +311,7 @@ $extent2 = str_replace(' ', ',', $extent2);
           }else{
              echo "<h2>Non sono presenti foto</h2>";
              if($idUsr) {
-         ?>          
+         ?>
            <form action="inc/uploaded_file.php" method="post" enctype="multipart/form-data">
              <input type="hidden" name="schedaFoto" value="<?php echo($id);?>" />
              <input type="file" name="file" id="file"><br>
@@ -401,7 +402,7 @@ $extent2 = str_replace(' ', ',', $extent2);
          $notecmp= stripslashes($acmp['cmp_note']); if($notecmp == '') {$notecmp=$nd;}
 
        ?>
-       
+
        <?php if($hub==1 || !$hub){ ?>
        <div class="toggle check bassa">
         <div class="sezioni"><h2>COMPILAZIONE</h2></div>
@@ -513,11 +514,11 @@ $qai =  ("
 select aree_scheda.id as id_as, area.id as filtro, area.nome,lista_ai_motiv.definizione as motiv, localita.localita, comune.comune, provincia.provincia, stato.stato
 from area
 inner join aree on aree.nome_area = area.id
-inner join aree_scheda on aree_scheda.id_area = area.id 
-inner join lista_ai_motiv on aree_scheda.id_motivazione = lista_ai_motiv.id 
-left join localita on aree.id_localita = localita.id 
-left join comune on aree.id_comune = comune.id 
-left join provincia on comune.provincia = provincia.id 
+inner join aree_scheda on aree_scheda.id_area = area.id
+inner join lista_ai_motiv on aree_scheda.id_motivazione = lista_ai_motiv.id
+left join localita on aree.id_localita = localita.id
+left join comune on aree.id_comune = comune.id
+left join provincia on comune.provincia = provincia.id
 left join stato on comune.stato=stato.id
 where aree_scheda.id_scheda = $id and area.tipo <> 2 order by comune asc, localita asc;
 ");
@@ -558,7 +559,7 @@ $param = '';
               </tr>
              ";
           }
-         
+
           ?>
           </tbody>
          </table>
@@ -580,8 +581,8 @@ $param = '';
          <?php } ?>
          </div>
          <div class="updateContent" style="display:none">
-           <?php 
-            require("inc/form_update/area_interesse.php"); 
+           <?php
+            require("inc/form_update/area_interesse.php");
             require("inc/form_update/area_interesse_add.php");
             require("inc/form_update/noteai_update.php");
            ?>
@@ -589,13 +590,13 @@ $param = '';
         </div>
        </div>
 
-       <?php 
+       <?php
          $qubi =  ("
          SELECT aree_scheda.id as id_as, area.id as area_id, area.nome as area, comune.comune, localita.localita, indirizzo.indirizzo, indirizzo.cap, anagrafica.nome, anagrafica.tel, anagrafica.cell, anagrafica.fax, anagrafica.mail, anagrafica.web, provincia.provincia,
-         stato.stato, lista_ai_motiv.definizione as motiv 
+         stato.stato, lista_ai_motiv.definizione as motiv
          FROM aree_scheda
         LEFT JOIN area ON aree_scheda.id_area = area.id
-LEFT JOIN aree ON aree.nome_area = area.id 
+LEFT JOIN aree ON aree.nome_area = area.id
 LEFT JOIN comune ON aree.id_comune = comune.id
 LEFT JOIN localita ON aree.id_localita = localita.id
 LEFT JOIN indirizzo ON aree.id_indirizzo = indirizzo.id
@@ -608,7 +609,7 @@ WHERE aree_scheda.id_scheda = $id AND area.tipo = 2;
          $rubi = pg_query($connection, $qubi);
          $aubi = pg_fetch_array($rubi, 0, PGSQL_ASSOC);
          $rowubi = pg_num_rows($rubi);
-         
+
          $id_as= $aubi['id_as'];
          $id_ubi = $aubi['area_id'];
          $localitaubi = ($aubi['localita']=="") ? $nd : stripslashes($aubi['localita']);
@@ -998,7 +999,7 @@ WHERE aree_scheda.id_scheda = $id AND area.tipo = 2;
       <div class="updateContent" style="display:none">
         <div id="newParente_form">
           <label>Inizia a digitare il nome della scheda da associare (es. "ARCHEO-"), la ricerca non e' case sensitive.</label>
-          
+
           <input class="form" id="termfiga2" style="width:150px !important; margin-top:10px !important;"/>
           <label id="numItems2"></label>
           <div id="resultfiga2"></div>
@@ -1007,17 +1008,17 @@ WHERE aree_scheda.id_scheda = $id AND area.tipo = 2;
         </div>
       </div>
     <?php } ?>
-          
+
     <?php if ($_SESSION['username']!='guest'){  ?>
       <div id="fine">
-       <label style="display:block;text-align:center;">La scheda risulta <?php echo($statoScheda); ?>. 
+       <label style="display:block;text-align:center;">La scheda risulta <?php echo($statoScheda); ?>.
        <?php if($tipoUsr != 3) {?>Utilizza il pulsante in basso per cambiare lo stato della scheda.</label>
        <br/>
        <label style="display:block;text-align:center;" class="update" id="upStatoScheda" <?php echo($upStatoScheda);?>>modifica stato</label>
       </div>
      <?php }} ?>
    </div>
-   
+
  </div><!--skArcheoContent-->
  </div><!--content-->
  <div id="footer"><?php require_once ("inc/footer.inc"); ?></div><!--footer-->
@@ -1040,8 +1041,7 @@ WHERE aree_scheda.id_scheda = $id AND area.tipo = 2;
 </div>
 
 <div id="fotoOrig" style="display:none;"><img src="foto/<?php echo($img); ?>" /></div>
-<script type="text/javascript" src="lib/jquery-core/jquery-1.12.0.min.js"></script>
-<script type="text/javascript" src="lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+
   <script type="text/javascript" src="lib/OpenLayers-2.12/OpenLayers.js"></script>
   <script src="http://maps.google.com/maps/api/js?v=3.2&amp;sensor=false"></script>
   <script type="text/javascript" src="lib/menu.js"></script>
@@ -1077,7 +1077,7 @@ $('.submenu').hide();
         , mouseleave: function() {$(this).find('.submenu').slideUp('fast');}
     });
  if(hub==2){$( "div.check:not([class~='bassa'])" ).remove();}
-    
+
     $("a#removeArea").click(function(e){
         e.preventDefault();
         var id = $(this).data('id');
@@ -1103,7 +1103,7 @@ else {$('.update').hide();}
      event.preventDefault();
     }
   });
-  
+
 $( "#termfiga2" ).autocomplete({
     source: "inc/autocomplete3.php?tpsch=<?php echo($tpsch);?>",
     minLength: 2,
@@ -1128,10 +1128,10 @@ $( "#termfiga2" ).autocomplete({
      $("#imgDiv").hide();
      $("#switchMappa").attr("checked", true);
     }else{
-     $("#switchImg").attr("checked", true); 
+     $("#switchImg").attr("checked", true);
     }
     $(".switchImgMapButton").change(function(){
-     $("#imgDiv").slideToggle("fast"); 
+     $("#imgDiv").slideToggle("fast");
      $("label.switchlabel").toggleClass("switchLabelChecked");
     });
    }
@@ -1260,11 +1260,11 @@ if (width >= height) {
    }
 }
 if(height > width){
-    ratio = minHeight / height; 
+    ratio = minHeight / height;
     width = width * ratio;    // Reset width to match scaled image
     $('#imgSmall').css({width:width, height:minHeight});
     //imgThumb.css("height", minHeight);   // Set new height
-    //imgThumb.css("width", width * ratio);    // Scale width based on ratio    
+    //imgThumb.css("width", width * ratio);    // Scale width based on ratio
     height = height * ratio;
 }
 
@@ -1282,7 +1282,7 @@ $("i").hover(function(){
 <script type="text/javascript">
 var mappa, gsat, aree, linee, arrayOSM, osm;
 var extent, extent2, bound, coo, numPoly, numLine, format, stile, param;
-var bingKey = 'Arsp1cEoX9gu-KKFYZWbJgdPEa8JkRIUkxcPr8HBVSReztJ6b0MOz3FEgmNRd4nM'; 
+var bingKey = 'Arsp1cEoX9gu-KKFYZWbJgdPEa8JkRIUkxcPr8HBVSReztJ6b0MOz3FEgmNRd4nM';
 OpenLayers.ProxyHost = "/cgi-bin/proxy.cgi?url=";
 format = 'image/png';
 numPoly = '<?php echo($numPoly); ?>';
@@ -1338,15 +1338,15 @@ var report = function(e) { OpenLayers.Console.log(e.type, e.feature.id); };
 
 if (numPoly != 0) {
  aree = new OpenLayers.Layer.WMS("Aree","http://www.lefontiperlastoria.it:80/geoserver/fonti/wms",{
-	layers: 'fonti:area_int_poly', 
+	layers: 'fonti:area_int_poly',
 	styles: stile,
 	srs: 'EPSG:3857',
 	format: 'image/png',
 	transparent: true,
 	CQL_FILTER: cql
-	
+
 },{
-	isBaseLayer: false, 
+	isBaseLayer: false,
 	tileSize: new OpenLayers.Size(256,256)
 });
  mappa.addLayer(aree);
@@ -1354,15 +1354,15 @@ if (numPoly != 0) {
 
 if(numLine != 0){
  linee = new OpenLayers.Layer.WMS("Tracciati","http://www.lefontiperlastoria.it:80/geoserver/fonti/wms",{
-	layers: 'fonti:area_int_line', 
+	layers: 'fonti:area_int_line',
 	styles: stile+'_linea',
 	srs: 'EPSG:3857',
 	format: 'image/png',
 	transparent: true,
 	CQL_FILTER: cql
-	
+
 },{
-	isBaseLayer: false, 
+	isBaseLayer: false,
 	tileSize: new OpenLayers.Size(256,256)
 });
  mappa.addLayer(linee);
