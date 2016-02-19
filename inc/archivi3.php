@@ -1,21 +1,21 @@
 <?php
 $nd = 'Dato non presente';
-$q2 =  ("SELECT 
-  scheda.id, 
+$q2 =  ("SELECT
+  scheda.id,
   archivi3.id,
-  archivi3.dsc_tpfonte as tipo, 
-  archivi3.dsc_supp as supporto, 
-  archivi3.dsc_dscfis as descrizione, 
-  archivi3.dsc_lingua3 as lingua, 
-  archivi3.dsc_conten as contenuto, 
-  archivi3.dsc_segnatura3 as segnatura, 
+  archivi3.dsc_tpfonte as tipo,
+  archivi3.dsc_supp as supporto,
+  archivi3.dsc_dscfis as descrizione,
+  archivi3.dsc_lingua3 as lingua,
+  archivi3.dsc_conten as contenuto,
+  archivi3.dsc_segnatura3 as segnatura,
   archivi3.dsc_note3 as note,
   archivi3.dsc_data,
   archivi3.dsc_luogo
-FROM 
-  public.archivi3, 
+FROM
+  public.archivi3,
   public.scheda
-WHERE 
+WHERE
   archivi3.dgn_numsch3 = scheda.dgn_numsch AND
   scheda.id = $id;");
 $r2 = pg_query($connection, $q2);
@@ -27,7 +27,7 @@ $tipo= stripslashes($a2['tipo']); if($tipo == '') {$tipo=$nd;}
 $supporto=stripslashes($a2['supporto']); if($supporto == '') {$supporto=$nd;}
 $descrizione=stripslashes($a2['descrizione']); if($descrizione == '') {$descrizione=$nd;}
 $lingua= stripslashes($a2['lingua']); if($lingua == '') {$lingua=$nd;}
-$contenuto= stripslashes($a2['contenuto']); if($contenuto == '') {$contenuto=$nd;}
+$contenuto= stripslashes(nl2br($a2['contenuto'])); if($contenuto == '') {$contenuto=$nd;}
 $segnatura= stripslashes($a2['segnatura']); if($segnatura == '') {$segnatura=$nd;}
 $note= stripslashes($a2['note']); if($note == '') {$note=$nd;}
 $data= stripslashes($a2['dsc_data']); if($data == '') {$data=$nd;}

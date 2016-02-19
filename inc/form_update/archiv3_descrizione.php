@@ -6,7 +6,7 @@
 
  <label>TIPOLOGIA DOCUMENTO</label>
  <div class="checkboxDiv">
- <?php 
+ <?php
   $trim = str_replace(', ',',',$tipo);
   $trim = ltrim($trim);
   $arr = explode(",", $trim);
@@ -35,7 +35,7 @@
     echo "<label for='archtipo$idArchTipo2' style='display:block;cursor:pointer;margin-bottom:3px; padding-right:3px;'><input type='checkbox' name='archiv3_tipo_update' id='archtipo$idArchTipo2' value='$defArchTipo2' />$defArchTipo2</label>";
   }
 ?>
-</div> 
+</div>
 
  <label>LUOGO REDAZIONE</label>
  <textarea id="archiv3_luogo_update" class="form"><?php echo($luogo); ?></textarea>
