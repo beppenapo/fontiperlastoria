@@ -11,7 +11,7 @@ $listaArr;
 while($lista = pg_fetch_array($listaExec)){$listaArr .="<li><input type='checkbox' name='locDel' id='locDel".$lista['id']."' value='".$lista['id']."' /> <label for='locDel".$lista['id']."'>".$lista['lista']."</label></li>";}
 ?>
 
-<div id="compilazione_form">   
+<div id="compilazione_form">
     <label>* Tipologia area</label>
     <select id="tipoUp" name="tipoUp" class="form">
         <option value="1">area di interesse</option>
@@ -68,11 +68,7 @@ $(document).ready(function(){
         var comId = $(this).val();
         var obj = "select[name=comNew]";
         var com = $(obj + "option:selected").text();
-        if(comId==15){
-            $('#locWrap').hide();
-        }else{
-            $('#locWrap').show();
-        }
+        if(comId==15){$('#locWrap').hide();}else{$('#locWrap').show();}
         $.ajax({
             type: "POST"
             , url: "inc/dinSelLocalitaCarto.php"
@@ -100,14 +96,14 @@ $(document).ready(function(){
             arrNewLoc.push({com: comId, loc:0});
         }else{
             checkLocChecked.each(function(){
-                var nome = $(this).data('loc'); 
-                var id = $(this).val(); 
+                var nome = $(this).data('loc');
+                var id = $(this).val();
                 arrLocNome.push( nome);
                 arrNewLoc.push({com: comId, loc:id});
             });
         }
         $("#locNewTotWrap").fadeIn(500);
-        $("#locNewTot").append("<li><i class='fa fa-times removeArea' title='Elimina area'></i> Comune: "+com+", Località: <span class='idLoc' data-arrloc='"+arrNewLoc.join()+"'>"+arrLocNome.join(", ")+"</span></li>"); 
+        $("#locNewTot").append("<li><i class='fa fa-times removeArea' title='Elimina area'></i> Comune: "+com+", Località: <span class='idLoc' data-arrloc='"+arrNewLoc.join()+"'>"+arrLocNome.join(", ")+"</span></li>");
         $(".removeArea").click(function(){$(this).parent("li").remove();checkLocLi();});
         $("#locWrap").fadeOut('fast');
         $("#comNew").val(15);
@@ -118,18 +114,18 @@ $(document).ready(function(){
             var idDel = $('#id').val();
             $.ajax({
                 url: 'inc/deleteArea.php',
-                type: 'POST', 
+                type: 'POST',
                 data: {idDel:idDel},
                 success: function(data){ $(data).dialog().delay(2500).fadeOut(function(){ window.location.href = 'aree.php?c=0&t=0'; }); }
             });//ajax
         });
     });//elimina
- 
+
 $('#salva').click(function(){
     arrDel.length=0;
     var idUp = $('#id').val();
-    var tipoUp = $('#tipoUp').val(); 
-    var nomeUp = $('#nomeUp').val(); 
+    var tipoUp = $('#tipoUp').val();
+    var nomeUp = $('#nomeUp').val();
     //console.log(idUp+" "+tipoUp+" "+nomeUp);
     var checkLocDel = $("input[name=locDel]:checked");
         var locDelLength = checkLocDel.length;
@@ -137,7 +133,7 @@ $('#salva').click(function(){
             arrDel.push=0;
         }else{
             checkLocDel.each(function(){
-                var id = $(this).val(); 
+                var id = $(this).val();
                 arrDel.push(id);
             });
         }

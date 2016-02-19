@@ -8,31 +8,33 @@ if(!isset($_POST['c']) || $_POST['c']==0) { $and='>0'; $jc = 0;}else{ $and= '='.
 if(!isset($_POST['t']) || $_POST['t']==0) { $and2='>0'; $jt = 0;}else{ $and2= '='.$_POST['t']; $jt = $_POST['t'];}
 
 $query = ("
-    select ac.id 
+    select ac.id
             , ac.nome area
             , ac.tipo
-            , array_to_string(array_agg(c.comune || ' (' || coalesce(l.localita, 'non determinabile') || ')' ), '<br/>') as lista
+            , array_to_string(array_agg(c.comune || ' (' || coalesce(l.localita, 'non determinabile') || ')' ), '<br/>') as localita
+            , array_to_string(array_agg(c.comune || ' (' || coalesce(i.indirizzo, 'non determinabile') || ')' ), '<br/>') as indirizzo
             , count(area_int_poly.id)::integer as geom
             , count(ubicazione.id)::integer as ubi
     from area ac
     inner join aree a on a.nome_area = ac.id
     inner join comune c on a.id_comune = c.id
     left join localita l on a.id_localita = l.id
+    left join indirizzo i on a.id_indirizzo = i.id
     left join area_int_poly on area_int_poly.id_area = ac.id
     left join ubicazione on ac.id = ubicazione.id_area and ac.tipo = 2
     where a.nome_area is not null and a.id_comune$and and ac.tipo$and2
     group by ac.id,ac.nome, ac.tipo
     order by area asc;
-");      
+");
 $e = pg_query($connection, $query);
-?> 
+?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//IT"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="IT" >
  <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  
+
   <meta name="author" content="Giuseppe Naponiello" />
   <meta name="keywords" content="gfoss, archaeology, anthropology, openlayer, jquery, grass, postgresql, postgis, qgis, webgis, informatic" />
   <meta name="description" content="Le fonti per la storia. Per un archivio delle fonti sulle valli di Primiero e Vanoi" />
@@ -78,11 +80,11 @@ $e = pg_query($connection, $query);
                         <li id="catalogoTitle" class="livAttivo">ELENCO AREE</li>
                     </ul>
                 </div>
- 
+
                 <div id="skArcheoContent">
                     <div class="inner primo">
                         <div>
-                            <?php if($usr) {include("inc/areeNew.php"); } ?>        
+                            <?php if($usr) {include("inc/areeNew.php"); } ?>
                             <div id="tableHeader">
                                 <div id="legendaWrap"><legend id="legenda"></legend></div>
                                 <div id="filtriWrap">
@@ -102,7 +104,7 @@ $e = pg_query($connection, $query);
                                             $qfr = pg_num_rows($qex);
                                             if($qfr != 0) {
                                                 for ($a = 0; $a < $qfr; $a++){
-                                                    $id = pg_result($qex, $a,"id_comune"); 	
+                                                    $id = pg_result($qex, $a,"id_comune");
                                                     $comune = pg_result($qex, $a,"comune");
                                                     $comune=stripslashes($comune);
                                                     $cap = pg_result($qex, $a,"cap");
@@ -132,15 +134,15 @@ $e = pg_query($connection, $query);
                                         elseif($r['tipo'] ==2 && $r['ubi'] == 0) {$azione = '<span style="color:red !important">inserisci</span>';}
                                         else {$azione = '<span style="color:#000 !important">gestisci</span>';}
                                         switch($r['tipo']){
-                                            case 1: $tipo = 'Area di interesse'; break;
-                                            case 2: $tipo = 'Ubicazione'; break;
-                                            case 3: $tipo = 'Cartografia'; break;
+                                            case 1: $tipo = 'Area di interesse'; $campo = $r['localita']; break;
+                                            case 2: $tipo = 'Ubicazione'; $campo = $r['indirizzo']; break;
+                                            case 3: $tipo = 'Cartografia'; $campo = $r['localita']; break;
                                         }
                                         echo "<tr id='".$r['id']."' area='".$r['area']."' title='clicca per modificare o eliminare il record'>";
                                             echo "<td class='link' >".$r['id']."</td>";
                                             echo "<td class='link' >".$tipo."</td>";
                                             echo "<td class='link' >".$r['area']."</td>";
-                                            echo "<td class='link' >".$r['lista']."</td>";
+                                            echo "<td class='link' >".$campo."</td>";
                                             if($usr == 1 || $usr == 2 || $usr == 6) {echo '<td class="modLista"><a href="aree_geom.php?a='.$r['id'].'">'.$azione.'</a></td>';}
                                         echo "</tr>";
                                     } ?>
@@ -162,16 +164,17 @@ $e = pg_query($connection, $query);
         var locLength,legenda;
         var c = <?php echo $jc; ?>;
         var t = <?php echo $jt; ?>;
+        var script = (t==2) ? "areaUbi_update.php" : "areaCarto_update.php"
         $(document).ready(function() {
             $('.slide, #addArea, #rubrica,#indirizzo,#localita').hide();
             $('.sezioni').click(function(){$('.slide').slideToggle();});
             $('#c option[value='+c+']').attr('selected','selected');
             $('#t option[value='+t+']').attr('selected','selected');
             legenda = (t==0 && c==0)?'Il database contiene ':'La ricerca ha prodotto ';
-            $("#tipo").change(function () { 
-                var i=$(this).val(); 
-                if (i==2) { $("#rubrica,#indirizzo").fadeIn("slow"); }else { $("#rubrica,#indirizzo").fadeOut("slow"); } 
-                
+            $("#tipo").change(function () {
+                var i=$(this).val();
+                if (i==2) { $("#rubrica,#indirizzo").fadeIn("slow"); }else { $("#rubrica,#indirizzo").fadeOut("slow"); }
+
                 $("#localita,#locTot").fadeOut('fast');
                 $("#locTot").html('');
                 $("#comuneCarto").val(15);
@@ -179,13 +182,14 @@ $e = pg_query($connection, $query);
                 $("select[name=indirizzo]").val(0);
                 arrLoc=[];
             });
-            $("select[name=comuneCarto]").change(function() { 
+            $("select[name=comuneCarto]").change(function() {
+                var obj = 0;
                 var tipo = $("#tipo").val();
-                var comId = $(this).val(); 
-                if(tipo == 1 || tipo == 3){ loc(comId); }else{ubi(comId);}
+                var comId = $(this).val();
+                if(tipo == 1 || tipo == 3){ loc(comId); }else{ubi(comId, obj);}
             });
             var arrLoc = new Array();
-            
+
             $("#addArea").click(function(){
                 var arrLocNome = new Array();
                 var com = $("#comuneCarto option:selected").text();
@@ -197,13 +201,13 @@ $e = pg_query($connection, $query);
                     arrLoc.push({com: comId, loc:0});
                 }else{
                     checkLocChecked.each(function(){
-                        var nome = $(this).data('loc'); 
-                        var id = $(this).val(); 
+                        var nome = $(this).data('loc');
+                        var id = $(this).val();
                         arrLocNome.push( nome);
                         arrLoc.push({com: comId, loc:id});
                     });
                 }
-                $("#locTot").append("<li><i class='fa fa-times removeArea' title='Elimina area'></i> Comune: "+com+", Località: <span class='idLoc' data-arrloc='"+arrLoc.join()+"'>"+arrLocNome.join(", ")+"</span></li>").show(); 
+                $("#locTot").append("<li><i class='fa fa-times removeArea' title='Elimina area'></i> Comune: "+com+", Località: <span class='idLoc' data-arrloc='"+arrLoc.join()+"'>"+arrLocNome.join(", ")+"</span></li>").show();
                 $(".removeArea").click(function(){$(this).parent("li").remove();/*checkLocLi();*/});
                 $("#localita").fadeOut('fast');
                 $("#comuneCarto").val(15);
@@ -223,7 +227,7 @@ $e = pg_query($connection, $query);
                 //console.log(tipo+' '+nome+' '+comune+' '+rubrica+' '+indirizzo+' '+arrLoc);return false;
                 $.ajax({
                     url: 'inc/areeIns.php',
-                    type: 'POST', 
+                    type: 'POST',
                     data: {tipo:tipo, nome:nome, comune:comune, localita:arrLoc, rubrica:rubrica, indirizzo:indirizzo},
                     success: function(data){ $("#test").html(data).delay(5000).fadeOut(function(){ location.reload(); }); }
                 });//ajax
@@ -237,8 +241,8 @@ $e = pg_query($connection, $query);
                     var area = $(this).parent('tr').attr('area');
                     var id = $(this).parent('tr').attr('id');
                     $.ajax({
-                        url: 'inc/form_update/areaCarto_update.php',
-                        type: 'POST', 
+                        url: 'inc/form_update/'+script,
+                        type: 'POST',
                         data: {id:id, area:area},
                         success: function(data){
                             $("#dialog").html(data);
