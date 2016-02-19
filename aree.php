@@ -138,7 +138,7 @@ $e = pg_query($connection, $query);
                                             case 2: $tipo = 'Ubicazione'; $campo = $r['indirizzo']; break;
                                             case 3: $tipo = 'Cartografia'; $campo = $r['localita']; break;
                                         }
-                                        echo "<tr id='".$r['id']."' area='".$r['area']."' title='clicca per modificare o eliminare il record'>";
+                                        echo "<tr id='".$r['id']."' area='".$r['area']."' tipo='".$r['tipo']."' title='clicca per modificare o eliminare il record'>";
                                             echo "<td class='link' >".$r['id']."</td>";
                                             echo "<td class='link' >".$tipo."</td>";
                                             echo "<td class='link' >".$r['area']."</td>";
@@ -164,7 +164,6 @@ $e = pg_query($connection, $query);
         var locLength,legenda;
         var c = <?php echo $jc; ?>;
         var t = <?php echo $jt; ?>;
-        var script = (t==2) ? "areaUbi_update.php" : "areaCarto_update.php"
         $(document).ready(function() {
             $('.slide, #addArea, #rubrica,#indirizzo,#localita').hide();
             $('.sezioni').click(function(){$('.slide').slideToggle();});
@@ -240,6 +239,8 @@ $e = pg_query($connection, $query);
             $('.link').click(function(){
                     var area = $(this).parent('tr').attr('area');
                     var id = $(this).parent('tr').attr('id');
+                    var tipo = $(this).parent('tr').attr('tipo');
+                    var script = (tipo==2) ? "areaUbi_update.php" : "areaCarto_update.php"
                     $.ajax({
                         url: 'inc/form_update/'+script,
                         type: 'POST',
