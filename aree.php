@@ -14,6 +14,7 @@ $query = ("
             , array_to_string(array_agg(c.comune || ' (' || coalesce(l.localita, 'non determinabile') || ')' ), '<br/>') as localita
             , array_to_string(array_agg(c.comune || ' (' || coalesce(i.indirizzo, 'non determinabile') || ')' ), '<br/>') as indirizzo
             , count(area_int_poly.id)::integer as geom
+            , count(area_int_line.id)::integer as line
             , count(ubicazione.id)::integer as ubi
     from area ac
     inner join aree a on a.nome_area = ac.id
@@ -21,6 +22,7 @@ $query = ("
     left join localita l on a.id_localita = l.id
     left join indirizzo i on a.id_indirizzo = i.id
     left join area_int_poly on area_int_poly.id_area = ac.id
+    left join area_int_line on area_int_line.id_area = ac.id
     left join ubicazione on ac.id = ubicazione.id_area and ac.tipo = 2
     where a.nome_area is not null and a.id_comune$and and ac.tipo$and2
     group by ac.id,ac.nome, ac.tipo
@@ -130,9 +132,15 @@ $e = pg_query($connection, $query);
                                 </thead>
                                 <tbody>
                                     <?php while($r = pg_fetch_array($e)){
-                                        if($r['tipo'] != 2 && $r['geom'] == 0) {$azione = '<span style="color:red !important">inserisci</span>';}
-                                        elseif($r['tipo'] ==2 && $r['ubi'] == 0) {$azione = '<span style="color:red !important">inserisci</span>';}
-                                        else {$azione = '<span style="color:#000 !important">gestisci</span>';}
+                                        $inserisci = '<span style="color:red !important">inserisci</span>';
+                                        $gestisci = '<span style="color:#000 !important">gestisci</span>';
+                                        $gestisciLine = '<span style="color:#000 !important">gestisci linea</span>';
+
+                                        if(($r['tipo'] == 1 || $r['tipo'] == 3) && ($r['geom'] == 0 && $r['line'] == 0)) {$azione = $inserisci;}
+                                        elseif(($r['tipo'] == 1 || $r['tipo'] == 3) && ($r['geom'] > 0 && $r['line'] == 0)) {$azione = $gestisci;}
+                                        elseif(($r['tipo'] == 1 || $r['tipo'] == 3) && ($r['geom'] == 0 && $r['line'] > 0)) {$azione = $gestisciLine;}
+                                        elseif($r['tipo'] ==2 && $r['ubi'] == 0) {$azione = $inserisci;}
+                                        else {$azione = $gestisci;}
                                         switch($r['tipo']){
                                             case 1: $tipo = 'Area di interesse'; $campo = $r['localita']; break;
                                             case 2: $tipo = 'Ubicazione'; $campo = $r['indirizzo']; break;
@@ -143,7 +151,10 @@ $e = pg_query($connection, $query);
                                             echo "<td class='link' >".$tipo."</td>";
                                             echo "<td class='link' >".$r['area']."</td>";
                                             echo "<td class='link' >".$campo."</td>";
-                                            if($usr == 1 || $usr == 2 || $usr == 6) {echo '<td class="modLista"><a href="aree_geom.php?a='.$r['id'].'">'.$azione.'</a></td>';}
+                                            if($usr == 1 || $usr == 2 || $usr == 6) {
+                                              $link = ($r['line'] > 0) ? $azione : '<a href="aree_geom.php?a='.$r['id'].'">'.$azione.'</a>';
+                                              echo '<td class="modLista">'.$link.'</td>';
+                                            }
                                         echo "</tr>";
                                     } ?>
                                 </tbody>
