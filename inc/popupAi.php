@@ -45,7 +45,7 @@ UNION
 
 SELECT
   area_int_line.id,
-  area.nome,
+  area.nome as area,
   aree.nome_area as id_area,
   st_length(area_int_line.the_geom) as misura,
   st_xmin(area_int_line.the_geom) as xmin,
@@ -70,7 +70,7 @@ else {
    if($righe != 0) {
      while($a = pg_fetch_array($result)){
        $extent = $a['xmin'].','.$a['ymin'].','.$a['xmax'].','.$a['ymax'];
-       echo "<li id='".$a['idArea']."' ext='".$extent."' class='openSchede' onclick='openSchede(".$a['idArea'].")'>".$a['area']."</li>";
+       echo "<li id='".$a['idArea']."' ext='".$extent."' class='openSchede' >".$a['area']."</li>";
      }
     /*for ($x = 0; $x < $righe; $x++){
        $idGeom = pg_result($result, $x,"id");
@@ -115,6 +115,8 @@ $('.openSchede').on({
        //var id_area=$(this).attr('id');
        //var featHiLite = actLayer.getFeaturesByAttribute('id_area', id_area);
        //actLayer.drawFeature(featHiLite[0], "active");
+       var idArea = $(this).attr('id');
+       openSchede(idArea);
    },
    mouseenter: function() {
        var id_area=$(this).attr('id');
