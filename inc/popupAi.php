@@ -26,7 +26,7 @@ $area = substr($idarea, 0, -4);
 $query=("
 SELECT
   area_int_poly.id,
-  area.nome,
+  area.nome as area,
   aree.nome_area as id_area,
   st_area(area_int_poly.the_geom) as misura,
   st_xmin(area_int_poly.the_geom) as xmin,
@@ -37,12 +37,10 @@ FROM area_int_poly, aree, area
 WHERE
   area_int_poly.id_area = aree.nome_area AND
   aree.nome_area = area.id AND
-  aree.tipo = 1 and
+  (area.tipo = 1 or area.tipo=3) and
   ($items) AND
   ($area)
-
 UNION
-
 SELECT
   area_int_line.id,
   area.nome as area,
@@ -56,7 +54,7 @@ FROM area_int_line, aree, area
 WHERE
   area_int_line.id_area = aree.nome_area AND
   aree.nome_area = area.id AND
-  aree.tipo = 1 and
+  (area.tipo = 1 or area.tipo=3) and
   ($items2) AND
   ($area)
 order by misura asc;
@@ -70,7 +68,7 @@ else {
    if($righe != 0) {
      while($a = pg_fetch_array($result)){
        $extent = $a['xmin'].','.$a['ymin'].','.$a['xmax'].','.$a['ymax'];
-       echo "<li id='".$a['idArea']."' ext='".$extent."' class='openSchede' >".$a['area']."</li>";
+       echo "<li id='".$a['id_area']."' ext='".$extent."' class='openSchede' >".$a['area']."</li>";
      }
     /*for ($x = 0; $x < $righe; $x++){
        $idGeom = pg_result($result, $x,"id");
