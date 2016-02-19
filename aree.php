@@ -8,7 +8,7 @@ if(!isset($_POST['c']) || $_POST['c']==0) { $and='>0'; $jc = 0;}else{ $and= '='.
 if(!isset($_POST['t']) || $_POST['t']==0) { $and2='>0'; $jt = 0;}else{ $and2= '='.$_POST['t']; $jt = $_POST['t'];}
 
 $query = ("
-    select ac.id
+    select distinct ac.id
             , ac.nome area
             , ac.tipo
             , array_to_string(array_agg(c.comune || ' (' || coalesce(l.localita, 'non determinabile') || ')' ), '<br/>') as localita
