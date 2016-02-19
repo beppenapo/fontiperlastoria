@@ -3,11 +3,11 @@ include('db.php');
 
 $id = $_POST['id_ubi'];
 $tipo = $_POST['tipo'];
-$q=("SELECT localita.localita FROM ubicazione, aree, localita WHERE ubicazione.id_area = aree.nome_area AND aree.id_localita = localita.id AND ubicazione.id = $id");
+$q=("SELECT area.nome FROM area, ubicazione, aree WHERE ubicazione.id_area = aree.nome_area AND aree.nome_area = area.id AND ubicazione.id = $id");
 $r=pg_query($connection, $q);
 $row =pg_num_rows($r);
 $arr = pg_fetch_array($r);
-echo "<div class='titLocUbi'>".stripslashes($arr['localita'])."</div>";
+echo "<div class='titLocUbi'>".stripslashes($arr['nome'])."</div>";
 
 $query = ("
 with listone as(
