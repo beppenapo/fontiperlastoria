@@ -1,20 +1,20 @@
 <?php
 $nd = 'Dato non presente';
-$q2 =  ("SELECT 
+$q2 =  ("SELECT
   archivi2.id,
-  archivi2.dgn_numsch2 as numsch, 
-  archivi2.dsc_fondo as fondo, 
+  archivi2.dgn_numsch2 as numsch,
+  archivi2.dsc_fondo as fondo,
   archivi2.dsc_segnatura2 as segnatura,
   archivi2.nst_fondo,
   archivi2.nst_ossfondo,
-  archivi2.dsc_consist2 as consist, 
-  archivi2.dsc_tipol2 as tipo, 
-  archivi2.dsc_lingua2 as lingua, 
+  archivi2.dsc_consist2 as consist,
+  archivi2.dsc_tipol2 as tipo,
+  archivi2.dsc_lingua2 as lingua,
   archivi2.dsc_note2 as note
-FROM 
-  public.scheda, 
+FROM
+  public.scheda,
   public.archivi2
-WHERE 
+WHERE
   archivi2.dgn_numsch2 = scheda.dgn_numsch AND
   scheda.id = $id;");
 $r2 = pg_query($connection, $q2);
@@ -61,11 +61,11 @@ $note= stripslashes($a2['note']); if($note == '') {$note=$nd;}
        <tr>
         <td width="50%;">
          <label>DESCRIZIONE</label>
-         <div class="valori" style="min-height:190px;"><?php echo($fondo); ?></div>
+         <div class="valori" style="min-height:190px;"><?php echo nl2br($fondo); ?></div>
         </td>
         <td>
          <label>CONSISTENZA</label>
-         <div class="valori"><?php echo($consist); ?> </div>
+         <div class="valori"><?php echo nl2br($consist); ?> </div>
          <br/>
          <label>TIPOLOGIA DOCUMENTI</label>
          <div class="valori"><?php echo($tipo); ?> </div>
@@ -74,7 +74,7 @@ $note= stripslashes($a2['note']); if($note == '') {$note=$nd;}
          <div class="valori"><?php echo($lingua); ?> </div>
          <br/>
          <label>NOTE</label>
-         <div class="valori"><?php echo($note); ?> </div>
+         <div class="valori"><?php echo nl2br($note); ?> </div>
         </td>
        </tr>
        <?php if($_SESSION['username']!='guest') {?>
@@ -95,11 +95,11 @@ $note= stripslashes($a2['note']); if($note == '') {$note=$nd;}
             <tr>
              <td width="50%;">
                <br/>
-               <div class="valori" style="min-height:190px;"><?php echo($nstfondo); ?></div>
+               <div class="valori" style="min-height:190px;"><?php echo nl2br($nstfondo); ?></div>
              </td>
              <td>
               <label>NOTE</label>
-              <div class="valori" style="min-height:190px;"><?php echo($ossfondo); ?></div>
+              <div class="valori" style="min-height:190px;"><?php echo nl2br($ossfondo); ?></div>
              </td>
            </tr>
           <?php if($_SESSION['username']!='guest') {?>

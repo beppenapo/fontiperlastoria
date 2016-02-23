@@ -1,24 +1,24 @@
 <?php
 $nd = 'Dato non presente';
-$q2 =  ("SELECT 
+$q2 =  ("SELECT
   archivi.id_archivi,
   archivi.id_scheda,
   archivi1.id,
-  lista_archivi_alt_tipo.definizione AS tipo_archivio, 
-  lista_archivi_alt_tipo.id AS id_tipo_archivio, 
-  archivi.dsc_fondiint AS fondi_segnalati, 
+  lista_archivi_alt_tipo.definizione AS tipo_archivio,
+  lista_archivi_alt_tipo.id AS id_tipo_archivio,
+  archivi.dsc_fondiint AS fondi_segnalati,
   archivi.dsc_fondi AS elenco_fondi,
   archivi.dsc_note AS note,
-  archivi.dsc_consist AS consistenza, 
-  archivi1.dsc_tipol AS tipo_doc, 
+  archivi.dsc_consist AS consistenza,
+  archivi1.dsc_tipol AS tipo_doc,
   archivi1.dsc_crord,
   archivi1.nst_vicarch,
   archivi1.nst_oss
-FROM 
-  public.archivi, 
-  public.archivi1, 
+FROM
+  public.archivi,
+  public.archivi1,
   public.lista_archivi_alt_tipo
-WHERE 
+WHERE
   archivi.alt_tipologia = lista_archivi_alt_tipo.id AND
   archivi1.dgn_numsch1 = archivi.dgn_numsch AND
   archivi.id_scheda = $id;");
@@ -48,7 +48,7 @@ $oss2 = nl2br($oss);
 ?>
    <div class="inner">
       <h2 class="h2aperto">DESCRIZIONE ARCHIVIO</h2>
-      
+
       <table class="mainData" style="width:98% !important;">
         <td width="50%;">
          <label>TIPOLOGIA ARCHIVIO</label>
@@ -70,9 +70,9 @@ $oss2 = nl2br($oss);
         </td>
        </tr>
        <tr>
-        <td colspan="2"> 
+        <td colspan="2">
          <label>NOTE</label>
-         <div class="valori"><?php echo($note); ?></div>
+         <div class="valori"><?php echo nl2br($note); ?></div>
         </td>
        </tr>
         <?php if($_SESSION['username']!='guest') {?>
@@ -86,8 +86,8 @@ $oss2 = nl2br($oss);
       <div class="updateContent" style="display:none">
         <?php require("inc/form_update/archiv1_descr.php"); ?>
       </div>
-      
-      
+
+
       <div style="border-top:1px solid #96867B">
        <h2 class="h2aperto">ARCHIVI COLLEGATI</h2>
       </div>
@@ -96,14 +96,14 @@ $oss2 = nl2br($oss);
         <td width="50%;">
          <label>ARCHIVI AGGREGATI</label>
          <div class="valori">
-          <?php 
+          <?php
            $qaggregato=("SELECT archivi_collegati.scheda AS id_scheda, a.dgn_numsch AS scheda, archivi_collegati.aggregato AS id_aggregato, b.dgn_numsch as aggregato FROM archivi_collegati, scheda a, scheda b WHERE archivi_collegati.scheda = a.id AND archivi_collegati.aggregato = b.id and archivi_collegati.scheda = $id;");
           $raggregato = pg_query($connection, $qaggregato);
           $rowaggregato = pg_num_rows($raggregato);
           if($rowaggregato != 0) {
           for ($x = 0; $x < $rowaggregato; $x++){
-          	$id_aggregato = pg_result($raggregato, $x,"id_aggregato"); 
-            $aggregato = pg_result($raggregato, $x,"aggregato"); 
+          	$id_aggregato = pg_result($raggregato, $x,"id_aggregato");
+            $aggregato = pg_result($raggregato, $x,"aggregato");
           echo "<a href=\"scheda_archeo.php?id=$id_aggregato\" target=\"_blank\" class=\"altrif $stile\">$aggregato</a>  ";
           }
          }else {echo "<label>La fonte non ha nessun archivio aggregato</label>";}
@@ -113,36 +113,36 @@ $oss2 = nl2br($oss);
         <td>
          <label>AGGREGATO A</label>
          <div class="valori">
-          <?php 
+          <?php
            $qaggregante=("
-            SELECT 
-              archivi_collegati.scheda AS id_scheda, 
-              archivi_collegati.aggregante AS id_aggregante, 
-              a.dgn_numsch AS scheda, 
-              b.dgn_numsch AS aggregante 
-            FROM 
-              archivi_collegati, 
-              scheda a, 
-              scheda b 
-            WHERE 
-              archivi_collegati.scheda = a.id AND  
-              archivi_collegati.aggregante = b.id and 
+            SELECT
+              archivi_collegati.scheda AS id_scheda,
+              archivi_collegati.aggregante AS id_aggregante,
+              a.dgn_numsch AS scheda,
+              b.dgn_numsch AS aggregante
+            FROM
+              archivi_collegati,
+              scheda a,
+              scheda b
+            WHERE
+              archivi_collegati.scheda = a.id AND
+              archivi_collegati.aggregante = b.id and
               archivi_collegati.scheda = $id;
           ");
           $raggregante = pg_query($connection, $qaggregante);
           $rowaggregante = pg_num_rows($raggregante);
           if($rowaggregante != 0) {
           for ($x = 0; $x < $rowaggregante; $x++){
-          	$id_aggregante = pg_result($raggregante, $x,"id_aggregante"); 
-            $aggregante = pg_result($raggregante, $x,"aggregante"); 
-            
+          	$id_aggregante = pg_result($raggregante, $x,"id_aggregante");
+            $aggregante = pg_result($raggregante, $x,"aggregante");
+
             echo "<a href=\"scheda_archeo.php?id=$id_aggregante\" target=\"_blank\" class=\"altrif $stile\">$aggregante</a>  ";
           }
          }else {echo "<label>La fonte non è aggregata a nessun archivio</label>";}
          ?>
          </div>
         </td>
-       </tr>      
+       </tr>
        <tr>
         <td>
           <?php if($_SESSION['username']!='guest') {?>
@@ -192,8 +192,8 @@ $oss2 = nl2br($oss);
       <div class="updateContent" style="display:none">
         <?php require("inc/form_update/archiv1_ordinamento.php"); ?>
       </div>
-      
-      
+
+
       <div class="toggle">
         <div class="sezioni"><h2>NOTIZIE STORICHE</h2></div>
         <div class="slide">
