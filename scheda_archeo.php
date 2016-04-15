@@ -10,32 +10,7 @@ $idUsr = $_SESSION['id_user'];
 $schedeUsr = $_SESSION['schede'];
 $idMappa = $id;
 $nd = 'Dato non presente';
-$q1 =  ("
-    SELECT
-        scheda.id,
-        scheda.livello,
-        scheda.dgn_numsch as numsch,
-        scheda.dgn_dnogg,
-        scheda.dgn_tpsch,
-        lista_dgn_tpsch.definizione AS tipo_scheda,
-        scheda.dgn_livind,
-        lista_dgn_livind.definizione AS individuazione,
-        scheda.dgn_note,
-        scheda.scn_note,
-        scheda.note,
-        scheda.ana_note,
-        scheda.noteai,
-        scheda.noteubi,
-        cronologia.cro_spec,
-        cronologia.cro_iniz,
-        cronologia.cro_fin,
-        scheda.fine
-    FROM scheda, lista_dgn_tpsch, lista_dgn_livind, cronologia
-    WHERE scheda.dgn_tpsch = lista_dgn_tpsch.id
-        AND  scheda.dgn_livind = lista_dgn_livind.id
-        AND  cronologia.id_scheda = scheda.id
-        AND  scheda.id = $id;
-");
+$q1 =  "SELECT scheda.id, scheda.livello,scheda.dgn_numsch as numsch, scheda.dgn_dnogg, scheda.dgn_tpsch, lista_dgn_tpsch.definizione AS tipo_scheda, scheda.dgn_livind, lista_dgn_livind.definizione AS individuazione, scheda.dgn_note, scheda.scn_note, scheda.note, scheda.ana_note, scheda.noteai, scheda.noteubi, cronologia.cro_spec, cronologia.cro_iniz, cronologia.cro_fin, scheda.fine FROM scheda, lista_dgn_tpsch, lista_dgn_livind, cronologia WHERE scheda.dgn_tpsch = lista_dgn_tpsch.id AND  scheda.dgn_livind = lista_dgn_livind.id AND cronologia.id_scheda = scheda.id AND  scheda.id = $id;";
 $r = pg_query($connection, $q1);
 $a = pg_fetch_array($r, 0, PGSQL_ASSOC);
 $rC = pg_num_rows($r);
@@ -45,6 +20,22 @@ $tpsch = $a['dgn_tpsch'];
 $tipologiaScheda = $a['tipo_scheda'];
 $livind = $a['dgn_livind'];
 $fine = $a['fine'];
+
+if($tpsch==1){
+    $upload = "uploaded_audio.php";
+    $noFile="<h2>Non sono presenti file audio</h2>";
+    $tipoFile = 2;
+    $folder = "audio/";
+    $mapSwitch="Multimedia";
+}else{
+    $upload = "uploaded_file.php";
+    $noFile = "<h2>Non sono presenti foto</h2>";
+    $tipoFile = 1;
+    $folder = "../foto/";
+    $mapSwitch="Foto";
+}
+
+
 $statoScheda=($fine == 1)?'APERTA':'CHIUSA';
 $upStatoScheda=($fine == 1)?'upVal=2':'upVal=1';
 if($a['cro_spec'] == '0') {$cro_spec = 'Cronologia assente';}
@@ -266,12 +257,12 @@ $extent2 = str_replace(' ', ',', $extent2);
          </div>
        </div>
 
-       <?php if(($tpsch==7)||($pag==92)||($pag==63)||($pag==23))  {?>
+       <?php if(($tpsch==1)||($tpsch==7)||($pag==92)||($pag==63)||($pag==23))  {?>
         <div id="switchImgMap">
-          <label class="switchLabel" for="switchMappa">Mappa</label>
-          <label class="switchLabel" for="switchImg"> Foto</label>
-          <input type="radio" id="switchMappa" class="switchImgMapButton" name="switchImgMapButton" />
-          <input type="radio" id="switchImg" class="switchImgMapButton" name="switchImgMapButton" />
+            <label class="switchLabel" for="switchImg"><?php echo $mapSwitch; ?></label>
+            <label class="switchLabel" for="switchMappa">Mappa</label>
+            <input type="radio" id="switchMappa" class="switchImgMapButton" name="switchImgMapButton" />
+            <input type="radio" id="switchImg" class="switchImgMapButton" name="switchImgMapButton" />
         </div>
        <?php }  ?>
 
@@ -292,30 +283,36 @@ $extent2 = str_replace(' ', ',', $extent2);
        <?php } ?>
 
        <?php
-          if(($tpsch==7)||($pag==92)||($pag==63)||($pag==23)) {
+          if(($tpsch==1)||($tpsch==7)||($pag==92)||($pag==63)||($pag==23)) {
              $imgq = ("select path from file where id_scheda = $id;");
              $imgexec = pg_query($connection, $imgq);
              $imgrow = pg_num_rows($imgexec);
              $imgres = pg_fetch_array($imgexec, 0, PGSQL_ASSOC);
              $img=$imgres['path'];
        ?>
-        <img id="imgOrig" src="foto/<?php echo($img);?>" style="position:absolute; left:-1000%;">
+        <img id="imgOrig" src="<?php echo($folder.$img);?>" style="position:absolute; left:-1000%;">
         <div id="imgDiv">
          <div id="noImgAlert">
          <?php
           if($imgrow > 0) {
-             echo "<img id=\"imgSmall\" src='foto/".$img."' />";
-             echo "<div id='panelFoto'><label id='ingrFoto' scheda='$id'>ingrandisci</label>&nbsp;&nbsp;";
-             if($idUsr) {echo"<label id='delFoto' scheda='$id' img='$img'>elimina</label>";}
-             echo"</div>";
+              if($tpsch!=1){
+                 echo "<img id='imgSmall' src='".$folder.$img."' />";
+                 echo "<div id='panelFoto'><label id='ingrFoto' scheda='$id'>ingrandisci</label>&nbsp;&nbsp;";
+                 if($idUsr) {echo"<label id='delFoto' scheda='$id' img='$img'>elimina</label>";}
+             }else{
+                 echo "<audio preload='none' controls>";
+                 echo "<source src='".$folder.$img."' type='audio/mp3'>";
+                 echo "Il tuo browser non supporta l'elemento audio";
+                 echo "</audio>";
+             }
           }else{
-             echo "<h2>Non sono presenti foto</h2>";
+             echo $noFile;
              if($idUsr) {
          ?>
-           <form action="inc/uploaded_file.php" method="post" enctype="multipart/form-data">
+           <form action="inc/<?php echo $upload; ?>" method="post" enctype="multipart/form-data">
              <input type="hidden" name="schedaFoto" value="<?php echo($id);?>" />
              <input type="file" name="file" id="file"><br>
-             <input type="submit" name="submit" value="Carica foto">
+             <input type="submit" name="submit" id="submitFile" value="Carica file selezionato">
            </form>
          <?php }}//else ?>
           </div>
@@ -1018,7 +1015,7 @@ WHERE aree_scheda.id_scheda = $id AND area.tipo = 2;
       </div>
      <?php }} ?>
    </div>
-
+   </div> <!-- test -->
  </div><!--skArcheoContent-->
  </div><!--content-->
  <div id="footer"><?php require_once ("inc/footer.inc"); ?></div><!--footer-->
@@ -1063,223 +1060,172 @@ var schede = '<?php echo($schedeUsr); ?>';
 var scheda = '<?php echo($tipologiaScheda); ?>';
 
 $(document).ready(function() {
- $(window).bind('beforeunload', function(){
-  $.ajax({
-    type: "POST",
-    url: "loginScript.php",
-    data: {login:'no'},
-    cache: false
-  });//ajax1
- });
-$('.submenu').hide();
-    $("#sessionMenu li").on({
-          mouseenter: function() {$(this).find('.submenu').slideDown('fast');}
-        , mouseleave: function() {$(this).find('.submenu').slideUp('fast');}
+    $(window).bind('beforeunload', function(){
+        $.ajax({
+            type: "POST",
+            url: "loginScript.php",
+            data: {login:'no'},
+            cache: false
+        });
     });
- if(hub==2){$( "div.check:not([class~='bassa'])" ).remove();}
-
+    $('.submenu').hide();
+    $("#sessionMenu li").on({
+         mouseenter: function() {$(this).find('.submenu').slideDown('fast');}
+        ,mouseleave: function() {$(this).find('.submenu').slideUp('fast');}
+    });
+    if(hub==2){$( "div.check:not([class~='bassa'])" ).remove();}
     $("a#removeArea").click(function(e){
         e.preventDefault();
         var id = $(this).data('id');
         removeArea(id);
     });
-
+    $("#submitFile").hide();
+    $('#file').bind('change', function (e) { $("#submitFile").show(); });
 
 ////////////// SHOW/HIDE modifica sezione /////////////////
-if ( (tipoUsr == 1)||((tipoUsr==2)&&(schede.indexOf(scheda)!=-1))||(idUsr==compilatore)) {$('.update').show();}
-else {$('.update').hide();}
+    if ( (tipoUsr == 1)||((tipoUsr==2)&&(schede.indexOf(scheda)!=-1))||(idUsr==compilatore)) {
+        $('.update').show();
+    } else {
+        $('.update').hide();
+    }
 ////////////////////////////////////////////////////////////////
-
-  $( "#termfiga" ).autocomplete({
-    source: "inc/autocomplete.php",
-    minLength: 2,
-    select: function( event, ui ) {
-      //alert(ui.item.id+'\n'+ui.item.value); return false;
-     $("#resultfiga").append("<div class='schAssoc' livello='"+ui.item.livello+"'tpsch='"+ui.item.tpsch+"' id='"+ui.item.id+"'>"+ui.item.value+"</div>");
-     $(this).val("");
-     numItems = $('.schAssoc').length;
-     $('#numItems').text('Schede associate: '+numItems);
-     $("#schAssocCanc").fadeIn('slow');
-     event.preventDefault();
-    }
-  });
-
-$( "#termfiga2" ).autocomplete({
-    source: "inc/autocomplete3.php?tpsch=<?php echo($tpsch);?>",
-    minLength: 2,
-    select: function( event, ui ) {
-      //alert(ui.item.id+'\n'+ui.item.value); return false;
-     $("#resultfiga2").append("<div class='schAssoc2' id_scheda='"+id+"' id_parente='"+ui.item.id_parente+"'>"+ui.item.value+"</div>");
-     $(this).val("");
-     numItems2 = $('.schAssoc2').length;
-     $('#numItems2').text('Schede parenti: '+numItems2);
-     $("#schParentiCanc").fadeIn('slow');
-     event.preventDefault();
-    }
-  });
-
-   $('#liv'+livello).addClass('livAttivo');
-
-   $('.slide').hide();
-   $('.toggle > div > h2').click(function(){$(this).parent().next('.slide').slideToggle(); });
-
-   if((tiposch==7)||(pag==92)||(pag==63)||(pag==23)) {
-    if(hub==1){
-     $("#imgDiv").hide();
-     $("#switchMappa").attr("checked", true);
-    }else{
-     $("#switchImg").attr("checked", true);
-    }
-    $(".switchImgMapButton").change(function(){
-     $("#imgDiv").slideToggle("fast");
-     $("label.switchlabel").toggleClass("switchLabelChecked");
+    $( "#termfiga" ).autocomplete({
+        source: "inc/autocomplete.php",
+        minLength: 2,
+        select: function( event, ui ) {
+            $("#resultfiga").append("<div class='schAssoc' livello='"+ui.item.livello+"'tpsch='"+ui.item.tpsch+"' id='"+ui.item.id+"'>"+ui.item.value+"</div>");
+            $(this).val("");
+            numItems = $('.schAssoc').length;
+            $('#numItems').text('Schede associate: '+numItems);
+            $("#schAssocCanc").fadeIn('slow');
+            event.preventDefault();
+        }
     });
-   }
 
+    $( "#termfiga2" ).autocomplete({
+        source: "inc/autocomplete3.php?tpsch=<?php echo($tpsch);?>",
+        minLength: 2,
+        select: function( event, ui ) {
+            $("#resultfiga2").append("<div class='schAssoc2' id_scheda='"+id+"' id_parente='"+ui.item.id_parente+"'>"+ui.item.value+"</div>");
+            $(this).val("");
+            numItems2 = $('.schAssoc2').length;
+            $('#numItems2').text('Schede parenti: '+numItems2);
+            $("#schParentiCanc").fadeIn('slow');
+            event.preventDefault();
+        }
+    });
+
+    $('#liv'+livello).addClass('livAttivo');
+    $('.slide').hide();
+    $('.toggle > div > h2').click(function(){$(this).parent().next('.slide').slideToggle(); });
+    $("#switchImg").attr("checked", true);
+    $(".switchImgMapButton").change(function(){ $("#imgDiv").slideToggle("fast"); });
 //////////  AGGIORNA STATO SCHEDA ///////////////
-$('#upStatoScheda').click(function(){
- var upStato = $(this).attr('upVal');
- $.ajax({
-   url: 'inc/updateStatoScheda.php',
-   type: 'POST',
-   data: {id:id, upStato:upStato},
-   success: function(data){
-      $(data).dialog().delay(2500).fadeOut(function(){ window.location.href = 'scheda_archeo.php?id='+id; });
-   }
- });//ajax
-});
+    $('#upStatoScheda').click(function(){
+        var upStato = $(this).attr('upVal');
+        $.ajax({
+            url: 'inc/updateStatoScheda.php',
+            type: 'POST',
+            data: {id:id, upStato:upStato},
+            success: function(data){ $(data).dialog().delay(2500).fadeOut(function(){ window.location.href = 'scheda_archeo.php?id='+id; }); }
+        });//ajax
+    });
 //////////  ELIMINA SCHEDA ///////////////
-$('#elimina_scheda').click(function(){
-  var id_scheda = $(this).attr('scheda');
-  $("#delDialog").dialog({
-      resizable:false,
-      height: 300,
-      width: 500,
-      title: "ATTENZIONE!!!"
-   });
-   $('#si').click(function(){
-     //alert('elimina il record:' + id_scheda); return false;
-     $.ajax({
-          url: 'inc/deleteScheda.php',
-          type: 'POST',
-          data: {id_scheda:id_scheda},
-          success: function(data){
-             $(data).dialog().delay(2500).fadeOut(function(){ window.location.href = 'catalogo.php'; });
-          }//success
-     });//ajax
-   });
+    $('#elimina_scheda').click(function(){
+        var id_scheda = $(this).attr('scheda');
+        $("#delDialog").dialog({
+            resizable:false,
+            height: 300,
+            width: 500,
+            title: "ATTENZIONE!!!"
+        });
+        $('#si').click(function(){
+            $.ajax({
+                url: 'inc/deleteScheda.php',
+                type: 'POST',
+                data: {id_scheda:id_scheda},
+                success: function(data){ $(data).dialog().delay(2500).fadeOut(function(){ window.location.href = 'catalogo.php'; }); }
+            });//ajax
+        });
 
-   $('#no').click(function(){$(this).closest('.ui-dialog-content').dialog('close');});
-});
-
-
+        $('#no').click(function(){$(this).closest('.ui-dialog-content').dialog('close');});
+    });
 //////////  ELIMINA FOTO ///////////////
-$('#delFoto').click(function(){
-  var id_scheda = $(this).attr('scheda');
-  var file = $(this).attr('img');
-  $("#delFotoDialog").dialog({
-      resizable:false,
-      height: 300,
-      width: 500,
-      title: "ATTENZIONE!!!"
-   });
-   $('#siFoto').click(function(){
-     $.ajax({
-          url: 'inc/deleteFoto.php',
-          type: 'POST',
-          data: {id_scheda:id_scheda, file:file},
-          success: function(data){
-             $(data).dialog().delay(2500).fadeOut(function(){ window.location = window.location; });
-          }//success
-     });//ajax
-   });
-
-   $('#noFoto').click(function(){$(this).closest('.ui-dialog-content').dialog('close');});
-});
-
+    $('#delFoto').click(function(){
+        var id_scheda = $(this).attr('scheda');
+        var file = $(this).attr('img');
+        $("#delFotoDialog").dialog({
+            resizable:false,
+            height: 300,
+            width: 500,
+            title: "ATTENZIONE!!!"
+        });
+        $('#siFoto').click(function(){
+            $.ajax({
+                url: 'inc/deleteFoto.php',
+                type: 'POST',
+                data: {id_scheda:id_scheda, file:file},
+                success: function(data){ $(data).dialog().delay(2500).fadeOut(function(){ window.location = window.location; }); }
+            });//ajax
+        });
+        $('#noFoto').click(function(){$(this).closest('.ui-dialog-content').dialog('close');});
+    });
 //////////// ingrandisci foto  //////////////////
-$('#ingrFoto').click(function () {
-	$('#fotoOrig').dialog({
-      //autoOpen: false,
-      resizable:false,
-      modal:true,
-      //height: 500,
-      width: 'auto',
-      //title: "Modifica sezione"//,
-      //buttons: {'Chiudi form': function() {$(this).dialog('close');}}//buttons
-   });//dialog
-});
-
-
-
+    $('#ingrFoto').click(function () {
+        $('#fotoOrig').dialog({resizable:false,modal:true,width: 'auto'});
+    });
 ///////// FORM UPDATE /////////////////
-$('.update').click(function(){
-    var form = $(this).attr('id');
-    $('#'+form+'_form').dialog({
-      autoOpen: false,
-      resizable:false,
-      modal:true,
-      height: 'auto',
-      width: 500,
-      title: "Modifica sezione"//,
-      //buttons: {'Chiudi form': function() {$(this).dialog('close');}}//buttons
-     });//dialog
-
-    if ($(this).attr('rel')) {
-     $('.sez').hide();
-     $('#'+$(this).attr('rel')).show();
-    }
-
-     $('#'+form+'_form').dialog("open");
-     $('#'+form+'_form').dialog("option", "position", ['center','center']);
-    return false;
+    $('.update').click(function(){
+        var form = $(this).attr('id');
+        $('#'+form+'_form').dialog({
+            autoOpen: false,
+            resizable:false,
+            modal:true,
+            height: 'auto',
+            width: 500,
+            title: "Modifica sezione"
+        });
+        if ($(this).attr('rel')) {
+            $('.sez').hide();
+            $('#'+$(this).attr('rel')).show();
+        }
+        $('#'+form+'_form').dialog("open");
+        $('#'+form+'_form').dialog("option", "position", ['center','center']);
+        return false;
     });//click
-
-$('.chiudiForm').click(function(){ $(this).closest('.ui-dialog-content').dialog('close'); });
-
-//var ratio, height, width;
-var imgThumb = $('#imgOrig');
-//var imgThumb = document.getElementById("imgOrig");
-var maxWidth = 400; // Max width for the image
-var minHeight = 300;    // Max height for the image
-var ratio = 0;  // Used for aspect ratio
-var width = imgThumb.width();
-var height = imgThumb.height();
-console.log(width, height);
-if (width >= height) {
-   ratio = maxWidth / width;   // get ratio for scaling image
-   height = height * ratio;    // Reset height to match scaled image
-   if (height > 300) {
-   	ratio2 = minHeight / height;
-   	width = 400 * ratio2;    // Reset width to match scaled image
-      $('#imgSmall').css({width:width, height:minHeight});
-      height = height * ratio2;
-   }else {
-   	$('#imgSmall').css({width:maxWidth, height:height});
-      width = width * ratio;    // Reset width to match scaled image
-   }
-}
-if(height > width){
-    ratio = minHeight / height;
-    width = width * ratio;    // Reset width to match scaled image
-    $('#imgSmall').css({width:width, height:minHeight});
-    //imgThumb.css("height", minHeight);   // Set new height
-    //imgThumb.css("width", width * ratio);    // Scale width based on ratio
-    height = height * ratio;
-}
-
+    $('.chiudiForm').click(function(){ $(this).closest('.ui-dialog-content').dialog('close'); });
+    var imgThumb = $('#imgOrig');
+    var maxWidth = 400; // Max width for the image
+    var minHeight = 300;    // Max height for the image
+    var ratio = 0;  // Used for aspect ratio
+    var width = imgThumb.width();
+    var height = imgThumb.height();
+    if (width >= height) {
+        ratio = maxWidth / width;   // get ratio for scaling image
+        height = height * ratio;    // Reset height to match scaled image
+        if (height > 300) {
+   	        ratio2 = minHeight / height;
+   	        width = 400 * ratio2;    // Reset width to match scaled image
+            $('#imgSmall').css({width:width, height:minHeight});
+            height = height * ratio2;
+        }else {
+   	        $('#imgSmall').css({width:maxWidth, height:height});
+            width = width * ratio;    // Reset width to match scaled image
+        }
+    }
+    if(height > width){
+        ratio = minHeight / height;
+        width = width * ratio;    // Reset width to match scaled image
+        $('#imgSmall').css({width:width, height:minHeight});
+        height = height * ratio;
+    }
+    $(".arrow_box").hide();
+    $("i").hover(function(){
+        var tip = $(this).data('class');
+        $("."+tip).toggle();
+    });
 });
 
-
-$(".arrow_box").hide();
-$("i").hover(function(){
-  var tip = $(this).data('class');
-  $("."+tip).toggle();
-});
-
-</script>
-
-<script type="text/javascript">
 var mappa, gsat, aree, linee, arrayOSM, osm;
 var extent, extent2, bound, coo, numPoly, numLine, format, stile, param;
 var bingKey = 'Arsp1cEoX9gu-KKFYZWbJgdPEa8JkRIUkxcPr8HBVSReztJ6b0MOz3FEgmNRd4nM';
@@ -1299,77 +1245,57 @@ if ((numPoly > 0 && numLine >= 0)){
 
 if ((numPoly == 0 && numLine > 0)){
 	coo = '<?php echo($extent2);?>';
-   bound = coo.split(',');
-   console.log(bound, '\n'+cql);
+    bound = coo.split(',');
 }
-
 function init() {
-//extent = new OpenLayers.Bounds(1279972.812, 5782339.838, 1331677.275, 5838213.399);
-extent = new OpenLayers.Bounds(bound[0], bound[1], bound[2], bound[3]);
-var options = {
-  controls: [
-    new OpenLayers.Control.Navigation(),
-    new OpenLayers.Control.Zoom(),
-    //new OpenLayers.Control.MousePosition(),
-    //new OpenLayers.Control.LayerSwitcher()
-  ],//controls
-  resolutions: [156543.03390625, 78271.516953125, 39135.7584765625, 19567.87923828125, 9783.939619140625, 4891.9698095703125, 2445.9849047851562, 1222.9924523925781, 611.4962261962891, 305.74811309814453, 152.87405654907226, 76.43702827453613, 38.218514137268066, 19.109257068634033, 9.554628534317017, 4.777314267158508, 2.388657133579254, 1.194328566789627, 0.5971642833948135, 0.29858214169740677, 0.14929107084870338, 0.07464553542435169, 0.037322767712175846, 0.018661383856087923, 0.009330691928043961, 0.004665345964021981, 0.0023326729820109904, 0.0011663364910054952, 5.831682455027476E-4, 2.915841227513738E-4, 1.457920613756869E-4],
-  maxExtent:new OpenLayers.Bounds (-20037508.34,-20037508.34,20037508.34,20037508.34),
-  units: 'm',
-  projection: new OpenLayers.Projection("EPSG:900913"),
-  displayProjection: new OpenLayers.Projection("EPSG:4326")
-};//options
-mappa = new OpenLayers.Map('smallMap', options);
-
-gsat = new OpenLayers.Layer.Bing({name: "Aerial",key: bingKey,type: "Aerial"});
-mappa.addLayer(gsat);
-
-arrayOSM = ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
-            "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
-            "http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
-            "http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg"];
-
-osm = new OpenLayers.Layer.OSM(" MapQuest", arrayOSM, {
-                attribution: "Data, imagery and map information provided by <a href='http://www.mapquest.com/'  target='_blank'>MapQuest</a>, <a href='http://www.openstreetmap.org/' target='_blank'>Open Street Map</a> and contributors, <a href='http://creativecommons.org/licenses/by-sa/2.0/' target='_blank'>CC-BY-SA</a>  <img src='http://developer.mapquest.com/content/osm/mq_logo.png' border='0'>",
-                transitionEffect: "resize"
-            });
-mappa.addLayer(osm);
-var report = function(e) { OpenLayers.Console.log(e.type, e.feature.id); };
-
-if (numPoly != 0) {
- aree = new OpenLayers.Layer.WMS("Aree","http://www.lefontiperlastoria.it:80/geoserver/fonti/wms",{
-	layers: 'fonti:area_int_poly',
-	styles: stile,
-	srs: 'EPSG:3857',
-	format: 'image/png',
-	transparent: true,
-	CQL_FILTER: cql
-
-},{
-	isBaseLayer: false,
-	tileSize: new OpenLayers.Size(256,256)
-});
- mappa.addLayer(aree);
-}
-
-if(numLine != 0){
- linee = new OpenLayers.Layer.WMS("Tracciati","http://www.lefontiperlastoria.it:80/geoserver/fonti/wms",{
-	layers: 'fonti:area_int_line',
-	styles: stile+'_linea',
-	srs: 'EPSG:3857',
-	format: 'image/png',
-	transparent: true,
-	CQL_FILTER: cql
-
-},{
-	isBaseLayer: false,
-	tileSize: new OpenLayers.Size(256,256)
-});
- mappa.addLayer(linee);
-}
-
-if (!mappa.getCenter()) {mappa.zoomToExtent(extent);}
-
+    extent = new OpenLayers.Bounds(bound[0], bound[1], bound[2], bound[3]);
+    var options = {
+        controls: [ new OpenLayers.Control.Navigation(), new OpenLayers.Control.Zoom() ],
+        resolutions: [156543.03390625, 78271.516953125, 39135.7584765625, 19567.87923828125, 9783.939619140625, 4891.9698095703125, 2445.9849047851562,     1222.9924523925781, 611.4962261962891, 305.74811309814453, 152.87405654907226, 76.43702827453613, 38.218514137268066, 19.109257068634033, 9.554628534317017, 4.777314267158508, 2.388657133579254, 1.194328566789627, 0.5971642833948135, 0.29858214169740677, 0.14929107084870338, 0.07464553542435169, 0.037322767712175846, 0.018661383856087923, 0.009330691928043961, 0.004665345964021981, 0.0023326729820109904, 0.0011663364910054952, 5.831682455027476E-4, 2.915841227513738E-4, 1.457920613756869E-4],
+        maxExtent:new OpenLayers.Bounds (-20037508.34,-20037508.34,20037508.34,20037508.34),
+        units: 'm',
+        projection: new OpenLayers.Projection("EPSG:900913"),
+        displayProjection: new OpenLayers.Projection("EPSG:4326")
+    };//options
+    mappa = new OpenLayers.Map('smallMap', options);
+    gsat = new OpenLayers.Layer.Bing({name: "Aerial",key: bingKey,type: "Aerial"});
+    mappa.addLayer(gsat);
+    arrayOSM = ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg", "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg", "http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg", "http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg"];
+    osm = new OpenLayers.Layer.OSM(" MapQuest", arrayOSM, {
+        attribution: "Data, imagery and map information provided by <a href='http://www.mapquest.com/'  target='_blank'>MapQuest</a>, <a href='http://www.openstreetmap.org/' target='_blank'>Open Street Map</a> and contributors, <a href='http://creativecommons.org/licenses/by-sa/2.0/' target='_blank'>CC-BY-SA</a>  <img src='http://developer.mapquest.com/content/osm/mq_logo.png' border='0'>",
+        transitionEffect: "resize"
+    });
+    mappa.addLayer(osm);
+    var report = function(e) { OpenLayers.Console.log(e.type, e.feature.id); };
+    if (numPoly != 0) {
+        aree = new OpenLayers.Layer.WMS("Aree","http://www.lefontiperlastoria.it:80/geoserver/fonti/wms",{
+	        layers: 'fonti:area_int_poly',
+	        styles: stile,
+	        srs: 'EPSG:3857',
+            format: 'image/png',
+            transparent: true,
+            CQL_FILTER: cql
+        },{
+            isBaseLayer: false,
+            tileSize: new OpenLayers.Size(256,256)
+        });
+        mappa.addLayer(aree);
+    }
+    if(numLine != 0){
+        linee = new OpenLayers.Layer.WMS("Tracciati","http://www.lefontiperlastoria.it:80/geoserver/fonti/wms",{
+            layers: 'fonti:area_int_line',
+            styles: stile+'_linea',
+            srs: 'EPSG:3857',
+            format: 'image/png',
+            transparent: true,
+            CQL_FILTER: cql
+        },{
+            isBaseLayer: false,
+            tileSize: new OpenLayers.Size(256,256)
+        });
+        mappa.addLayer(linee);
+    }
+    if (!mappa.getCenter()) {mappa.zoomToExtent(extent);}
 }
 </script>
 </body>
