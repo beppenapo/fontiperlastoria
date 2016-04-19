@@ -27,12 +27,14 @@ if($tpsch==1){
     $tipoFile = 2;
     $folder = "audio/";
     $mapSwitch="Multimedia";
+    $css = "style='background-image:url(\"img/layout/loghiSchede/logoSkOrale.png\"); background-repeat:no-repeat;background-position:center center;background-size:contain;'";
 }else{
     $upload = "uploaded_file.php";
     $noFile = "<h2>Non sono presenti foto</h2>";
     $tipoFile = 1;
     $folder = "../foto/";
     $mapSwitch="Foto";
+    $css = '';
 }
 
 
@@ -291,7 +293,7 @@ $extent2 = str_replace(' ', ',', $extent2);
              $img=$imgres['path'];
        ?>
         <img id="imgOrig" src="<?php echo($folder.$img);?>" style="position:absolute; left:-1000%;">
-        <div id="imgDiv">
+        <div id="imgDiv" <?php echo $css; ?> >
          <div id="noImgAlert">
          <?php
           if($imgrow > 0) {
