@@ -1,0 +1,26 @@
+body {background: #fff;color: #000;font-size: 12pt;font-family: "Times New Roman", Times, serif;width: 21cm; height: 29.7cm;}
+h1,h2,h3,p,a,label,img{margin:0px;padding:0px;}
+/*da nascondere*/
+.noPrint, .update{display:none !important;}
+
+/* no border  */
+fieldset, input#search{border:none;}
+
+h2, h3 { page-break-after: avoid;}
+h1{font-size:15pt;}
+h2{font-size:13pt;}
+p{font-size:11pt;}
+table{font-size:9pt;width:100%;margin:0px; padding:0px; border-collapse:collapse;}
+table thead {border-top:1px solid #000 !important;border-bottom:1px solid #000 !important; padding:5px 0px;}
+table tbody tr{border-bottom:1px solid #939393}
+th,td{text-align:left;vertical-align:top; padding:5px 0px;}
+ol{page-break-inside: avoid;}
+li{font-size:10pt;}
+
+#primoDivSx, #smallMap{margin:0px !important; display:inline-block !important; width:49% !important;}
+#smallMap{height:300px;margin-left:10px !important;}
+#logoSchedaDx{position: absolute; top: 0; right: 0; z-index: 1;}
+.slide{display:block !important; margin-bottom:20px; border-bottom:1px solid #000;}
+.slide table tr{border:none !important;}
+.mainData label{font-weight: bold;}
+#footer{font-size:10pt;text-align:center;}

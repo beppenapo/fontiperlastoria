@@ -1,4 +1,4 @@
-<?php 
+<?php
  require("inc/db.php");
  if ($_SESSION['username']!='guest'){
   $idUsr = $_SESSION['id_user'];
@@ -6,13 +6,13 @@
   $hub = $_SESSION['hub'];
   $andHub = ($hub==2)?'and hub = 2':'';
 ?>
-<div id='utente'>
+<div id='utente' class="noPrint">
     <ul id="sessionMenu">
         <li>Ciao <?php echo($_SESSION['username']); ?>, </li>
         <li>
             <a href="#" id="account" class='sessionLink' title="Gestisci la tua sessione di lavoro" >account <span id="accountToggle" class="oc">+</span></a>
             <ul class="submenu">
-                <li><a href='account.php' title="modifica i tuoi dati personali"> dati personali</a></li> 
+                <li><a href='account.php' title="modifica i tuoi dati personali"> dati personali</a></li>
                 <li><a href='inc/loginScript.php?login=no' title='Chiudi la tua sessione di lavoro'>logout</a></li>
             </ul>
         </li>
@@ -28,8 +28,8 @@
         </li>
         <li>
             <a href="#" id="nuova_scheda" class='sessionLink' title="Inserisci una nuova scheda" > nuova scheda <span id="schedaToggle" class="oc">+</span></a>
-            <ul class="submenu" id="nuovaScheda"> 
-            <?php 
+            <ul class="submenu" id="nuovaScheda">
+            <?php
                 $ql=("select * from lista_tipo_scheda where id <> 3 $andHub order by etichetta asc;");
                 $qlr=pg_query($connection, $ql);
                 while ($obj = pg_fetch_array($qlr)) {
@@ -41,8 +41,8 @@
         <li>
             <a href="#" class='sessionLink' title="Modifica una lista valori" id="liste"> liste <span id="listeToggle" class="oc">+</span></a>
             <ul class="submenu">
-                <li><a href='vocabolari.php' title="modifica un vocabolario"> vocabolari</a></li> 
-                <li><a href='stato.php' title='modifca lista Stato'>Stato</a></li>  
+                <li><a href='vocabolari.php' title="modifica un vocabolario"> vocabolari</a></li>
+                <li><a href='stato.php' title='modifca lista Stato'>Stato</a></li>
                 <li><a href='provincia.php' title='modifca lista Provincia'>Provincia</a></li>
                 <li><a href='comune.php' title='modifca lista Comune'>Comune</a></li>
                 <li><a href='localita.php' title='modifca lista Localita'>Localita</a></li>
@@ -58,4 +58,3 @@
     <div style="clear:both"></div>
 </div>
 <?php } ?>
-

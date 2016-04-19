@@ -169,7 +169,8 @@ $extent2 = str_replace(' ', ',', $extent2);
   <link href="lib/jquery-ui-1.11.4/jquery-ui.min.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/scheda.css" type="text/css" rel="stylesheet" media="screen" />
   <link href="css/ico-font/css/font-awesome.min.css" type="text/css" rel="stylesheet" media="screen" />
-    <link rel="stylesheet" href="css/google.css" type="text/css">
+  <link rel="stylesheet" href="css/google.css" type="text/css">
+  <link href="css/print.css" type="text/css" rel="stylesheet" media="print" />
   <link rel="shortcut icon" href="img/icone/favicon.ico" />
   <script type="text/javascript" src="lib/jquery-core/jquery-1.12.0.min.js"></script>
   <script type="text/javascript" src="lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
@@ -181,6 +182,10 @@ $extent2 = str_replace(' ', ',', $extent2);
     .areeListRecord{display:inline-block; margin:2px 10px; width:45%;}
     .areeListRecord label{font-size: 1em !important;}
     #areeAdd{ border-radius: 15px; -moz-border-radius: 15px; -webkit-border-radius: 15px;  padding:5px 8px !important; margin-bottom: 0px;}
+    #primoDivSx{width:450px; float:left; margin-left:-70px;}
+    #last{border:none !important; background-color: none !important; height:auto !important}
+    button.print{ background-color: transparent; background-image: -webkit-linear-gradient(top,#f8f8f8,#f1f1f1); background-image: linear-gradient(top,#f8f8f8,#f1f1f1); background-image: -webkit-gradient(linear,left top,left bottom,from(#f8f8f8),to(#f1f1f1)); background-image: -webkit-linear-gradient(top,#f8f8f8,#f1f1f1); border: 1px solid rgba(0,0,0,0.1); cursor:pointer; padding: 7px 10px; color: #444;}
+    button.print:hover{color: #111;}
   </style>
 
 </head>
@@ -193,7 +198,7 @@ $extent2 = str_replace(' ', ',', $extent2);
    <div id="content">
     <?php require_once('inc/logoHub.php'); ?>
     <?php if($hub != 2){ ?>
-    <div id="livelloScheda">
+    <div id="livelloScheda" class="noPrint">
      <ul>
       <li id="liv1">PRIMO LIVELLO</li>
       <li id="liv2">SECONDO LIVELLO</li>
@@ -205,16 +210,17 @@ $extent2 = str_replace(' ', ',', $extent2);
 
  <div id="skArcheoContent">
   <div class="inner primo">
-   <div style="width:450px; float:left; margin-left:-70px;" class="check bassa">
+   <div id="primoDivSx" class="check bassa">
         <table class="mainData">
           <tr>
+              <td colspan="2"><button class="print noPrint" type="button"><i class="fa fa-file-pdf-o"></i> stampa</button></td>
+          </tr>
+          <tr>
            <td>
-
             <label>NUMERO SCHEDA</label>
             <h1 class="<?php echo($stile);?>"><?php echo($numSch); ?></h1>
            </td>
            <td>
-
              <label>TIPO SCHEDA</label>
              <div class="valori"><?php echo($a['tipo_scheda']); ?></div>
            </td>
@@ -260,7 +266,7 @@ $extent2 = str_replace(' ', ',', $extent2);
        </div>
 
        <?php if(($tpsch==1)||($tpsch==7)||($pag==92)||($pag==63)||($pag==23))  {?>
-        <div id="switchImgMap">
+        <div id="switchImgMap" class="noPrint">
             <label class="switchLabel" for="switchImg"><?php echo $mapSwitch; ?></label>
             <label class="switchLabel" for="switchMappa">Mappa</label>
             <input type="radio" id="switchMappa" class="switchImgMapButton" name="switchImgMapButton" />
@@ -277,7 +283,7 @@ $extent2 = str_replace(' ', ',', $extent2);
          </div>
        <?php }else {?>
          <div id="smallMap">
-          <div id="smallMapPanel">
+          <div id="smallMapPanel" class="noPrint">
            <a href="#" class="baseButton" id="sat" onclick="mappa.setBaseLayer(gsat)">SAT</a>
            <a href="#" class="baseButton" id="osm" onclick="mappa.setBaseLayer(osm)">OSM</a>
           </div>
@@ -929,7 +935,7 @@ WHERE aree_scheda.id_scheda = $id AND area.tipo = 2;
   </div>
  <?php } ?>
 
-   <div class="inner" style="border:none !important; background-color: none !important; height:auto !important">
+   <div class="inner noPrint" id="last">
     <div class="inner check" style="width:250px !important; float:left; margin-right:10px;">
      <label>SCHEDE DI PRIMO LIVELLO</label><br />
      <?php
@@ -1020,7 +1026,7 @@ WHERE aree_scheda.id_scheda = $id AND area.tipo = 2;
    </div> <!-- test -->
  </div><!--skArcheoContent-->
  </div><!--content-->
- <div id="footer"><?php require_once ("inc/footer.inc"); ?></div><!--footer-->
+ <div id="footer"><?php require_once ("inc/footer.php"); ?></div><!--footer-->
  </div><!-- wrap-->
  </div><!--container-->
 
@@ -1083,6 +1089,9 @@ $(document).ready(function() {
     });
     $("#submitFile").hide();
     $('#file').bind('change', function (e) { $("#submitFile").show(); });
+
+    $(".print").on("click", function(){ window.print();});
+
 
 ////////////// SHOW/HIDE modifica sezione /////////////////
     if ( (tipoUsr == 1)||((tipoUsr==2)&&(schede.indexOf(scheda)!=-1))||(idUsr==compilatore)) {
