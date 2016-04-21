@@ -268,7 +268,7 @@ $extent2 = str_replace(' ', ',', $extent2);
             </div>
         </div> <!--primoDivSx-->
         <!--  ############  switch mappa file ############## -->
-        <?php if(($pag==12)||($pag==72)||($pag==13)||($pag==73)||($pag==92)||($pag==63)||($pag==23))  {?>
+        <?php if(($pag==12)||($pag==13)||($pag==21)||($pag==23)||($pag==63)||($pag==72)||($pag==73)||($pag==92))  {?>
         <div id="switchImgMap" class="noPrint">
             <label class="switchLabel" for="switchImg"><?php echo $mapSwitch; ?></label>
             <label class="switchLabel" for="switchMappa">Mappa</label>
@@ -295,7 +295,7 @@ $extent2 = str_replace(' ', ',', $extent2);
            </div>
            <!--  ############  FINE MAPPA PICCOLA ############## -->
        <?php }
-        if(($pag==12)||($pag==72)||($pag==13)||($pag==73)||($pag==92)||($pag==63)||($pag==23)) {
+        if(($pag==12)||($pag==13)||($pag==21)||($pag==23)||($pag==63)||($pag==72)||($pag==73)||($pag==92)) {
              $imgq = ("select path from file where id_scheda = $id;");
              $imgexec = pg_query($connection, $imgq);
              $imgrow = pg_num_rows($imgexec);
