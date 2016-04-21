@@ -152,9 +152,8 @@ $extent2 = str_replace(' ', ',', $extent2);
 
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//IT"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="IT" >
+<!DOCTYPE>
+<html lang="it">
  <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
@@ -208,127 +207,133 @@ $extent2 = str_replace(' ', ',', $extent2);
     <?php } ?>
     <div id="logoSchedaDx"><img src="img/layout/loghiSchede/<?php echo($logo);?>.png" alt="logo scheda" /></div>
 
- <div id="skArcheoContent">
-  <div class="inner primo">
-   <div id="primoDivSx" class="check bassa">
-        <table class="mainData">
-          <tr>
-              <td colspan="2"><button class="print noPrint" type="button"><i class="fa fa-file-pdf-o"></i> stampa</button></td>
-          </tr>
-          <tr>
-           <td>
-            <label>NUMERO SCHEDA</label>
-            <h1 class="<?php echo($stile);?>"><?php echo($numSch); ?></h1>
-           </td>
-           <td>
-             <label>TIPO SCHEDA</label>
-             <div class="valori"><?php echo($a['tipo_scheda']); ?></div>
-           </td>
-          </tr>
-          <tr>
-           <td colspan="2">
-             <label>DEFINIZIONE OGGETTO</label>
-             <div class="valori" style="min-height:50px; font-size:18px;"><?php echo($dgn_ogg); ?></div>
-           </td>
-          </tr>
-          <tr>
-            <td <?php if($hub==2){echo "colspan='2'";} ?>>
-              <label>CRONOLOGIA</label>
-              <div class="valori"><?php echo($cro_spec); ?></div>
-            </td>
-            <td>
-             <?php if($hub!=2){ ?>
-              <label>LIVELLO INDIVIDUAZIONE DATI</label>
-              <div class="valori"><?php echo($a['individuazione']); ?></div>
-             <?php } ?>
-            </td>
-          </tr>
-          <tr>
-           <td colspan="2">
-             <label>NOTE</label>
-             <div class="valori"><?php echo($note1); ?></div>
-           </td>
-          </tr>
-          <?php if($_SESSION['username']!='guest') {?>
-          <tr>
-           <td>
-             <label class="update" id="dati_principali">modifica sezione</label>
-           </td>
-           <td>
-             <label class="update" id="elimina_scheda" scheda="<?php echo ($id);?>">elimina scheda</label>
-           </td>
-          </tr>
-          <?php } ?>
-         </table>
-         <div class="updateContent" style="display:none">
-          <?php require("inc/form_update/dati_principali.php"); ?>
-         </div>
-       </div>
-
-       <?php if(($tpsch==1)||($tpsch==7)||($pag==92)||($pag==63)||($pag==23))  {?>
+<div id="skArcheoContent">
+    <div class="inner primo">
+        <div id="primoDivSx" class="check bassa">
+            <table class="mainData">
+                <tr>
+                    <td colspan="2">
+                        <button class="print noPrint" type="button">
+                            <i class="fa fa-file-pdf-o"></i> stampa
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>NUMERO SCHEDA</label>
+                        <h1 class="<?php echo($stile);?>"><?php echo($numSch); ?></h1>
+                    </td>
+                    <td>
+                        <label>TIPO SCHEDA</label>
+                        <div class="valori"><?php echo($a['tipo_scheda']); ?></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label>DEFINIZIONE OGGETTO</label>
+                        <div class="valori" style="min-height:50px; font-size:18px;"><?php echo($dgn_ogg); ?></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td <?php if($hub==2){echo "colspan='2'";} ?>>
+                        <label>CRONOLOGIA</label>
+                        <div class="valori"><?php echo($cro_spec); ?></div>
+                    </td>
+                    <td>
+                        <?php if($hub!=2){ ?>
+                            <label>LIVELLO INDIVIDUAZIONE DATI</label>
+                            <div class="valori"><?php echo($a['individuazione']); ?></div>
+                        <?php } ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label>NOTE</label>
+                        <div class="valori"><?php echo($note1); ?></div>
+                    </td>
+                </tr>
+                <?php if($_SESSION['username']!='guest') {?>
+                <tr>
+                    <td>
+                        <label class="update" id="dati_principali">modifica sezione</label>
+                    </td>
+                    <td>
+                        <label class="update" id="elimina_scheda" scheda="<?php echo ($id);?>">elimina scheda</label>
+                    </td>
+                </tr>
+                <?php } ?>
+            </table>
+            <div class="updateContent" style="display:none">
+                <?php require("inc/form_update/dati_principali.php"); ?>
+            </div>
+        </div> <!--primoDivSx-->
+        <!--  ############  switch mappa file ############## -->
+        <?php if(($tpsch==1)||($tpsch==7)||($pag==92)||($pag==63)||($pag==23))  {?>
         <div id="switchImgMap" class="noPrint">
             <label class="switchLabel" for="switchImg"><?php echo $mapSwitch; ?></label>
             <label class="switchLabel" for="switchMappa">Mappa</label>
             <input type="radio" id="switchMappa" class="switchImgMapButton" name="switchImgMapButton" />
             <input type="radio" id="switchImg" class="switchImgMapButton" name="switchImgMapButton" />
         </div>
-       <?php }  ?>
+        <?php } ?>
+        <!--  ############ fine switch mappa file ############## -->
 
        <div id="mapImgWrap">
        <?php if($numPoly == 0 && $numLine == 0){?>
-         <div id="noMap">
-          <div id="noMapAlert">
-           <h2>Non sono presenti geometrie per la scheda visualizzata</h2>
-          </div>
-         </div>
+           <div id="noMap">
+               <div id="noMapAlert">
+                   <h2>Non sono presenti geometrie per la scheda visualizzata</h2>
+               </div>
+           </div> <!-- no map -->
        <?php }else {?>
-         <div id="smallMap">
-          <div id="smallMapPanel" class="noPrint">
-           <a href="#" class="baseButton" id="sat" onclick="mappa.setBaseLayer(gsat)">SAT</a>
-           <a href="#" class="baseButton" id="osm" onclick="mappa.setBaseLayer(osm)">OSM</a>
-          </div>
-         </div>
-       <?php } ?>
-
-       <?php
-          if(($tpsch==1)||($tpsch==7)||($pag==92)||($pag==63)||($pag==23)) {
+           <!--  ############  MAPPA PICCOLA ############## -->
+           <div id="smallMap">
+               <div id="smallMapPanel" class="noPrint">
+                   <a href="#" class="baseButton" id="sat" onclick="mappa.setBaseLayer(gsat)">SAT</a>
+                   <a href="#" class="baseButton" id="osm" onclick="mappa.setBaseLayer(osm)">OSM</a>
+               </div>
+           </div>
+           <!--  ############  FINE MAPPA PICCOLA ############## -->
+       <?php }
+        if(($tpsch==1)||($tpsch==7)||($pag==92)||($pag==63)||($pag==23)) {
              $imgq = ("select path from file where id_scheda = $id;");
              $imgexec = pg_query($connection, $imgq);
              $imgrow = pg_num_rows($imgexec);
              $imgres = pg_fetch_array($imgexec, 0, PGSQL_ASSOC);
              $img=$imgres['path'];
        ?>
-        <img id="imgOrig" src="<?php echo($folder.$img);?>" style="position:absolute; left:-1000%;">
-        <div id="imgDiv" <?php echo $css; ?> >
-         <div id="noImgAlert">
-         <?php
-          if($imgrow > 0) {
-              if($tpsch!=1){
-                 echo "<img id='imgSmall' src='".$folder.$img."' />";
-                 echo "<div id='panelFoto'><label id='ingrFoto' scheda='$id'>ingrandisci</label>&nbsp;&nbsp;";
-                 if($idUsr) {echo"<label id='delFoto' scheda='$id' img='$img'>elimina</label>";}
-             }else{
-                 echo "<audio preload='none' controls>";
-                 echo "<source src='".$folder.$img."' type='audio/mp3'>";
-                 echo "Il tuo browser non supporta l'elemento audio";
-                 echo "</audio>";
-             }
-          }else{
-             echo $noFile;
-             if($idUsr) {
-         ?>
-           <form action="inc/<?php echo $upload; ?>" method="post" enctype="multipart/form-data">
-             <input type="hidden" name="schedaFoto" value="<?php echo($id);?>" />
-             <input type="file" name="file" id="file"><br>
-             <input type="submit" name="submit" id="submitFile" value="Carica file selezionato">
-           </form>
-         <?php }}//else ?>
-          </div>
-         </div>
+            <img id="imgOrig" src="<?php echo($folder.$img);?>" style="position:absolute; left:-1000%;">
+            <div id="imgDiv" <?php echo $css; ?> >
+                <div id="noImgAlert">
+                <?php
+                    if($imgrow > 0) {
+                        if($tpsch!=1){
+                            echo "<img id='imgSmall' src='".$folder.$img."' />";
+                            echo "<div id='panelFoto'>";
+                                echo "<label id='ingrFoto' scheda='$id'>ingrandisci</label>&nbsp;&nbsp;";
+                                if($idUsr) {echo"<label id='delFoto' scheda='$id' img='$img'>elimina</label>";}
+                            echo "</div>";
+                        }else{
+                            echo "<audio preload='none' controls>";
+                            echo "<source src='".$folder.$img."' type='audio/mp3'>";
+                            echo "Il tuo browser non supporta l'elemento audio";
+                            echo "</audio>";
+                        }
+                    }else{
+                        echo $noFile;
+                        if($idUsr) {
+                ?>
+                    <form action="inc/<?php echo $upload; ?>" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="schedaFoto" value="<?php echo($id);?>" />
+                        <input type="file" name="file" id="file"><br>
+                        <input type="submit" name="submit" id="submitFile" value="Carica file selezionato">
+                    </form>
+                    <?php }}//else ?>
+                </div> <!-- noImgAlert -->
+            </div> <!-- imgDiv -->
          <?php }//primo if ?>
-       </div>
-       <div style="clear:both"></div>
-
+        </div> <!-- mapImgWrap -->
+        <div style="clear:both"></div>
        <?php
          $qcro =  ("SELECT c.cro_iniz, c.cro_fin, c.cro_spec, c.cro_motiv as cro_id, l.definizione AS cro_motiv, c.cro_note
                     FROM public.cronologia as c, public.scheda as s, public.lista_cro_motiv as l
