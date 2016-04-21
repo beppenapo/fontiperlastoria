@@ -2,7 +2,8 @@
 include("db.php");
 $id = $_POST['id_scheda'];
 $file = $_POST['file'];
-$cartella = '../foto/';
+$dir = $_POST['tipo'];
+$cartella = '../'.$dir.'/';
 $path = $cartella.$file;
 $elimina = ("DELETE from file WHERE id_scheda = $id;");
 $result = pg_query($connection, $elimina);

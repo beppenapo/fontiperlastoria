@@ -20,7 +20,7 @@ li{font-size:10pt;}
 #primoDivSx, #smallMap{margin:0px !important; display:inline-block !important; width:49% !important;}
 #smallMap{height:300px;margin-left:10px !important;}
 #logoSchedaDx{position: absolute; top: 0; right: 0; z-index: 1;}
-.slide{display:block !important; margin-bottom:20px; border-bottom:1px solid #000;}
+.slide{/*display:block !important;*/ margin-bottom:20px; border-bottom:1px solid #000;}
 .slide table tr{border:none !important;}
 .mainData label{font-weight: bold;}
 #footer{font-size:10pt;text-align:center;}

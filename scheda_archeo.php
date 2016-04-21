@@ -268,7 +268,7 @@ $extent2 = str_replace(' ', ',', $extent2);
             </div>
         </div> <!--primoDivSx-->
         <!--  ############  switch mappa file ############## -->
-        <?php if(($tpsch==1)||($tpsch==7)||($pag==92)||($pag==63)||($pag==23))  {?>
+        <?php if(($pag==12)||($pag==72)||($pag==13)||($pag==73)||($pag==92)||($pag==63)||($pag==23))  {?>
         <div id="switchImgMap" class="noPrint">
             <label class="switchLabel" for="switchImg"><?php echo $mapSwitch; ?></label>
             <label class="switchLabel" for="switchMappa">Mappa</label>
@@ -295,7 +295,7 @@ $extent2 = str_replace(' ', ',', $extent2);
            </div>
            <!--  ############  FINE MAPPA PICCOLA ############## -->
        <?php }
-        if(($tpsch==1)||($tpsch==7)||($pag==92)||($pag==63)||($pag==23)) {
+        if(($pag==12)||($pag==72)||($pag==13)||($pag==73)||($pag==92)||($pag==63)||($pag==23)) {
              $imgq = ("select path from file where id_scheda = $id;");
              $imgexec = pg_query($connection, $imgq);
              $imgrow = pg_num_rows($imgexec);
@@ -309,15 +309,20 @@ $extent2 = str_replace(' ', ',', $extent2);
                     if($imgrow > 0) {
                         if($tpsch!=1){
                             echo "<img id='imgSmall' src='".$folder.$img."' />";
-                            echo "<div id='panelFoto'>";
+                            echo "<div class='panel panelFoto'>";
                                 echo "<label id='ingrFoto' scheda='$id'>ingrandisci</label>&nbsp;&nbsp;";
-                                if($idUsr) {echo"<label id='delFoto' scheda='$id' img='$img'>elimina</label>";}
+                                if($idUsr) {echo"<label class='delFile' data-scheda='$id' data-img='$img' data-tipo='foto'>elimina</label>";}
                             echo "</div>";
                         }else{
                             echo "<audio preload='none' controls>";
                             echo "<source src='".$folder.$img."' type='audio/mp3'>";
                             echo "Il tuo browser non supporta l'elemento audio";
                             echo "</audio>";
+                            if($idUsr){
+                                echo "<div class='panel panelAudio'>";
+                                    echo"<label class='delFile' data-scheda='$id' data-img='$img' data-tipo='audio'>elimina</label>";
+                                echo "</div>";
+                            }
                         }
                     }else{
                         echo $noFile;
@@ -1167,20 +1172,16 @@ $(document).ready(function() {
         $('#no').click(function(){$(this).closest('.ui-dialog-content').dialog('close');});
     });
 //////////  ELIMINA FOTO ///////////////
-    $('#delFoto').click(function(){
-        var id_scheda = $(this).attr('scheda');
-        var file = $(this).attr('img');
-        $("#delFotoDialog").dialog({
-            resizable:false,
-            height: 300,
-            width: 500,
-            title: "ATTENZIONE!!!"
-        });
+    $('.delFile').click(function(){
+        var id_scheda = $(this).data('scheda');
+        var file = $(this).data('img');
+        var tipo = $(this).data('tipo');
+        $("#delFotoDialog").dialog({ resizable:false, height: 300, width: 500, title: "ATTENZIONE!!!" });
         $('#siFoto').click(function(){
             $.ajax({
                 url: 'inc/deleteFoto.php',
                 type: 'POST',
-                data: {id_scheda:id_scheda, file:file},
+                data: {id_scheda:id_scheda, file:file, tipo:tipo},
                 success: function(data){ $(data).dialog().delay(2500).fadeOut(function(){ window.location = window.location; }); }
             });//ajax
         });

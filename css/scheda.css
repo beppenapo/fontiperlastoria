@@ -101,9 +101,11 @@ div#mapImgWrap{float:right;width:400px;height: 300px;margin-top:30px !important;
 div#smallMap, div#noMap, div#imgDiv{width:400px;height: 300px; overflow:hidden;}
 div#noMapAlert, div#noImgAlert{position:relative;font-weight: bold;font-size: 16px;margin:0px auto !important; text-align: center;}
 div#switchImgMap{float: right;width: 400px;margin: 10px 0px -30px 0px;}
-div#panelFoto{position: absolute; bottom: 5px; right: 0px; background-color: rgba(255,255,255,0.4); text-align: center; width: 100%; padding: 5px;}
-div#panelFoto label{font-size:12px; color:black; cursor: pointer;}
-div#panelFoto label:hover{text-shadow:0px 0px 8px #000;}
+div.panel{background-color: rgba(255,255,255,0.4); text-align: center; width: 100%; padding: 5px;}
+div.panel label{font-size:12px; color:black; cursor: pointer;}
+div.panel label:hover{text-shadow:0px 0px 8px #000;}
+div.panelFoto{position: absolute; bottom: 5px; right: 0px;}
+div.panelAudio{position: relative; margin-top:30px;}
 div#img{cursor: pointer;}
 div#tip{ display: none; width:800px; margin:10px auto !important;  padding:10px; background-color: orange;  font-size: 130%;text-align: center;border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
 div#fine{border-top:1px solid #96867B; border-bottom:1px solid #96867B; background-color: #CFC4B1; margin:10px 0px; padding:10px; font-weight: bold;text-align:center;}
