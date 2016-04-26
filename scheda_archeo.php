@@ -23,14 +23,14 @@ $fine = $a['fine'];
 
 if($tpsch==1){
     $upload = "uploaded_audio.php";
-    $noFile="<h2>Non sono presenti file audio</h2>";
+    $noFile="<h2 class='noPrint'>Non sono presenti file audio</h2>";
     $tipoFile = 2;
     $folder = "audio/";
     $mapSwitch="Multimedia";
     $css = "style='background-image:url(\"img/layout/loghiSchede/logoSkOrale.png\"); background-repeat:no-repeat;background-position:center center;background-size:contain;'";
 }else{
     $upload = "uploaded_file.php";
-    $noFile = "<h2>Non sono presenti foto</h2>";
+    $noFile = "<h2 class='noPrint'>Non sono presenti foto</h2>";
     $tipoFile = 1;
     $folder = "../foto/";
     $mapSwitch="Foto";
@@ -205,20 +205,20 @@ $extent2 = str_replace(' ', ',', $extent2);
      </ul>
     </div>
     <?php } ?>
-    <div id="logoSchedaDx"><img src="img/layout/loghiSchede/<?php echo($logo);?>.png" alt="logo scheda" /></div>
+    <div id="logoSchedaDx" class="noPrint"><img src="img/layout/loghiSchede/<?php echo($logo);?>.png" alt="logo scheda" /></div>
 
 <div id="skArcheoContent">
     <div class="inner primo">
         <div id="primoDivSx" class="check bassa">
             <table class="mainData">
-                <tr>
+                <tr class="noPrint">
                     <td colspan="2">
-                        <button class="print noPrint" type="button">
+                        <button class="print" type="button">
                             <i class="fa fa-file-pdf-o"></i> stampa
                         </button>
                     </td>
                 </tr>
-                <tr>
+                <tr class="trHeadStampa">
                     <td>
                         <label>NUMERO SCHEDA</label>
                         <h1 class="<?php echo($stile);?>"><?php echo($numSch); ?></h1>
@@ -253,7 +253,7 @@ $extent2 = str_replace(' ', ',', $extent2);
                     </td>
                 </tr>
                 <?php if($_SESSION['username']!='guest') {?>
-                <tr>
+                <tr class="noPrint">
                     <td>
                         <label class="update" id="dati_principali">modifica sezione</label>
                     </td>
