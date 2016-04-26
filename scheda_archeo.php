@@ -287,7 +287,13 @@ $extent2 = str_replace(' ', ',', $extent2);
            </div> <!-- no map -->
        <?php }else {?>
            <!--  ############  MAPPA PICCOLA ############## -->
-           <div id="smallMap" class="noPrint">
+           <?php if(($pag==12)||($pag==13)||($pag==21)||($pag==23)||($pag==63)||($pag==72)||($pag==73)||($pag==92))  {
+                   $printMappa = 'class="noPrint"';
+               }else{
+                   $printMappa = '';
+               }
+           ?>
+           <div id="smallMap" <?php echo $printMappa; ?>>
                <div id="smallMapPanel" class="noPrint">
                    <a href="#" class="baseButton" id="sat" onclick="mappa.setBaseLayer(gsat)">SAT</a>
                    <a href="#" class="baseButton" id="osm" onclick="mappa.setBaseLayer(osm)">OSM</a>
@@ -314,12 +320,12 @@ $extent2 = str_replace(' ', ',', $extent2);
                                 if($idUsr) {echo"<label class='delFile' data-scheda='$id' data-img='$img' data-tipo='foto'>elimina</label>";}
                             echo "</div>";
                         }else{
-                            echo "<audio preload='none' controls>";
+                            echo "<audio  class='noPrint' preload='none' controls>";
                             echo "<source src='".$folder.$img."' type='audio/mp3'>";
                             echo "Il tuo browser non supporta l'elemento audio";
                             echo "</audio>";
                             if($idUsr){
-                                echo "<div class='panel panelAudio'>";
+                                echo "<div class='panel panelAudio noPrint'>";
                                     echo"<label class='delFile' data-scheda='$id' data-img='$img' data-tipo='audio'>elimina</label>";
                                 echo "</div>";
                             }
@@ -328,7 +334,7 @@ $extent2 = str_replace(' ', ',', $extent2);
                         echo $noFile;
                         if($idUsr) {
                 ?>
-                    <form action="inc/<?php echo $upload; ?>" method="post" enctype="multipart/form-data">
+                    <form class="noPrint" action="inc/<?php echo $upload; ?>" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="schedaFoto" value="<?php echo($id);?>" />
                         <input type="file" name="file" id="file"><br>
                         <input type="submit" name="submit" id="submitFile" value="Carica file selezionato">
@@ -945,8 +951,8 @@ WHERE aree_scheda.id_scheda = $id AND area.tipo = 2;
   </div>
  <?php } ?>
 
-   <div class="inner noPrint" id="last">
-    <div class="inner check" style="width:250px !important; float:left; margin-right:10px;">
+   <div class="inner" id="last">
+    <div class="inner check" style="width:32% !important; float:left; margin-right:10px;">
      <label>SCHEDE DI PRIMO LIVELLO</label><br />
      <?php
       $q1 = ("SELECT a.id, a.id_parente, s.dgn_numsch
@@ -961,13 +967,13 @@ WHERE aree_scheda.id_scheda = $id AND area.tipo = 2;
          $id_parente1 = pg_result($r1, $x,"id_parente");
          $ap_dgn_numsch1 = pg_result($r1, $x,"dgn_numsch");
          echo "<a href=\"scheda_archeo.php?id=$id_parente1\" target=\"_blank\" class=\"altrif $stile\">$ap_dgn_numsch1</a>  ";
-         if ($_SESSION['username']!='guest'){echo '<a href="javascript:removeParente('.$ap_id1.')"><img style="width:10px;height:10px;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACHElEQVR42n2T70tTYRTHB73ddPfubq6ld5utYOQ2lsRYm7IyK6xBoC8CK+jHin5AWLEQgugPkG48OlEqMtIKhKAfrhFkJOVwlYVBSe1FvvDFSFj0B3x7zr1udOvOA1/Oc87nex547uGaTP9ErsHsM9WItZgp22Bex6W8CnpB2YDXZGo8c5gzn3q78HtyAHP74+C18hdj73s6VEaZvLrhxw4L+3BwL8ojF1Dqi6F8qx/5fXHwvkKs0N2B8mhaZb9uXgbV1FeHHzksvlyLFz8Hz2P5zDZN5yJYGUnjTVcM+QMJrAxfxPLZSJVTnfXL4LOyesmk3cKmwy78OBbG0vFVpVpRGrqEEuvD0onWap88L0Mu0IzuGQ/sdexF0IXvvQEUD63qSAjFw6FqTSwXWA/yGn7IcamOZbc48bXbj8Uevag35XeCPDVXOSbVs1x7GAvJzfic9Om0kNyEbCwI7jFe421bPXve2Ybi1ZOY392M+U6PTh/3bETx2mlM7YyCe/WXjNqsytNdcXy7kkIhIaPQ3qhqrk1TpX6XcHPPKTzZsR18RnvKsGj1jvk8+JI+itmoC7MRp6q3XPfdNjz0SOq50s9HN2CxP4U7zW7wWW2Ng6JVmZBteL1VwgwX5XFZBO8zEp0rjDTh1pjuGTdEgd1tFDHdIoAy1TrWxFlAwL0mgVjG8ENeFwRlSBJA2YCxjF1ltddIMSAI8hrsv9/5D5EYVSAsqeh8AAAAAElFTkSuQmCC"></a>';}
+         if ($_SESSION['username']!='guest'){echo '<a href="javascript:removeParente('.$ap_id1.')"><i class="fa fa-times fa-2x></i>"</a>';}
         }
      }
      ?>
     </div>
 
-    <div class="inner check" style="width:324px !important; float:left; margin-right:10px;">
+    <div class="inner check" style="width:32% !important; float:left; margin-right:10px;">
      <label>SCHEDE DI SECONDO LIVELLO</label><br />
      <?php
       $q2 = ("SELECT a.id, a.id_parente, s.dgn_numsch
@@ -982,13 +988,13 @@ WHERE aree_scheda.id_scheda = $id AND area.tipo = 2;
          $id_parente2 = pg_result($r2, $x,"id_parente");
          $ap_dgn_numsch2 = pg_result($r2, $x,"dgn_numsch");
          echo "<a href=\"scheda_archeo.php?id=$id_parente2\" target=\"_blank\" class=\"altrif $stile\">$ap_dgn_numsch2</a>  ";
-         if ($_SESSION['username']!='guest'){echo '<a href="javascript:removeParente('.$ap_id2.')"><img style="width:10px;height:10px;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACHElEQVR42n2T70tTYRTHB73ddPfubq6ld5utYOQ2lsRYm7IyK6xBoC8CK+jHin5AWLEQgugPkG48OlEqMtIKhKAfrhFkJOVwlYVBSe1FvvDFSFj0B3x7zr1udOvOA1/Oc87nex547uGaTP9ErsHsM9WItZgp22Bex6W8CnpB2YDXZGo8c5gzn3q78HtyAHP74+C18hdj73s6VEaZvLrhxw4L+3BwL8ojF1Dqi6F8qx/5fXHwvkKs0N2B8mhaZb9uXgbV1FeHHzksvlyLFz8Hz2P5zDZN5yJYGUnjTVcM+QMJrAxfxPLZSJVTnfXL4LOyesmk3cKmwy78OBbG0vFVpVpRGrqEEuvD0onWap88L0Mu0IzuGQ/sdexF0IXvvQEUD63qSAjFw6FqTSwXWA/yGn7IcamOZbc48bXbj8Uevag35XeCPDVXOSbVs1x7GAvJzfic9Om0kNyEbCwI7jFe421bPXve2Ybi1ZOY392M+U6PTh/3bETx2mlM7YyCe/WXjNqsytNdcXy7kkIhIaPQ3qhqrk1TpX6XcHPPKTzZsR18RnvKsGj1jvk8+JI+itmoC7MRp6q3XPfdNjz0SOq50s9HN2CxP4U7zW7wWW2Ng6JVmZBteL1VwgwX5XFZBO8zEp0rjDTh1pjuGTdEgd1tFDHdIoAy1TrWxFlAwL0mgVjG8ENeFwRlSBJA2YCxjF1ltddIMSAI8hrsv9/5D5EYVSAsqeh8AAAAAElFTkSuQmCC"></a>';}
+         if ($_SESSION['username']!='guest'){echo '<a href="javascript:removeParente('.$ap_id2.')"><i class="fa fa-times fa-2x></i></a>';}
         }
      }
      ?>
     </div>
 
-    <div class="inner check" style="width:350px !important; float:left;">
+    <div class="inner check" style="width:33% !important; float:left;">
       <label>SCHEDE DI TERZO LIVELLO</label><br />
      <?php
       $q3 = ("SELECT a.id, a.id_parente, s.dgn_numsch
@@ -1003,7 +1009,7 @@ WHERE aree_scheda.id_scheda = $id AND area.tipo = 2;
          $id_parente3 = pg_result($r3, $x,"id_parente");
          $ap_dgn_numsch3 = pg_result($r3, $x,"dgn_numsch");
          echo "<a href=\"scheda_archeo.php?id=$id_parente3\" target=\"_blank\" class=\"altrif $stile\">$ap_dgn_numsch3</a>  ";
-         if ($_SESSION['username']!='guest'){echo '<a href="javascript:removeParente('.$ap_id3.')"><img style="width:10px;height:10px;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACHElEQVR42n2T70tTYRTHB73ddPfubq6ld5utYOQ2lsRYm7IyK6xBoC8CK+jHin5AWLEQgugPkG48OlEqMtIKhKAfrhFkJOVwlYVBSe1FvvDFSFj0B3x7zr1udOvOA1/Oc87nex547uGaTP9ErsHsM9WItZgp22Bex6W8CnpB2YDXZGo8c5gzn3q78HtyAHP74+C18hdj73s6VEaZvLrhxw4L+3BwL8ojF1Dqi6F8qx/5fXHwvkKs0N2B8mhaZb9uXgbV1FeHHzksvlyLFz8Hz2P5zDZN5yJYGUnjTVcM+QMJrAxfxPLZSJVTnfXL4LOyesmk3cKmwy78OBbG0vFVpVpRGrqEEuvD0onWap88L0Mu0IzuGQ/sdexF0IXvvQEUD63qSAjFw6FqTSwXWA/yGn7IcamOZbc48bXbj8Uevag35XeCPDVXOSbVs1x7GAvJzfic9Om0kNyEbCwI7jFe421bPXve2Ybi1ZOY392M+U6PTh/3bETx2mlM7YyCe/WXjNqsytNdcXy7kkIhIaPQ3qhqrk1TpX6XcHPPKTzZsR18RnvKsGj1jvk8+JI+itmoC7MRp6q3XPfdNjz0SOq50s9HN2CxP4U7zW7wWW2Ng6JVmZBteL1VwgwX5XFZBO8zEp0rjDTh1pjuGTdEgd1tFDHdIoAy1TrWxFlAwL0mgVjG8ENeFwRlSBJA2YCxjF1ltddIMSAI8hrsv9/5D5EYVSAsqeh8AAAAAElFTkSuQmCC"></a>';}
+         if ($_SESSION['username']!='guest'){echo '<a href="javascript:removeParente('.$ap_id3.')"><i class="fa fa-times fa-2x></i></a>';}
         }
      }
      ?>
@@ -1027,7 +1033,7 @@ WHERE aree_scheda.id_scheda = $id AND area.tipo = 2;
     <?php if ($_SESSION['username']!='guest'){  ?>
       <div id="fine">
        <label style="display:block;text-align:center;">La scheda risulta <?php echo($statoScheda); ?>.
-       <?php if($tipoUsr != 3) {?>Utilizza il pulsante in basso per cambiare lo stato della scheda.</label>
+       <?php if($tipoUsr != 3) {?><span class="noPrint">Utilizza il pulsante in basso per cambiare lo stato della scheda.</span></label>
        <br/>
        <label style="display:block;text-align:center;" class="update" id="upStatoScheda" <?php echo($upStatoScheda);?>>modifica stato</label>
       </div>

@@ -1,4 +1,4 @@
-body {background: #fff;color: #000;font-size: 12pt;font-family: "Times New Roman", Times, serif;width: 21cm; height: 29.7cm;}
+body {background: #fff;color: #000;font-size: 12pt;font-family: "Times New Roman", Times, serif;width: 21cm; height: 29.7cm;-webkit-print-color-adjust: exact;}
 h1,h2,h3,p,a,label,img{margin:0px;padding:0px;}
 /*da nascondere*/
 .noPrint, .update{display:none !important;}
@@ -18,7 +18,7 @@ ol{page-break-inside: avoid;}
 li{font-size:10pt;}
 
 #primoDivSx{margin:0px !important; display:inline-block !important; width:49% !important;}
-#primoDivSx table tbody tr:nth-child(2), .sezioni h2{background: #CFC4B1;}
+#primoDivSx table tbody tr:nth-child(2), .sezioni h2{background: #CFC4B1 !important;}
 .sezioni h2{padding:5px;margin:5px 0px;border-bottom: 1px solid #96867B;}
 #smallMap{height:300px;margin-left:10px !important; width:49% !important;display:inline-block;}
 #imgDiv { position: relative !important; background-color: #fff !important; z-index: 9000 !important; display: inline-block; width: 50%; text-align: right;}
@@ -26,4 +26,5 @@ li{font-size:10pt;}
 .slide table tr{border:none !important;}
 .mainData td:nth-child(1){padding-right:20px;}
 .mainData label{font-weight: bold;}
+#fine{ margin: 20px 0px; border-top: 1px solid #96867B; border-bottom: 1px solid #96867B; padding: 10px 0px;background-color: #CFC4B1 !important;}
 #footer{font-size:10pt;text-align:center;}
