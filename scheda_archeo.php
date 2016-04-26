@@ -287,7 +287,7 @@ $extent2 = str_replace(' ', ',', $extent2);
            </div> <!-- no map -->
        <?php }else {?>
            <!--  ############  MAPPA PICCOLA ############## -->
-           <div id="smallMap">
+           <div id="smallMap" class="noPrint">
                <div id="smallMapPanel" class="noPrint">
                    <a href="#" class="baseButton" id="sat" onclick="mappa.setBaseLayer(gsat)">SAT</a>
                    <a href="#" class="baseButton" id="osm" onclick="mappa.setBaseLayer(osm)">OSM</a>
@@ -309,7 +309,7 @@ $extent2 = str_replace(' ', ',', $extent2);
                     if($imgrow > 0) {
                         if($tpsch!=1){
                             echo "<img id='imgSmall' src='".$folder.$img."' />";
-                            echo "<div class='panel panelFoto'>";
+                            echo "<div class='panel panelFoto noPrint'>";
                                 echo "<label id='ingrFoto' scheda='$id'>ingrandisci</label>&nbsp;&nbsp;";
                                 if($idUsr) {echo"<label class='delFile' data-scheda='$id' data-img='$img' data-tipo='foto'>elimina</label>";}
                             echo "</div>";
@@ -1140,7 +1140,10 @@ $(document).ready(function() {
     $('.slide').hide();
     $('.toggle > div > h2').click(function(){$(this).parent().next('.slide').slideToggle(); });
     $("#switchImg").attr("checked", true);
-    $(".switchImgMapButton").change(function(){ $("#imgDiv").slideToggle("fast"); });
+    $(".switchImgMapButton").change(function(){
+        $("#imgDiv").slideToggle("fast");
+        $("#smallMap").toggleClass('noPrint');
+    });
 //////////  AGGIORNA STATO SCHEDA ///////////////
     $('#upStatoScheda').click(function(){
         var upStato = $(this).attr('upVal');
