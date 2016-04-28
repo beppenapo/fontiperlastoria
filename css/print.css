@@ -16,7 +16,7 @@ table thead {border-top:1px solid #000 !important;border-bottom:1px solid #000 !
 table tbody tr{border-bottom:1px solid #939393}
 table tbody tr:last-child{border-bottom:1px transparent;}
 th,td{text-align:left;vertical-align:top; padding:5px 0px;}
-ul, ol, .toggle, .inner{page-break-inside: avoid;}
+ul, ol{page-break-inside: avoid;}
 li{font-size:10pt;}
 
 #logoSchedaSx, #livelloScheda{display:inline-block; margin:0px;}
