@@ -952,7 +952,7 @@ WHERE aree_scheda.id_scheda = $id AND area.tipo = 2;
  <?php } ?>
 
    <div class="inner" id="last">
-    <div class="inner check" style="width:32% !important; float:left; margin-right:10px;">
+    <div class="inner check" style="width:32%; float:left; margin-right:10px;">
      <label>SCHEDE DI PRIMO LIVELLO</label><br />
      <?php
       $q1 = ("SELECT a.id, a.id_parente, s.dgn_numsch
@@ -973,7 +973,7 @@ WHERE aree_scheda.id_scheda = $id AND area.tipo = 2;
      ?>
     </div>
 
-    <div class="inner check" style="width:32% !important; float:left; margin-right:10px;">
+    <div class="inner check" style="width:32%; float:left; margin-right:10px;">
      <label>SCHEDE DI SECONDO LIVELLO</label><br />
      <?php
       $q2 = ("SELECT a.id, a.id_parente, s.dgn_numsch
@@ -994,7 +994,7 @@ WHERE aree_scheda.id_scheda = $id AND area.tipo = 2;
      ?>
     </div>
 
-    <div class="inner check" style="width:33% !important; float:left;">
+    <div class="inner check" style="width:33%; float:left;">
       <label>SCHEDE DI TERZO LIVELLO</label><br />
      <?php
       $q3 = ("SELECT a.id, a.id_parente, s.dgn_numsch
@@ -1016,7 +1016,7 @@ WHERE aree_scheda.id_scheda = $id AND area.tipo = 2;
     </div>
     <div style="clear:both"></div>
     <?php if($_SESSION['username']!='guest') {?>
-      <div class="check"><label class="update" id="newParente">Aggiungi scheda</label></div>
+      <div class="check noPrint"><label class="update" id="newParente">Aggiungi scheda</label></div>
       <div class="updateContent" style="display:none">
         <div id="newParente_form">
           <label>Inizia a digitare il nome della scheda da associare (es. "ARCHEO-"), la ricerca non e' case sensitive.</label>

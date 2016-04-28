@@ -1,6 +1,6 @@
 body {position:relative; background: #fff;color: #000;font-size: 12pt;font-family: "Times New Roman", Times, serif;width: 21cm; height: 29.7cm;-webkit-print-color-adjust: exact;}
 h1,h2,h3,p,a,label,img{margin:0px;padding:0px;}
-ul,ol {list-style:none;}
+ul,ol {list-style:none;page-break-inside: avoid;margin:0px;padding:0px;}
 /*da nascondere*/
 .noPrint, .update{display:none !important;}
 
@@ -16,17 +16,18 @@ table thead {border-top:1px solid #000 !important;border-bottom:1px solid #000 !
 table tbody tr{border-bottom:1px solid #939393}
 table tbody tr:last-child{border-bottom:1px transparent;}
 th,td{text-align:left;vertical-align:top; padding:5px 0px;}
-ul, ol{page-break-inside: avoid;}
 li{font-size:10pt;}
 
 #logoSchedaSx, #livelloScheda{display:inline-block; margin:0px;}
-#logoSchedaSx{width:25%;}
-#livelloScheda{vertical-align: top;width:50%;text-align: center;}
+#logoSchedaSx{width:28%;}
+#livelloScheda { vertical-align: top; width: 70%; text-align: right; padding: 10px 0px;}
 #livelloScheda li:before{content: 'SCHEDA DI ';}
-#livelloScheda li{font-size:15pt;}
+#livelloScheda li{font-size:15pt;font-weight:bold;}
 #primoDivSx{margin:0px !important; display:inline-block !important; width:49% !important;}
-#primoDivSx table tbody tr:nth-child(2), .sezioni h2, .inner h2{background: #CFC4B1 !important;}
-.sezioni h2, .inner h2{padding:5px;margin:5px 0px;border-bottom: 1px solid #96867B;}
+#primoDivSx table tbody tr:nth-child(2), .sezioni h2, .inner h2, #last div.check{background: #CFC4B1 !important;}
+/*.inner{border: 1px solid #FFBF96;}*/
+.sezioni h2, .inner h2, #last div.check{padding:5px;margin:5px 0px;border-bottom: 1px solid #96867B;}
+#last div.check{width:30.9% !important;display: inline-block;text-align:center;}
 #smallMap{height:300px;margin-left:10px !important; width:49% !important;display:inline-block;}
 #imgDiv { position: relative !important; background-color: #fff !important; z-index: 9000 !important; display: inline-block; width: 50%; text-align: right;}
 .slide{margin-bottom:20px;}
