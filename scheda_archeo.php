@@ -197,7 +197,7 @@ $extent2 = str_replace(' ', ',', $extent2);
    <div id="content">
     <?php require_once('inc/logoHub.php'); ?>
     <?php if($hub != 2){ ?>
-    <div id="livelloScheda" class="noPrint">
+    <div id="livelloScheda">
      <ul>
       <li id="liv1">PRIMO LIVELLO</li>
       <li id="liv2">SECONDO LIVELLO</li>
@@ -1142,7 +1142,7 @@ $(document).ready(function() {
         }
     });
 
-    $('#liv'+livello).addClass('livAttivo');
+    $('#liv'+livello).addClass('livAttivo').siblings('li').addClass('noPrint');
     $('.slide').hide();
     $('.toggle > div > h2').click(function(){$(this).parent().next('.slide').slideToggle(); });
     $("#switchImg").attr("checked", true);
