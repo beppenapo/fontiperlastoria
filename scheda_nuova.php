@@ -11,7 +11,7 @@ $idUsr = $_SESSION['id'];
 $tipoUsr = $_SESSION['tipo'];
 $hub = $_SESSION['hub'];
 $data = date("Y-m-d");
-
+$anno = date("Y");
 $dv = ($hub==2)?1286:1287;
 
 if($tipoScheda==10){
@@ -167,7 +167,7 @@ $resai = pg_query($connection, $qai);
              </td>
              <td>
               <label>CRONOLOGIA FINALE</label>
-              <input type="text" id="cro_fin" name="cro_fin" maxlength="4" value="0"  class="form"/>
+              <input type="text" id="cro_fin" name="cro_fin" maxlength="4" value="<?php echo $anno; ?>"  class="form"/>
               <label class="avviso" id="croTmp"></label>
              </td>
              <td>
