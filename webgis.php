@@ -41,7 +41,7 @@ while($topo = pg_fetch_array($topoR)){
 <?php if($hub!=2){?><link rel="shortcut icon" href="img/icone/favicon.ico" /><?php } ?>
 
 </head>
- <body onload="init()"> 
+ <body onload="init()">
   <div id="map"></div>
 
 <?php if($hub!=2){?>
@@ -56,13 +56,13 @@ while($topo = pg_fetch_array($topoR)){
 <?php }else{ ?>
  <div id="wrapLogoAvs">
   <div id="headLogo" class="headDiv"></div>
-  <div id="headTitle" class="headDiv bianco"> 
+  <div id="headTitle" class="headDiv bianco">
    <h1>ARCHIVIO ICONOGRAFICO DEI PAESAGGI DI COMUNITÀ</h1>
    <h2>Comunità Alta Valsugana e Bersntol<br>Tolgamoa'schòft Hoa Valzegu' ont Bersntol</h2>
   </div>
  </div>
 <?php } ?>
-  <div id="pannello"></div> 
+  <div id="pannello"></div>
     <div id="drag" class="attivo"></div>
     <div id="zoomArea"></div>
     <div id="zoomMax"></div>
@@ -71,14 +71,14 @@ while($topo = pg_fetch_array($topoR)){
       <div id="btnNext"></div>
     </div>
   <div id="nord"></div>
-  
+
   <div id="topoSearch">
     <select>
         <?php echo $opt; ?>
     </select>
   </div>
-  
-  <div id="text"> 
+
+  <div id="text">
    <div id="switcher">
     <div id="cartografiaToggle"><h1 class="switcher">CARTOGRAFIA DI BASE</h1></div>
     <div id='cartografiaSwitch'>
@@ -95,11 +95,11 @@ while($topo = pg_fetch_array($topoR)){
       <input type="checkbox" name="baselayer" id="toponomastica"class='checkLiv' value="toponomastica" checked/><label id="toponomasticaLabel">TOPONOMASTICA</label>
      </div>
     </div><!--cartografiaSwitch-->
-     
+
     <div id="areaToggle" class="hover tip" title="Mostra/nascondi le aree di interesse"><h1 class="switcher">AREA DI INTERESSE</h1></div>
     <div id='areaSwitch' class="chiuso">
      <div class="livelli">
-      <input type="checkbox" name="overlays" id="aree_archeo" value="aree_archeo" data-tipo="6" class='checkLiv ai'/> 
+      <input type="checkbox" name="overlays" id="aree_archeo" value="aree_archeo" data-tipo="6" class='checkLiv ai'/>
       <label for="aree_archeo" id="areeArcheoLabel" class="info" title="Il livello mostra le aree di interesse archeologico...">ARCHEOLOGICA</label>
       <div class="legende legendeAree legendeAreeArcheo"></div>
      </div>
@@ -111,7 +111,7 @@ while($topo = pg_fetch_array($topoR)){
      <div class="livelli">
       <input type="checkbox" name="overlays" id="aree_archiv" value="aree_archiv" data-tipo="4" class='checkLiv ai' />
       <label for="aree_archiv" id="areeArchivLabel" class="info" title="Il livello mostra le aree di interesse archivistico...">ARCHIVISTICA</label>
-      <div class="legende legendeAree legendeAreeArchiv"></div> 
+      <div class="legende legendeAree legendeAreeArchiv"></div>
      </div>
      <div class="livelli">
       <input type="checkbox" name="overlays" id="aree_biblio" value="aree_biblio" data-tipo="5" class='checkLiv ai' />
@@ -123,18 +123,18 @@ while($topo = pg_fetch_array($topoR)){
       <label for="aree_cult" id="areeCultLabel"  class="info" title="Il livello mostra le aree di interesse per la cultura materiale del luogo...">CULTURA MATERIALE</label>
       <div class="legende legendeAree legendeAreeCult"></div>
      </div>
-     <div class="livelli bassa">       
+     <div class="livelli bassa">
       <input type="checkbox" name="overlays" id="aree_foto" value="aree_foto" data-tipo="7" class='checkLiv ai' />
       <label for="aree_foto" id="areeFotoLabel"  class="info" title="Il livello mostra le aree di interesse fotografico...">FOTOGRAFICA </label>
       <div class="legende legendeAree legendeAreeFoto"></div>
      </div>
-     <div class="livelli">        
-      <input type="checkbox" name="overlays" id="aree_orale" value="aree_orale" data-tipo="1" class='checkLiv ai' /> 
+     <div class="livelli">
+      <input type="checkbox" name="overlays" id="aree_orale" value="aree_orale" data-tipo="1" class='checkLiv ai' />
       <label for="aree_orale" id="areeOraleLabel" class="info" title="Il livello mostra le aree di interesse per le fonti orali...">ORALE</label>
       <div class="legende legendeAree legendeAreeOrale"></div>
      </div>
-     <div class="livelli">      
-      <input type="checkbox" name="overlays" id="aree_stoart" value="aree_stoart" data-tipo="9" class='checkLiv ai' /> 
+     <div class="livelli">
+      <input type="checkbox" name="overlays" id="aree_stoart" value="aree_stoart" data-tipo="9" class='checkLiv ai' />
       <label for="aree_stoart" id="areeStoArtLabel" class="info" title="Il livello mostra le aree di interesse storico-artistico...">STORICO-ARTISTICA</label>
       <div class="legende legendeAree legendeAreeStoArt"></div>
      </div>
@@ -164,7 +164,7 @@ while($topo = pg_fetch_array($topoR)){
       <label id="ubiArchivLabel" class="info" title="Il livello mostra le aree di interesse archivistico...">
        <input type="checkbox" name="overlaysUbi" id="ubi_archiv" value="ubi_archiv" class='checkLiv' /> ARCHIVISTICA
       </label>
-      <div class="legende legendeUbi legendeUbiArchiv"></div> 
+      <div class="legende legendeUbi legendeUbiArchiv"></div>
      </div>
      <div class="livelli">
       <label id="ubiBiblioLabel"  class="info" title="Il livello mostra le aree di interesse bibliografico...">
@@ -178,29 +178,29 @@ while($topo = pg_fetch_array($topoR)){
       </label>
       <div class="legende legendeUbi legendeUbiCult"></div>
      </div>
-     <div class="livelli bassa">       
+     <div class="livelli bassa">
       <label id="ubiFotoLabel"  class="info" title="Il livello mostra le aree di interesse fotografico...">
        <input type="checkbox" name="overlaysUbi" id="ubi_foto" value="ubi_foto" class='checkLiv' />FOTOGRAFICA
       </label>
       <div class="legende legendeUbi legendeUbiFoto"></div>
      </div>
-     <div class="livelli">        
+     <div class="livelli">
       <label id="ubiOraleLabel" class="info" title="Il livello mostra le aree di interesse per le fonti orali...">
        <input type="checkbox" name="overlaysUbi" id="ubi_orale" value="ubi_orale" class='checkLiv' /> ORALE
       </label>
       <div class="legende legendeUbi legendeUbiOrale"></div>
      </div>
-     <div class="livelli">      
+     <div class="livelli">
       <label id="ubiStoArtLabel" class="info" title="Il livello mostra le aree di interesse storico-artistico...">
        <input type="checkbox" name="overlaysUbi" id="ubi_stoart" value="ubi_stoart" class='checkLiv' /> STORICO-ARTISTICA
       </label>
       <div class="legende legendeUbi legendeUbiStoArt"></div>
      </div>
-    </div><!--ubiSwitch--> 
+    </div><!--ubiSwitch-->
     <?php } ?>
    </div><!--switcher-->
    <?php if($hub!=2){?>
-   <div id="ricerca">     
+   <div id="ricerca">
     <div id="ricercaToggle"  class="tip" title="Mostra/nascondi i form per la ricerca avanzata"><h1>RICERCA</h1></div>
     <div id="formRicerca" class="chiuso">
      <div class="sezioni" id="datiGenerali"><h2>DATI GENERALI</h2></div>
@@ -219,18 +219,18 @@ while($topo = pg_fetch_array($topoR)){
      <div class="sezioni" id="fotografica"><h2>FOTOGRAFICA</h2></div>
      <div class="sezioni" id="orale"><h2>ORALE</h2></div>
      <div class="sezioni" id="storicoArtistica"><h2>STORICO-ARTISTICA</h2></div>
-    </div><!--div formRicerca --> 
-   </div><!-- div ricerca --> 
+    </div><!--div formRicerca -->
+   </div><!-- div ricerca -->
    <?php } ?>
   </div><!--div text -->
-  
+
  <!-- <div id="sliderWrap">
-   <div id="sliderLabel"><label>Anno </label></div> 
+   <div id="sliderLabel"><label>Anno </label></div>
    <div id="slider"></div>
   </div>-->
   <div id="scalebar"></div>
   <div id="coord"></div>
-  
+
 
  <div id="resultWrap">
   <div id="result">
@@ -244,13 +244,14 @@ while($topo = pg_fetch_array($topoR)){
 <script type="text/javascript" src="lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
   <script type="text/javascript" src="lib/OpenLayers-2.12/OpenLayers.js"></script>
   <script type="text/javascript" src="lib/OpenLayers-2.10/ScaleBar.js"></script>
+  <script src="https://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
   <script src="http://maps.google.com/maps/api/js?v=3.2&amp;sensor=false"></script>
   <script src="lib/webgis.js"></script>
   <script type="text/javascript">
   var hub = '<?php echo($hub); ?>';
   console.log('hub: '+hub);
    $(document).ready(function() {
-       
+
         (function ($) {
             $.fn.clickToggle = function (func1, func2) {
                 var funcs = [func1, func2];
@@ -264,18 +265,18 @@ while($topo = pg_fetch_array($topoR)){
                 return this;
             };
         }(jQuery));
- 
+
         $("#resHeadImg").clickToggle(
-            function() {$("#result").animate({ left: '-290px' });}, 
+            function() {$("#result").animate({ left: '-290px' });},
             function() {$("#result").animate({ left: '0px' });}
         );
-    
+
         if(hub==2){
             $( "#areaSwitch > div:not([class~='bassa'])" ).remove();
             $( "#ubiSwitch > div:not([class~='bassa'])" ).remove();
             $("#wrapLogoAvs").click(function(){ window.location.href='avs/index.php'; })
-        }        
+        }
    });
  </script>
-    </body> 
-</html> 
+    </body>
+</html>
