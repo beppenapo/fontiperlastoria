@@ -1,7 +1,7 @@
 <?php
 session_start();
-if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 ini_set( "display_errors", 0);
+if (!isset($_SESSION['username'])){$_SESSION['username']='guest';}
 $hub = $_SESSION['hub'];
 require("inc/db.php");
 $id = $_GET["id"];
