@@ -1,1 +1,0 @@
-/home/lefontip/public_html/conf_global.php
