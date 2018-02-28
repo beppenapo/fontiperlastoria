@@ -127,7 +127,7 @@ $e = pg_query($connection, $query);
                                         <th style="width:100px">TIPO</th>
                                         <th style="width:250px">AREA</th>
                                         <th style="width:400px">LOCALITÀ</th>
-                                        <?php if($usr == 1 || $usr == 2 || $usr == 6) {echo '<th style="width:100px; text-align:center">GEOMETRIE</th>';} ?>
+                                        <th style="width:100px; text-align:center">GEOMETRIE</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -151,10 +151,9 @@ $e = pg_query($connection, $query);
                                             echo "<td class='link' >".$tipo."</td>";
                                             echo "<td class='link' >".$r['area']."</td>";
                                             echo "<td class='link' >".$campo."</td>";
-                                            if($usr == 1 || $usr == 2 || $usr == 6) {
-                                              $link = ($r['line'] > 0) ? $azione : '<a href="aree_geom.php?a='.$r['id'].'">'.$azione.'</a>';
-                                              echo '<td class="modLista">'.$link.'</td>';
-                                            }
+                                            $link = ($r['line'] > 0) ? $azione : '<a href="aree_geom.php?a='.$r['id'].'">'.$azione.'</a>';
+                                            echo '<td class="modLista">'.$link.'</td>';
+                                            
                                         echo "</tr>";
                                     } ?>
                                 </tbody>
