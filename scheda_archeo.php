@@ -1064,11 +1064,12 @@ WHERE aree_scheda.id_scheda = $id AND area.tipo = 2;
 <div id="fotoOrig" style="display:none;"><img src="foto/<?php echo($img); ?>" /></div>
 
   <script type="text/javascript" src="lib/OpenLayers-2.12/OpenLayers.js"></script>
-  <script src="http://maps.google.com/maps/api/js?v=3.2&amp;sensor=false"></script>
+  <script src="https://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
   <script type="text/javascript" src="lib/menu.js"></script>
   <script type="text/javascript" src="lib/select.js"></script>
   <script type="text/javascript" src="lib/update.js"></script>
   <script type="text/javascript" src="lib/funzioniScheda.js"></script>
+  <script type="text/javascript" src="js/vargeom.js"></script>
 
 <script type="text/javascript" >
 var hub = '<?php echo($hub); ?>'
@@ -1252,11 +1253,7 @@ $(document).ready(function() {
     });
 });
 
-var mappa, gsat, aree, linee, arrayOSM, osm;
-var extent, extent2, bound, coo, numPoly, numLine, format, stile, param;
-var bingKey = 'Arsp1cEoX9gu-KKFYZWbJgdPEa8JkRIUkxcPr8HBVSReztJ6b0MOz3FEgmNRd4nM';
 OpenLayers.ProxyHost = "/cgi-bin/proxy.cgi?url=";
-format = 'image/png';
 numPoly = '<?php echo($numPoly); ?>';
 numLine = '<?php echo($numLine); ?>';
 param = '<?php echo($param);?>';
@@ -1266,7 +1263,6 @@ var cql = param.slice(0, -4);
 if ((numPoly > 0 && numLine >= 0)){
     coo = '<?php echo($extent);?>';
     bound = coo.split(',');
-    console.log(bound, '\n'+cql);
 }
 
 if ((numPoly == 0 && numLine > 0)){
@@ -1275,50 +1271,29 @@ if ((numPoly == 0 && numLine > 0)){
 }
 function init() {
     extent = new OpenLayers.Bounds(bound[0], bound[1], bound[2], bound[3]);
-    var options = {
+    options = {
         controls: [ new OpenLayers.Control.Navigation(), new OpenLayers.Control.Zoom() ],
-        resolutions: [156543.03390625, 78271.516953125, 39135.7584765625, 19567.87923828125, 9783.939619140625, 4891.9698095703125, 2445.9849047851562,     1222.9924523925781, 611.4962261962891, 305.74811309814453, 152.87405654907226, 76.43702827453613, 38.218514137268066, 19.109257068634033, 9.554628534317017, 4.777314267158508, 2.388657133579254, 1.194328566789627, 0.5971642833948135, 0.29858214169740677, 0.14929107084870338, 0.07464553542435169, 0.037322767712175846, 0.018661383856087923, 0.009330691928043961, 0.004665345964021981, 0.0023326729820109904, 0.0011663364910054952, 5.831682455027476E-4, 2.915841227513738E-4, 1.457920613756869E-4],
+        resolutions: resolution,
         maxExtent:new OpenLayers.Bounds (-20037508.34,-20037508.34,20037508.34,20037508.34),
         units: 'm',
-        projection: new OpenLayers.Projection("EPSG:900913"),
-        displayProjection: new OpenLayers.Projection("EPSG:4326")
-    };//options
+        projection: proj3857,
+        displayProjection:proj4326
+    };
     mappa = new OpenLayers.Map('smallMap', options);
-    gsat = new OpenLayers.Layer.Bing({name: "Aerial",key: bingKey,type: "Aerial"});
-    mappa.addLayer(gsat);
-    arrayOSM = ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg", "http://otile2.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg", "http://otile3.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg", "http://otile4.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg"];
-    osm = new OpenLayers.Layer.OSM(" MapQuest", arrayOSM, {
-        attribution: "Data, imagery and map information provided by <a href='http://www.mapquest.com/'  target='_blank'>MapQuest</a>, <a href='http://www.openstreetmap.org/' target='_blank'>Open Street Map</a> and contributors, <a href='http://creativecommons.org/licenses/by-sa/2.0/' target='_blank'>CC-BY-SA</a>  <img src='http://developer.mapquest.com/content/osm/mq_logo.png' border='0'>",
-        transitionEffect: "resize"
-    });
-    mappa.addLayer(osm);
+    mappa.addLayers([gsat,osm]);
     var report = function(e) { OpenLayers.Console.log(e.type, e.feature.id); };
     if (numPoly != 0) {
-        aree = new OpenLayers.Layer.WMS("Aree","http://www.lefontiperlastoria.it:80/geoserver/fonti/wms",{
-	        layers: 'fonti:area_int_poly',
-	        styles: stile,
-	        srs: 'EPSG:3857',
-            format: 'image/png',
-            transparent: true,
-            CQL_FILTER: cql
-        },{
-            isBaseLayer: false,
-            tileSize: new OpenLayers.Size(256,256)
-        });
+        aree = new OpenLayers.Layer.WMS("Aree",wmsHost
+            ,{layers: 'fps:area_int_poly',styles: stile,srs:srs3857,format:format,transparent: true,CQL_FILTER: cql}
+            ,{isBaseLayer: false,tileSize:tileSize}
+        );
         mappa.addLayer(aree);
     }
     if(numLine != 0){
-        linee = new OpenLayers.Layer.WMS("Tracciati","http://www.lefontiperlastoria.it:80/geoserver/fonti/wms",{
-            layers: 'fonti:area_int_line',
-            styles: stile+'_linea',
-            srs: 'EPSG:3857',
-            format: 'image/png',
-            transparent: true,
-            CQL_FILTER: cql
-        },{
-            isBaseLayer: false,
-            tileSize: new OpenLayers.Size(256,256)
-        });
+        linee = new OpenLayers.Layer.WMS("Tracciati",wmsHost
+            ,{layers: 'fps:area_int_line',styles: stile+'_linea',srs:srs3857,format:format,transparent: true,CQL_FILTER: cql}
+            ,{isBaseLayer: false,tileSize:tileSize}
+        );
         mappa.addLayer(linee);
     }
     if (!mappa.getCenter()) {mappa.zoomToExtent(extent);}
