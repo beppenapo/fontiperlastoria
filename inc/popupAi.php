@@ -95,7 +95,7 @@ var tpsch = "<?php echo($tpsch); ?>";
 function openSchede(idArea){
    //console.log('area: '+idArea+'\ntipo: '+tpsch+'\nhub: '+hub);
    $.ajax({
-    url: '../inc/popupAiSchede.php',
+    url: './inc/popupAiSchede.php',
     type: 'POST',
     data: {idArea:idArea, tpsch:tpsch, hub:hub},
     success: function(data){$("#resContentSchede").html(data);}
