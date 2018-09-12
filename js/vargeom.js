@@ -14,7 +14,7 @@ wmsHost="http://www.lefontiperlastoria.it:8080/geoserver/wms";
 wfsHost="http://www.lefontiperlastoria.it:8080/geoserver/wfs";
 version="1.0.0";
 namespace="http://78.46.230.205/fps";
-schema="http://78.46.230.205:8080/geoserver/fps/wfs?service=WFS&version=1.0.0&request=DescribeFeatureType&typeName=fps:area_int_poly"
+schema="http://78.46.230.205:8080/geoserver/fps/wfs?service=WFS&version=1.0.0&request=DescribeFeatureType&typeName=";
 //schema="http://www.lefontiperlastoria.it/fonti?service=WFS&version=1.0.0&request=DescribeFeatureType&TypeName=area_int_poly"
 tileSize=new OpenLayers.Size(256,256);
 namespace='http://78.46.230.205/fps';

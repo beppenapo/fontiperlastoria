@@ -81,120 +81,28 @@ while($topo = pg_fetch_array($topoR)){
             <div id="cartografiaToggle"><h1 class="switcher">CARTOGRAFIA DI BASE</h1></div>
             <div id='cartografiaSwitch'>
                 <div class="livelli">
-                    <input type="radio" name="baselayer" id="gsat" value="gsat" class='checkLiv' onclick="map.setBaseLayer(gsat)" checked />
-                    <label for="gsat">SATELLITE</label>
+                    <label for="gsat">
+                        <input type="radio" name="baselayer" id="gsat" value="gsat" class='checkLiv' onclick="map.setBaseLayer(gsat)" checked />
+                        SATELLITE
+                    </label>
                 </div>
                 <div class="livelli">
-                    <input type="radio" name="baselayer" value="osm" id="osm" class='checkLiv' onclick="map.setBaseLayer(osm)" />
-                    <label for="osm">OPENSTREETMAP</label>
-                </div>
-                <div class="livelli">
-                    <input type="checkbox" name="baselayer" id="comuni"class='checkLiv' value="comuni" checked/>
-                    <label for="comuni" id="comuniLabel">COMUNI</label>
-                </div>
-                <div class="livelli">
-                    <input type="checkbox" name="baselayer" id="toponomastica"class='checkLiv' value="toponomastica" checked/>
-                    <label for="toponomastica" id="toponomasticaLabel">TOPONOMASTICA</label>
+                    <label for="osm">
+                        <input type="radio" name="baselayer" value="osm" id="osm" class='checkLiv' onclick="map.setBaseLayer(osm)" />
+                        OPENSTREETMAP
+                    </label>
                 </div>
             </div>
 
             <div id="areaToggle" class="hover tip" title="Mostra/nascondi le aree di interesse">
                 <h1 class="switcher">AREA DI INTERESSE</h1>
             </div>
-            <div id='areaSwitch' class="chiuso">
-                <div class="livelli">
-                    <input type="checkbox" name="overlays" id="aree_archeo" value="aree_archeo" data-tipo="6" class='checkLiv ai'/>
-                    <label for="aree_archeo" id="areeArcheoLabel" class="info" title="Il livello mostra le aree di interesse archeologico...">ARCHEOLOGICA</label>
-                    <div class="legende legendeAree legendeAreeArcheo"></div>
-                </div>
-                <div class="livelli">
-                    <input type="checkbox" name="overlays" id="aree_architet" value="aree_architet" data-tipo="8" class='checkLiv ai' />
-                    <label for="aree_architet" id="areeArchitetLabel" class="info" title="Il livello mostra le aree di interesse architettonico...">ARCHITETTONICA</label>
-                    <div class="legende legendeAree legendeAreeArchitet"></div>
-                </div>
-                <div class="livelli">
-                    <input type="checkbox" name="overlays" id="aree_archiv" value="aree_archiv" data-tipo="4" class='checkLiv ai' />
-                    <label for="aree_archiv" id="areeArchivLabel" class="info" title="Il livello mostra le aree di interesse archivistico...">ARCHIVISTICA</label>
-                    <div class="legende legendeAree legendeAreeArchiv"></div>
-                </div>
-                <div class="livelli">
-                    <input type="checkbox" name="overlays" id="aree_biblio" value="aree_biblio" data-tipo="5" class='checkLiv ai' />
-                    <label for="aree_biblio" id="areeBiblioLabel"  class="info" title="Il livello mostra le aree di interesse bibliografico...">BIBLIOGRAFICA</label>
-                    <div class="legende legendeAree legendeAreeBiblio"></div>
-                </div>
-                <div class="livelli">
-                    <input type="checkbox" name="overlays" id="aree_cult" value="aree_cult" data-tipo="2" class='checkLiv ai' />
-                    <label for="aree_cult" id="areeCultLabel"  class="info" title="Il livello mostra le aree di interesse per la cultura materiale del luogo...">CULTURA MATERIALE</label>
-                    <div class="legende legendeAree legendeAreeCult"></div>
-                </div>
-                <div class="livelli bassa">
-                    <input type="checkbox" name="overlays" id="aree_foto" value="aree_foto" data-tipo="7" class='checkLiv ai' />
-                    <label for="aree_foto" id="areeFotoLabel"  class="info" title="Il livello mostra le aree di interesse fotografico...">FOTOGRAFICA </label>
-                    <div class="legende legendeAree legendeAreeFoto"></div>
-                </div>
-                <div class="livelli">
-                    <input type="checkbox" name="overlays" id="aree_orale" value="aree_orale" data-tipo="1" class='checkLiv ai' />
-                    <label for="aree_orale" id="areeOraleLabel" class="info" title="Il livello mostra le aree di interesse per le fonti orali...">ORALE</label>
-                    <div class="legende legendeAree legendeAreeOrale"></div>
-                </div>
-                <div class="livelli">
-                    <input type="checkbox" name="overlays" id="aree_stoart" value="aree_stoart" data-tipo="9" class='checkLiv ai' />
-                    <label for="aree_stoart" id="areeStoArtLabel" class="info" title="Il livello mostra le aree di interesse storico-artistico...">STORICO-ARTISTICA</label>
-                    <div class="legende legendeAree legendeAreeStoArt"></div>
-                </div>
-                <div class="livelli bassa">
-                    <div class="sliderLivelli">
-                        <div class="sliderOpacity" id="sliderArea">
-                            <div class="ui-slider-handle"></div>
-                        </div>
-                        <span class="amount" id="amountAree"></span>
-                    </div>
-                </div>
-            </div>
+            <div id='areaSwitch' class="chiuso"></div>
             <?php if($hub!=2){?>
-                <div id="ubiToggle" class="hover tip" title="Mostra/nascondi le ubicazioni"><h1 class="switcher">UBICAZIONE FONTE</h1></div>
-                <div id='ubiSwitch' class="chiuso">
-                    <div class="livelli">
-                        <input type="checkbox" name="overlaysUbi" id="ubi_archeo" value="ubi_archeo" class='checkLiv'/>
-                        <label for="ubi_archeo" id="ubiArcheoLabel" class="info" title="Il livello mostra le aree di interesse archeologico..."> ARCHEOLOGICA</label>
-                        <div class="legende legendeUbi legendeUbiArcheo"></div>
-                    </div>
-                    <div class="livelli">
-                        <input type="checkbox" name="overlaysUbi" id="ubi_architet" value="ubi_architet" class='checkLiv' />
-                        <label id="ubiArchitetLabel" class="info" title="Il livello mostra le aree di interesse architettonico...">ARCHITETTONICA</label>
-                        <div class="legende legendeUbi legendeUbiArchitet"></div>
-                    </div>
-                    <div class="livelli">
-                        <input type="checkbox" name="overlaysUbi" id="ubi_archiv" value="ubi_archiv" class='checkLiv' />
-                        <label id="ubiArchivLabel" class="info" title="Il livello mostra le aree di interesse archivistico...">ARCHIVISTICA</label>
-                        <div class="legende legendeUbi legendeUbiArchiv"></div>
-                    </div>
-                    <div class="livelli">
-                        <input type="checkbox" name="overlaysUbi" id="ubi_biblio" value="ubi_biblio" class='checkLiv' />
-                        <label id="ubiBiblioLabel" class="info" title="Il livello mostra le aree di interesse bibliografico...">BIBLIOGRAFICA</label>
-                        <div class="legende legendeUbi legendeUbiBiblio"></div>
-                    </div>
-                    <div class="livelli">
-                        <input type="checkbox" name="overlaysUbi" id="ubi_cult" value="ubi_cult" class='checkLiv' />
-                        <label id="ubiCultLabel" class="info" title="Il livello mostra le aree di interesse per la cultura materiale del luogo...">CULTURA MATERIALE</label>
-                        <div class="legende legendeUbi legendeUbiCult"></div>
-                    </div>
-                    <div class="livelli bassa">
-                        <input type="checkbox" name="overlaysUbi" id="ubi_foto" value="ubi_foto" class='checkLiv' />
-                        <label id="ubiFotoLabel" class="info" title="Il livello mostra le aree di interesse fotografico...">FOTOGRAFICA</label>
-                        <div class="legende legendeUbi legendeUbiFoto"></div>
-                    </div>
-                    <div class="livelli">
-                        <input type="checkbox" name="overlaysUbi" id="ubi_orale" value="ubi_orale" class='checkLiv' />
-                        <label id="ubiOraleLabel" class="info" title="Il livello mostra le aree di interesse per le fonti orali...">ORALE</label>
-                        <div class="legende legendeUbi legendeUbiOrale"></div>
-                    </div>
-                    <div class="livelli">
-                        <input type="checkbox" name="overlaysUbi" id="ubi_stoart" value="ubi_stoart" class='checkLiv' />
-                        <label id="ubiStoArtLabel" class="info" title="Il livello mostra le aree di interesse storico-artistico...">STORICO-ARTISTICA</label>
-                        <div class="legende legendeUbi legendeUbiStoArt"></div>
-                    </div>
-                </div>
+            <div id="ubiToggle" class="hover tip" title="Mostra/nascondi le ubicazioni">
+                <h1 class="switcher">UBICAZIONE FONTE</h1>
+            </div>
+            <div id='ubiSwitch' class="chiuso"></div>
             <?php } ?>
         </div>
         <?php if($hub!=2){?>

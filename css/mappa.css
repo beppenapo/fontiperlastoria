@@ -22,11 +22,11 @@ div#logo2Wrap:hover{background-color: rgba(255,255,255,0.5);}
 div#logo2{ position:absolute; left:5.5px; width:50px; height:43px; margin:0px auto !important; cursor:pointer; font-size: 8px; color:#AAA !important; font-family: 'AdobeCaslonProRegular', Arial, sans-serif; text-align:center; background-color:rgb(57,45,0); z-index: 20000;-webkit-border-radius: 30em; -moz-border-radius: 30em; border-radius: 30em;}
 div#logo2 p{margin:16px auto !important;}
 div#text, div#result { position: absolute; font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif; font-size: 80%; color: #222; height: auto; margin: 0px auto; overflow:hidden; z-index: 20000; background-color: rgba(255,255,255,0.8);}
-div#text{top: 20px;right: 60px;width: 125px;padding: 0px 0.5em 0.5em 0.5em;}
-div#text h1{text-align:center;}
-div#text h1.switcher{text-align:left !important; }
+div#text{top: 20px;right: 60px;width: 130px;padding: 0px;}
 div#text h1{font-size:9px; color:#43321C; text-align:center;}
+div#text h1.switcher{text-align:left !important; }
 div#text h2{font-size:8px; color:#43321C;}
+div#text label{cursor:pointer;}
 div#ricerca{ margin:20px 1px 5px 1px; padding:0px; border-top:1px solid #67573F; overflow:hidden;}
 div#ricercaToggle{cursor:default;}
 div.sezioni{border:1px solid #67573F;margin:-1px 2px; padding:0px 1px;}
@@ -35,15 +35,16 @@ div.sezioni h2{padding:1px 0px !important; margin:0px !important;}
 #topoSearch{ position: absolute; bottom:15px; left: 60px; z-index: 1005; padding: 5px; background: rgba(255,255,255,0.5);}
 #topoSearch select{font-size: .55em; padding: 5px; background: #fff; border: none;}
 div#switcher{font-size:7px;}
+div#switcher>div>*{padding:1px 10px;}
 div#nord{ position:absolute; top:85%; right:1px; width:60px; height:60px; z-index:1005; background: url(../img/icone/nord.png) no-repeat center center; }
 img.infoImg{vertical-align: bottom; cursor: pointer;}
-input.checkLiv{ width: 10px; height: 10px; padding: 0px; margin:0px; vertical-align: bottom; position: relative; top: 0px; *overflow: hidden;}
+input.checkLiv{ width: 10px; height: 10px; padding: 0px; margin:0px 3px 0px 0px; vertical-align: middle; position: relative; top: 0px; *overflow: hidden;}
 .olControlPanZoom {width: 45px; height: 143px; margin-top: 75%; margin-left:10px; background-color: rgba(255,255,255,0.4) !important; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; transition: background 0.5s linear; -moz-transition: background 0.5s linear; -webkit-transition: background 0.5s linear; -o-transition: background 0.5s linear; }
 .olControlPanZoom:hover {background: rgba(255,255,255,0.5);}
 #coord, #scalebar{position: absolute; bottom: 1px; font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif; font-size: 70%; text-align:center; color: #67573F; margin: 0px auto; z-index: 20000; background-color: rgba(255,255,255,0.5); padding: 0px 0.5em 0.5em 0.5em;-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;}
 #coord { left: 60%; width: 150px; height: auto; padding: 6px;}
 #scalebar{ left: 40%; width: 180px; height: auto;}
-div.livelli{position: relative; display: block;width: 125px; }
+div.livelli:hover{background: #fff}
 .legende{ float:right;  width: 20px; height:5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;}
 .legendeAreeArcheo,   .legendeUbiArcheo{background-color: rgba(113,255,64,1);}
 .legendeAreeArchitet, .legendeUbiArchitet{background-color: rgba(255,0,0,1);}
@@ -75,12 +76,12 @@ div.livelli{position: relative; display: block;width: 125px; }
 div#pannello{position:absolute; top:70%; left:6px; padding: 5px; width:40px; height:180px; background-color: rgba(255,255,255,0.5); z-index: 1000;}
 /*********  Comando zoom area *************/
 div#zoomArea{
-	position:absolute; 
-	left:18px; 
+	position:absolute;
+	left:18px;
 	top:70%;
-	z-index: 1005; 
-	width:27px; 
-	height:27px; 
+	z-index: 1005;
+	width:27px;
+	height:27px;
 	cursor:pointer;
 	background: url(../img/icone/zoomArea.png) no-repeat center center;
 	background-color: none !important;
@@ -90,12 +91,12 @@ div#zoomArea{
 
 /*********  Comando drag *************/
 div#drag{
-	position:absolute; 
-	left:18px; 
+	position:absolute;
+	left:18px;
 	top:70%;
-	z-index: 1005; 
-	width:27px; 
-	height:27px; 
+	z-index: 1005;
+	width:27px;
+	height:27px;
 	cursor:pointer;
 	background: url(../img/icone/drag.png) no-repeat center center;
 	background-color: none !important;
@@ -104,12 +105,12 @@ div#drag{
 
 /*********  Comando di zoom max extent  *************/
 div#zoomMax{
-	position:absolute; 
-	left:18px; 
+	position:absolute;
+	left:18px;
 	top:70%;
-	z-index: 1005; 
-	width:27px; 
-	height:27px; 
+	z-index: 1005;
+	width:27px;
+	height:27px;
 	cursor:pointer;
 	background: url(../img/icone/zoom_world.png) no-repeat center center;
 	background-color: none !important;
@@ -145,7 +146,7 @@ div#history{
   z-index: 1005;
   width: 50px;
   height: auto !important;
-  margin-top: 80px;	
+  margin-top: 80px;
   background: rgba(45,36,3,0) !important;
 }
 
@@ -158,19 +159,19 @@ div#history{
 	cursor:pointer;
 }
 
-.olControlNavigationHistoryPreviousItemActive { 
+.olControlNavigationHistoryPreviousItemActive {
 	background-image:url(../img/icone/zoomPrev.png) !important;
   	background-position: -1px 0px !important;
 }
-.olControlNavigationHistoryPreviousItemInactive { 
+.olControlNavigationHistoryPreviousItemInactive {
    background-image:url(../img/icone/zoomPrev.png) !important;
 	background-position: -1px 0px !important;
 }
-.olControlNavigationHistoryNextItemActive { 
+.olControlNavigationHistoryNextItemActive {
 	background-image:url(../img/icone/zoomNext.png) !important;
    background-position: -1px 0px !important;
 }
-.olControlNavigationHistoryNextItemInactive { 
+.olControlNavigationHistoryNextItemInactive {
 	background-image:url(../img/icone/zoomNext.png) !important;
    background-position: -1px 0px !important;
 }
@@ -228,15 +229,15 @@ ul.ulpopup li{font-size: 0.5em;list-style: none; width: 220px;margin-left:10px;p
 div#result{
    top: 90px;
    left: -325px;
-   width: 300px; 
-   height:50%; 
+   width: 300px;
+   height:50%;
    padding:0px;
    margin:0px;
    -webkit-border-top-right-radius: 10px;
    -webkit-border-bottom-right-radius: 10px;
    -moz-border-radius-topright: 10px;
    -moz-border-radius-bottomright: 10px;
-   border-top-right-radius: 10px; 
+   border-top-right-radius: 10px;
    border-bottom-right-radius: 10px;
 }
 div#resultHeader{width:100%; /*background-color: #ac5a00;*/ float:left;}
@@ -244,7 +245,7 @@ div#resultHeader{width:100%; /*background-color: #ac5a00;*/ float:left;}
 div#resHeadImg, .olPopupCloseBox{
    width:25px !important;
    height:25px !important;
-   float:right; 
+   float:right;
    cursor: pointer !important;
    text-transform:uppercase !important;
    color:#fff !important;
@@ -271,9 +272,9 @@ div#resContentData{ height:auto;max-height: 40% !important;}
 div#resContentSchede{min-height: 38%; height: auto;max-height: 45%;}
 
 div#resContentData li{
-  list-style-type: none; 
-  margin-left: 10px; 
-  font-weight:bold; 
+  list-style-type: none;
+  margin-left: 10px;
+  font-weight:bold;
   cursor: pointer;
   width:235px;
   padding:2px 0px;
@@ -281,8 +282,8 @@ div#resContentData li{
   transition-property: margin-left; /*standard*/
   transition-duration: 0.5s;
   -webkit-transition-property: margin-left; /*Safari e Chrome */
-  -webkit-transition-duration: 0.5s;      
-  -o-transition-property: margin-left;     /*Opera*/        
+  -webkit-transition-duration: 0.5s;
+  -o-transition-property: margin-left;     /*Opera*/
   -o-transition-duration: 0.5s;
   -moz-transition-property: margin-left;   /*Firefox*/
   -moz-transition-duration: 0.5s;
@@ -325,22 +326,22 @@ h2.architettonica, a.architettonica{color:#FF0000 !important;}
 .active{color: #B10404;}
 
 /**************** AVS *********************/
-#wrapLogoAvs{ 
- position:absolute; 
- top:20px; 
- left:10px; 
- padding: 5px; 
- width:560px; 
- height:50px; 
+#wrapLogoAvs{
+ position:absolute;
+ top:20px;
+ left:10px;
+ padding: 5px;
+ width:560px;
+ height:50px;
  background-color: rgba(255,255,255,0.2);
  color:#fff;
- z-index: 20000;-moz-border-radius: 4px; 
- -webkit-border-radius: 4px; 
- border-radius: 4px; 
- transition: background 0.5s linear, color 0.5s linear; 
- -moz-transition: background 0.5s linear, color 0.5s linear; 
- -webkit-transition: background 0.5s linear, color 0.5s linear; 
- -o-transition: background 0.5s linear, color 0.5s linear; 
+ z-index: 20000;-moz-border-radius: 4px;
+ -webkit-border-radius: 4px;
+ border-radius: 4px;
+ transition: background 0.5s linear, color 0.5s linear;
+ -moz-transition: background 0.5s linear, color 0.5s linear;
+ -webkit-transition: background 0.5s linear, color 0.5s linear;
+ -o-transition: background 0.5s linear, color 0.5s linear;
  cursor:pointer;
  font-family: 'Raleway', sans-serif;
 }
@@ -351,8 +352,11 @@ div#wrapLogoAvs:hover{ background-color: rgba(255,255,255,0.7);color:#000;}
  background-size:contain;
  width: 60px;
  height: 100%;
- display: inline-block; 
+ display: inline-block;
 }
 #wrapLogoAvs #headTitle{ width: 490px; height: 100%; display: inline-block; vertical-align:top;}
 #wrapLogoAvs #headTitle h1{font-size:1em;padding: 0px !important; margin: 0px !important;}
 #wrapLogoAvs #headTitle h2{font-size:.8em;padding: 0px !important; margin: 0px !important;}
+
+
+/******* nuovi elementi **/
